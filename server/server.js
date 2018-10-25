@@ -1,10 +1,14 @@
 const path = require("path");
+const http = require("http");
 const express = require("express");
-const bodyParser = require("body-parser");
+const socketIO = require("socket.io");
+//const bodyParser = require("body-parser");
 
 const publicPath = path.join(__dirname, "../public");
 
 var app = express();
+var server = http.createServer(app);
+var io = socketIO(server);
 const port = process.env.PORT || 3000;
 //app.use(bodyParser.json());
 
@@ -12,7 +16,13 @@ const port = process.env.PORT || 3000;
 //   res.send(publicPath);
 // });
 app.use(express.static(publicPath));
-app.listen(port, () => {
+io.on("connection", socket => {
+  console.log("new User conected");
+  socket.on("disconnect", () => {
+    console.log("User disconected");
+  });
+});
+server.listen(port, () => {
   console.log(`starting on port: ${port}`);
 });
 

@@ -14,6 +14,16 @@
     <h1>hellooo world</h1>
     <h2>hello heroku and github</h2>
     <h3>I think this time for real</h3>
+    <script src='/socket.io/socket.io.js'></script>
+    <script>
+        var socket = io();
+        socket.on('connect', () => {
+            console.log('connected to server')
+        })
+        socket.on('disconnect', () => {
+            console.log('disconected from server')
+        })
+    </script>
 </body>
 
 </html>
