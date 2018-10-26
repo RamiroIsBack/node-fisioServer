@@ -3,7 +3,7 @@ const http = require("http");
 const express = require("express");
 const socketIO = require("socket.io");
 //const bodyParser = require("body-parser");
-
+const { generateMessage } = require("./utils/message");
 const publicPath = path.join(__dirname, "../public");
 
 var app = express();
@@ -19,23 +19,20 @@ app.use(express.static(publicPath));
 io.on("connection", socket => {
   console.log("new User conected");
 
-  socket.emit("newMessage", {
-    from: "server",
-    createdAt: new Date().getTime(),
-    text: "wellcome to the server , you can now chat with eachother"
-  });
-  socket.broadcast.emit("newMessage", {
-    from: "admin",
-    text: "new guy joined!"
-  });
+  socket.emit(
+    "newMessage",
+    generateMessage(
+      "server",
+      "wellcome to the server , you can now chat with eachother"
+    )
+  );
+  socket.broadcast.emit(
+    "newMessage",
+    generateMessage("admin", "new guy joined!")
+  );
 
   socket.on("createMessage", ({ from, text }) => {
-    console.log("client created a message", from, text);
-    socket.broadcast.emit("newMessage", {
-      from,
-      text,
-      createdAt: new Date().getTime()
-    });
+    socket.broadcast.emit("newMessage", generateMessage(from, text));
   });
 
   socket.on("disconnect", () => {
