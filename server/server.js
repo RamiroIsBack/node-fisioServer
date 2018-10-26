@@ -31,8 +31,9 @@ io.on("connection", socket => {
     generateMessage("admin", "new guy joined!")
   );
 
-  socket.on("createMessage", ({ from, text }) => {
-    socket.broadcast.emit("newMessage", generateMessage(from, text));
+  socket.on("createMessage", ({ from, text }, callback) => {
+    io.emit("newMessage", generateMessage(from, text));
+    callback("if you may...");
   });
 
   socket.on("disconnect", () => {
