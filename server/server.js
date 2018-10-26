@@ -21,13 +21,17 @@ io.on("connection", socket => {
 
   socket.emit("newMessage", {
     from: "server",
-    createdAt: new Date(),
-    text: "fuck you monster!!"
+    createdAt: new Date().getTime(),
+    text: "well come to the server , you can now chat with eachother"
   });
 
-  socket.on("createMessage", message => {
-    message.createdAt = new Date();
-    console.log("client created a message", message);
+  socket.on("createMessage", ({ from, text }) => {
+    console.log("client created a message", from, text);
+    io.emit("newMessage", {
+      from,
+      text,
+      createdAt: new Date().getTime()
+    });
   });
 
   socket.on("disconnect", () => {
