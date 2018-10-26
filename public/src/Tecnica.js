@@ -9,8 +9,25 @@ socket.on("newMessage", function(message) {
   console.log("newMessage", message);
 });
 
-var seleccionarTipo = function() {
-  console.log("seleccionarTipo presssed bitch");
+var seleccionarPersona = function() {
+  var trabajadores = [
+    { nombre: "javi", id: "javi" },
+    { nombre: "Nadia", id: "nadia" }
+  ];
+  var radioPersona = document.getElementById("radioPersona");
+  trabajadores.map((persona, index) => {
+    var label = document.createElement("label");
+    var radio = document.createElement("input");
+    radio.type = "radio";
+    radio.name = "persona";
+    radio.id = persona.id;
+    radio.value = persona.nombre;
+    radio.required = "required";
+    label.appendChild(radio);
+    label.appendChild(document.createTextNode(persona.id));
+
+    radioPersona.appendChild(label);
+  });
 };
 var seleccionarServicio = function() {
   console.log("seleccionarServicio presssed bitch");
