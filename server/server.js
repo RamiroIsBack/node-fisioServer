@@ -18,6 +18,18 @@ const port = process.env.PORT || 3000;
 app.use(express.static(publicPath));
 io.on("connection", socket => {
   console.log("new User conected");
+
+  socket.emit("newMessage", {
+    from: "server",
+    createdAt: new Date(),
+    text: "fuck you monster!!"
+  });
+
+  socket.on("createMessage", message => {
+    message.createdAt = new Date();
+    console.log("client created a message", message);
+  });
+
   socket.on("disconnect", () => {
     console.log("User disconected");
   });
