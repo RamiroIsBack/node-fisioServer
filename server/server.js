@@ -22,12 +22,16 @@ io.on("connection", socket => {
   socket.emit("newMessage", {
     from: "server",
     createdAt: new Date().getTime(),
-    text: "well come to the server , you can now chat with eachother"
+    text: "wellcome to the server , you can now chat with eachother"
+  });
+  socket.broadcast.emit("newMessage", {
+    from: "admin",
+    text: "new guy joined!"
   });
 
   socket.on("createMessage", ({ from, text }) => {
     console.log("client created a message", from, text);
-    io.emit("newMessage", {
+    socket.broadcast.emit("newMessage", {
       from,
       text,
       createdAt: new Date().getTime()
