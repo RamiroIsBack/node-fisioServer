@@ -1,6 +1,6 @@
 {
-  "name": "fisiobserver",
-  "version": "2.0.0",
+  "name": "fisback",
+  "version": "2.1.0",
   "description": "graphql,webpack,reactJs,mongoose,Apollo,JWT",
   "main": "index.js",
   "scripts": {

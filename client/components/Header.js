@@ -29,9 +29,6 @@ class Header extends Component {
       return (
         <div>
           <li>
-            <Link to="/signup">Sign up</Link>
-          </li>
-          <li>
             <Link to="/login">Log in</Link>
           </li>
         </div>
