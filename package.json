@@ -1,7 +1,7 @@
 {
-  "name": "chat",
-  "version": "1.0.0",
-  "description": "about soket io",
+  "name": "fisiobserver",
+  "version": "2.0.0",
+  "description": "graphql,webpack,reactJs,mongoose,Apollo,JWT",
   "main": "index.js",
   "scripts": {
     "start": "node server/server.js",
@@ -14,13 +14,26 @@
   "author": "ramiro",
   "license": "ISC",
   "dependencies": {
+    "apollo-boost": "^0.1.18",
     "apollo-server-express": "^2.1.0",
     "axios": "^0.18.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "graphql": "^14.0.2",
     "graphql-tools": "^4.0.2",
-    "socket.io": "^2.1.1"
+    "html-webpack-plugin": "^3.2.0",
+    "mongoose": "^5.3.7",
+    "react": "^16.6.0",
+    "react-apollo": "^2.2.4",
+    "react-dom": "^16.6.0",
+    "react-router-dom": "^4.3.1",
+    "socket.io": "^2.1.1",
+    "webpack": "^4.23.1",
+    "webpack-dev-middleware": "^3.4.0"
   },
   "devDependencies": {
     "expect": "^23.6.0",
