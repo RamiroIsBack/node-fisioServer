@@ -37,13 +37,21 @@ class Header extends Component {
   }
   render() {
     return (
-      <div className="nav-wrapper">
-        <nav>
+      <div>
+        {this.props.data.hola && (
           <div>
-            <ul className="right">{this.renderButtons()}</ul>
-            <Link to="/dashboard">Home</Link>
+            <h1> {this.props.data.hello.name}</h1>
+            <h1> {this.props.data.hello.id}</h1>
           </div>
-        </nav>
+        )}
+        <div className="nav-wrapper">
+          <nav>
+            <div>
+              <ul className="right">{this.renderButtons()}</ul>
+              <Link to="/dashboard">Home</Link>
+            </div>
+          </nav>
+        </div>
       </div>
     );
   }

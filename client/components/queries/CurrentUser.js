@@ -1,10 +1,10 @@
-import gql from 'graphql-tag'
+import gql from "graphql-tag";
 
 export default gql`
   {
-    currentUser{
+    hello {
+      name
       id
-      email
     }
   }
 `;
