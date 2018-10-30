@@ -31,10 +31,17 @@ app.listen(port, () => {
 });
 // Webpack runs as a middleware.  If any request comes in for the root route ('/')
 // Webpack will respond with the output of the webpack process: an HTML file and
-// a single bundle.js output of all of our client side Javascript
+var env = process.env.NODE_ENV || "development";
+var webpackConfig = "";
+if (env === "development" || env === "test") {
+  // devtool: "inline-source-map" for development
+  webpackConfig = require("../webpack.dev.js");
+} else {
+  // a single bundle.js output of all of our client side Javascript for production
+  webpackConfig = require("../webpack.prod.js");
+}
 const webpackMiddleware = require("webpack-dev-middleware");
 const webpack = require("webpack");
-const webpackConfig = require("../webpack.dev.js");
 app.use(webpackMiddleware(webpack(webpackConfig)));
 module.exports = { app };
 
