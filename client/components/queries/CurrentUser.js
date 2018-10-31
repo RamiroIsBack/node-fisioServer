@@ -2,9 +2,13 @@ import gql from "graphql-tag";
 
 export default gql`
   {
-    hello {
-      name
+    instalacionesCopy {
+      textoLargo
+      textoCorto
       id
+      items {
+        alt
+      }
     }
   }
 `;

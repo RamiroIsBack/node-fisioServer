@@ -38,10 +38,10 @@ class Header extends Component {
   render() {
     return (
       <div>
-        {this.props.data.hello && (
+        {this.props.data.instalacionesCopy && (
           <div>
-            <h1> {this.props.data.hello.name}</h1>
-            <h1> {this.props.data.hello.id}</h1>
+            <h1> {this.props.data.instalacionesCopy.textoCorto}</h1>
+            <h1> {this.props.data.instalacionesCopy.items[0].alt}</h1>
           </div>
         )}
         <div className="nav-wrapper">

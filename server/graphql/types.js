@@ -2,12 +2,18 @@
 const { gql } = require("apollo-server-express");
 // GraphQL: TypeDefs
 const TYPEDEFS = gql`
-  type Gremlin {
-    name: String
+  type Img {
+    src: String
+    alt: String
+  }
+  type InstalacionesCopy {
+    textoLargo: String
+    textoCorto: String
     id: ID
+    items: [Img]
   }
   type Query {
-    hello: Gremlin
+    instalacionesCopy: InstalacionesCopy
   }
 `;
 // Exports
