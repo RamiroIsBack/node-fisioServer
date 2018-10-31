@@ -38,7 +38,7 @@ class Header extends Component {
   render() {
     return (
       <div>
-        {this.props.data.hola && (
+        {this.props.data.hello && (
           <div>
             <h1> {this.props.data.hello.name}</h1>
             <h1> {this.props.data.hello.id}</h1>

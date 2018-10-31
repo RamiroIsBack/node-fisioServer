@@ -32,6 +32,9 @@ app.listen(port, () => {
 // Webpack runs as a middleware.  If any request comes in for the root route ('/')
 // Webpack will respond with the output of the webpack process: an HTML file and
 var env = process.env.NODE_ENV || "development";
+
+// not working  TODO:::: try writting the node_env as heroku variable like in the aprieta API
+
 var webpackConfig = "";
 if (env === "development" || env === "test") {
   // devtool: "inline-source-map" for development
