@@ -36,7 +36,7 @@ var env = process.env.NODE_ENV || "development";
 // not working  TODO:::: try writting the node_env as heroku variable like in the aprieta API
 
 var webpackConfig = "";
-if (env === "development" || env === "test") {
+if (port === 4000) {
   // devtool: "inline-source-map" for development
   webpackConfig = require("../webpack.dev.js");
 } else {
