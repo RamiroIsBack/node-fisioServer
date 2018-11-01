@@ -3,17 +3,21 @@ const path = require("path");
 const express = require("express");
 //const socketIO = require("socket.io");
 const bodyParser = require("body-parser");
-const mongosse = require("mongoose");
+var { connectWithDBThroughMongoose } = require("./db/mongoose");
+connectWithDBThroughMongoose()
+  .then(message => console.log("connectingDB: ", message))
+  .catch(e => console.log("error while connecting: ", e));
+
 //const { generateMessage } = require("./utils/message");
 const publicPath = path.join(__dirname, "../public");
 
 // Imports: GraphQL
-const { SERVER } = require("./graphql/schema.js");
+const { apolloServer } = require("./graphql/schema.js");
 
 var app = express();
 
 // Middleware: GraphQL
-SERVER.applyMiddleware({
+apolloServer.applyMiddleware({
   app
 });
 

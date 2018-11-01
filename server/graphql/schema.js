@@ -5,7 +5,7 @@ const { TYPEDEFS } = require("./types.js");
 const { RESOLVERS } = require("./resolvers.js");
 // GraphQL: Schema
 const port = process.env.PORT || 4000;
-const SERVER = new ApolloServer({
+const apolloServer = new ApolloServer({
   typeDefs: TYPEDEFS,
   resolvers: RESOLVERS,
   playground: {
@@ -16,4 +16,4 @@ const SERVER = new ApolloServer({
   }
 });
 // Exports
-module.exports = { SERVER };
+module.exports = { apolloServer };
