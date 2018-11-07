@@ -1,5 +1,5 @@
 // Imports: Axios
-const axios = require("axios");
+const instalaciones = require("../models/Instalaciones");
 // GraphQL: Resolvers
 const RESOLVERS = {
   Query: {
