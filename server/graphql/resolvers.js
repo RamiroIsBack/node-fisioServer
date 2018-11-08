@@ -5,7 +5,7 @@ const RESOLVERS = {
   Query: {
     instalacionesCopy(root, args, context, info) {
       return Instalaciones.find().then(instalacionesCopy => {
-        return instalacionesCopy;
+        return instalacionesCopy[0];
       });
       // return {
       //   textoLargo: "Gizmo is a lightfull creature that lives with us human",

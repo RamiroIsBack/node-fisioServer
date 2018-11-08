@@ -44,6 +44,11 @@ class Header extends Component {
             <h1> {this.props.data.instalacionesCopy.items[0].alt}</h1>
           </div>
         )}
+        {this.props.data.loading && (
+          <div>
+            <h1>Cargando...</h1>
+          </div>
+        )}
         <div className="nav-wrapper">
           <nav>
             <div>
