@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
-const Schema = mongoose.Schema;
-var Instalaciones = mongoose.model("instalaciones", {
+
+var InstalacionesSchema = mongoose.Schema({
   textoLargo: {
     type: String
   },
@@ -18,5 +18,5 @@ var Instalaciones = mongoose.model("instalaciones", {
     }
   ]
 });
-
+var Instalaciones = mongoose.model("Instalaciones", InstalacionesSchema);
 module.exports = { Instalaciones };
