@@ -21,6 +21,9 @@ app.use(bodyParser.json());
 app.get("/users/login", (req, res) => {
   res.send(publicPath);
 });
+app.get("/ping", (req, res) => {
+  res.send("ping");
+});
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
