@@ -4,7 +4,6 @@ const bodyParser = require("body-parser");
 var { connectWithDBThroughMongoose } = require("./db/mongoose");
 
 var { Ping } = require("./models/Ping");
-var { Prueba } = require("./models/prueba");
 
 connectWithDBThroughMongoose()
   .then(message => console.log("connectingDB: ", message))
