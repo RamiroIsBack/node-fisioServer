@@ -13,7 +13,7 @@ const cache = new InMemoryCache({
 
 const port = process.env.PORT || 4000;
 const client = new ApolloClient({
-  uri: `http://localhost:${port}/graphql`,
+  uri: `https://stormy-meadow-66204.herokuapp.com:/graphql`,
   cache
 });
 
