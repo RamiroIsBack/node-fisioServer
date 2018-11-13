@@ -2,6 +2,10 @@ const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
 var { connectWithDBThroughMongoose } = require("./db/mongoose");
+
+var { Ping } = require("./models/Ping");
+var { Prueba } = require("./models/prueba");
+
 connectWithDBThroughMongoose()
   .then(message => console.log("connectingDB: ", message))
   .catch(e => console.log("error while connecting: ", e));
@@ -22,7 +26,23 @@ app.get("/users/login", (req, res) => {
   res.send(publicPath);
 });
 app.get("/ping", (req, res) => {
-  res.send("ping");
+  Ping.find()
+    .then(ping => {
+      res.send({ ping, working: "is working" });
+    })
+    .catch(err => {
+      res.send(err);
+    });
+});
+app.get("/instalaciones", (req, res) => {
+  Instalaciones.find()
+    .then(insta => {
+      res.send({ insta, working: "is working" });
+    })
+
+    .catch(err => {
+      res.send(err);
+    });
 });
 
 const port = process.env.PORT || 4000;
