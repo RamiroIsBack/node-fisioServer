@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 var { connectWithDBThroughMongoose } = require("./db/mongoose");
 
 var { Ping } = require("./models/Ping");
+var { User } = require("./models/User");
 
 connectWithDBThroughMongoose()
   .then(message => console.log("connectingDB: ", message))
@@ -33,10 +34,14 @@ app.get("/ping", (req, res) => {
       res.send(err);
     });
 });
-app.get("/instalaciones", (req, res) => {
-  Instalaciones.find()
-    .then(insta => {
-      res.send({ insta, working: "is working" });
+app.get("/user", (req, res) => {
+  // let javi = new User({ nombre: "javi", password: "wendimola2018" });
+  // javi
+  //   .save()
+  //   .then(SavedUser => {
+  User.find()
+    .then(users => {
+      res.send({ users });
     })
 
     .catch(err => {
