@@ -1,11 +1,10 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 export default gql`
-  mutation login($email: String, $password: String){
-    login(email: $email, password: $password){
+  mutation login($nombre: String, $password: String) {
+    login(nombre: $nombre, password: $password) {
       id
-      email
+      nombre
     }
-    
   }
 `;
