@@ -2,6 +2,12 @@
 const { gql } = require("apollo-server-express");
 // GraphQL: TypeDefs
 const TYPEDEFS = gql`
+  type User {
+    nombre: String
+    password: String
+    id: ID
+  }
+
   type Img {
     src: String
     alt: String
@@ -14,6 +20,9 @@ const TYPEDEFS = gql`
   }
   type Query {
     instalacionesCopy: InstalacionesCopy
+  }
+  type Mutation {
+    login(nombre: String, password: String): User
   }
 `;
 // Exports

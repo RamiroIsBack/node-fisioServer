@@ -17,6 +17,12 @@ const RESOLVERS = {
       //   ]
       // };
     }
+  },
+  Mutation: {
+    login(root, args, context, info) {
+      let { nombre, password } = args;
+      return { nombre: nombre, password: password };
+    }
   }
 };
 // Exports
