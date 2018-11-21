@@ -24,7 +24,7 @@ class Header extends Component {
     if (loading) {
       return <div />;
     }
-    if (currentUser) {
+    if (!currentUser) {
       //render here all the liks to modify everything
       return <NavFisioConfig />;
     } else {
