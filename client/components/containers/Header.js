@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { graphql } from "react-apollo";
 import { Link } from "react-router-dom";
-import currentUserQuery from "./queries/CurrentUser";
-import logoutMutation from "./mutations/Logout";
+import currentUserQuery from "../../queries/CurrentUser";
+import logoutMutation from "../../mutations/Logout";
+import NavFisioConfig from "./NavFisioConfig";
 
 class Header extends Component {
   constructor() {
@@ -10,9 +11,13 @@ class Header extends Component {
     this.onLogout.bind(this);
   }
   onLogout() {
-    this.props.mutate({
-      refetchQueries: () => [{ query: currentUserQuery }]
-    });
+    this.props
+      .mutate({
+        refetchQueries: () => [{ query: currentUserQuery }]
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
   renderButtons() {
     const { loading, currentUser } = this.props.data;
@@ -20,17 +25,12 @@ class Header extends Component {
       return <div />;
     }
     if (currentUser) {
-      return (
-        <li>
-          <a onClick={this.onLogout.bind(this)}>Log out</a>
-        </li>
-      );
+      //render here all the liks to modify everything
+      return <NavFisioConfig />;
     } else {
       return (
         <div>
-          <li>
-            <Link to="/login">Log in</Link>
-          </li>
+          <Link to="/login">Log in</Link>
         </div>
       );
     }
@@ -51,10 +51,7 @@ class Header extends Component {
         )}
         <div className="nav-wrapper">
           <nav>
-            <div>
-              <ul className="right">{this.renderButtons()}</ul>
-              <Link to="/dashboard">Home</Link>
-            </div>
+            <div>{this.renderButtons()}</div>
           </nav>
         </div>
       </div>

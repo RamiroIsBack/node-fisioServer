@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { graphql } from "react-apollo";
-import AuthForm from "./AuthForm";
-import loginMutation from "./mutations/Login";
-import currentUserQuery from "./queries/CurrentUser";
+import AuthForm from "../presentational/AuthForm";
+import loginMutation from "../../mutations/Login";
+import currentUserQuery from "../../queries/CurrentUser";
 
 class LoginForm extends Component {
   constructor() {
@@ -11,14 +11,14 @@ class LoginForm extends Component {
       errors: []
     };
   }
-  componentWillUpdate(nextProps) {
-    //this.props // the old, current set of props
-    //nextProps // the next set of props that will be in place
+  // componentWillUpdate(nextProps) {
+  //   //this.props // the old, current set of props
+  //   //nextProps // the next set of props that will be in place
 
-    if (!this.props.data.currentUser && nextProps.data.currentUser) {
-      this.props.history.push("/dashboard");
-    }
-  }
+  //   if (!this.props.data.currentUser && nextProps.data.currentUser) {
+  //     this.props.history.push("/dashboard");
+  //   }
+  // }
 
   onSubmit({ nombre, password }) {
     this.props

@@ -2,11 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom";
 import ApolloClient, { InMemoryCache } from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
-import { BrowserRouter, Route } from "react-router-dom";
-import App from "./components/App";
-import LoginForm from "./components/LoginForm";
-import Dashboard from "./components/Dashboard";
-import requireAuth from "./components/requireAuth";
+import { Router, Route } from "react-router-dom";
+import history from "./utils/history";
+import App from "./components/containers/App";
+import LoginForm from "./components/containers/LoginForm";
 const cache = new InMemoryCache({
   dataIdFromObject: o => o.id
 });
@@ -20,13 +19,12 @@ const client = new ApolloClient({
 const Root = () => {
   return (
     <ApolloProvider client={client}>
-      <BrowserRouter>
+      <Router history={history}>
         <div>
           <Route path="/" component={App} />
           <Route path="/login" component={LoginForm} />
-          <Route path="/dashboard" component={requireAuth(Dashboard)} />
         </div>
-      </BrowserRouter>
+      </Router>
     </ApolloProvider>
   );
 };
