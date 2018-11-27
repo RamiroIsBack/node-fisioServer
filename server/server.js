@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 var { connectWithDBThroughMongoose } = require("./db/mongoose");
+var cors = require("cors");
 
 var { Ping } = require("./models/Ping");
 var { User } = require("./models/User");
@@ -12,8 +13,9 @@ connectWithDBThroughMongoose()
 var app = express();
 
 app.use(bodyParser.json());
+app.use(cors());
 app.get("/users/login", (req, res) => {
-  res.send("hola");
+  res.send({ saludo: "hola" });
 });
 app.get("/ping", (req, res) => {
   Ping.find()
