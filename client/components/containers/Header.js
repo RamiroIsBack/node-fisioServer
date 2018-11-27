@@ -1,30 +1,15 @@
 import React, { Component } from "react";
-import { graphql } from "react-apollo";
 import { Link } from "react-router-dom";
-import currentUserQuery from "../../queries/CurrentUser";
-import logoutMutation from "../../mutations/Logout";
 import NavFisioConfig from "./NavFisioConfig";
 
 class Header extends Component {
-  constructor() {
-    super();
-    this.onLogout.bind(this);
-  }
-  onLogout() {
-    this.props
-      .mutate({
-        refetchQueries: () => [{ query: currentUserQuery }]
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
   renderButtons() {
-    const { loading, currentUser } = this.props.data;
+    let currentUser = true;
+    let loading = null;
     if (loading) {
       return <div />;
     }
-    if (!currentUser) {
+    if (currentUser) {
       //render here all the liks to modify everything
       return <NavFisioConfig />;
     } else {
@@ -38,13 +23,13 @@ class Header extends Component {
   render() {
     return (
       <div>
-        {this.props.data.instalacionesCopy && (
+        {this.props.instalacionesCopy && (
           <div>
             <h1> {this.props.data.instalacionesCopy.textoCorto}</h1>
             <h1> {this.props.data.instalacionesCopy.items[0].alt}</h1>
           </div>
         )}
-        {this.props.data.loading && (
+        {this.props.loading && (
           <div>
             <h1>Cargando...</h1>
           </div>
@@ -59,4 +44,4 @@ class Header extends Component {
   }
 }
 
-export default graphql(logoutMutation)(graphql(currentUserQuery)(Header));
+export default Header;

@@ -1,8 +1,5 @@
 import React, { Component } from "react";
-import { graphql } from "react-apollo";
 import InstalacionesForm from "../presentational/InstalacionesForm";
-import loginMutation from "../../mutations/Login";
-import currentUserQuery from "../../queries/CurrentUser";
 
 class InstalacionesContainer extends Component {
   constructor() {
@@ -13,14 +10,7 @@ class InstalacionesContainer extends Component {
   }
 
   onSubmit(parameters) {
-    this.props
-      .mutate({
-        variables: { parameters }
-      })
-      .catch(err => {
-        const errors = err.graphQLErrors.map(err => err.message);
-        this.setState({ errors });
-      });
+    console.log("hola");
   }
   render(props) {
     return (
@@ -35,6 +25,4 @@ class InstalacionesContainer extends Component {
   }
 }
 
-export default graphql(currentUserQuery)(
-  graphql(loginMutation)(InstalacionesContainer)
-);
+export default InstalacionesContainer;

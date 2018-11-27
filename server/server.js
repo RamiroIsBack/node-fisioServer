@@ -1,4 +1,3 @@
-const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
 var { connectWithDBThroughMongoose } = require("./db/mongoose");
@@ -10,20 +9,11 @@ connectWithDBThroughMongoose()
   .then(message => console.log("connectingDB: ", message))
   .catch(e => console.log("error while connecting: ", e));
 
-const publicPath = path.join(__dirname, "../public");
-
-const { apolloServer } = require("./graphql/schema.js");
-
 var app = express();
-
-// Middleware: GraphQL
-apolloServer.applyMiddleware({
-  app
-});
 
 app.use(bodyParser.json());
 app.get("/users/login", (req, res) => {
-  res.send(publicPath);
+  res.send("hola");
 });
 app.get("/ping", (req, res) => {
   Ping.find()
@@ -52,7 +42,6 @@ app.get("/user", (req, res) => {
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
   console.log(`The server has started on port: ${port}`);
-  console.log(`http://localhost:${port}/graphql`);
 });
 // Webpack runs as a middleware.  If any request comes in for the root route ('/')
 // Webpack will respond with the output of the webpack process: an HTML file and
