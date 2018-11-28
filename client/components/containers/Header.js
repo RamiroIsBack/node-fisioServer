@@ -11,7 +11,9 @@ class Header extends Component {
   componentDidMount() {
     if (!this.props.user.logedIn) {
       axios
-        .get("https://stormy-meadow-66204.herokuapp.com/users/login")
+        .get("http://localhost:4000/users/login", {
+          headers: { auth: "hommmmme" }
+        })
         .then(res => {
           this.props.isTheDude(res.data.saludo);
           console.log(res);
@@ -29,31 +31,23 @@ class Header extends Component {
     if (this.props.user.logedIn) {
       //render here all the liks to modify everything
       return <NavFisioConfig />;
-    } else {
-      return (
-        <div>
-          <Link to="/login">Log in</Link>
-        </div>
-      );
     }
   }
   render() {
     return (
       <div>
-        <Jumbotron style={{ textAlign: "center", padding: 20 }}>
+        <Jumbotron style={{ textAlign: "center", padding: 10 }}>
           <h1>Hola Javi!</h1>
         </Jumbotron>
         {!this.props.user.logedIn && (
-          <div>
-            <h2>logueate lo primero</h2>
+          <div style={{ padding: 10 }}>
+            <Link style={{ fontSize: 30 }} to="/login">
+              Pincha aqui para loguearte lo primero
+            </Link>
           </div>
         )}
 
-        <div className="nav-wrapper">
-          <nav>
-            <div>{this.renderButtons()}</div>
-          </nav>
-        </div>
+        <div className="nav-wrapper">{this.renderButtons()}</div>
       </div>
     );
   }

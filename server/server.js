@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 var { connectWithDBThroughMongoose } = require("./db/mongoose");
 var cors = require("cors");
+var { authenticateMiddleware } = require("./middleware/authenticate");
 
 var { Ping } = require("./models/Ping");
 var { User } = require("./models/User");
@@ -14,28 +15,40 @@ var app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
+app.get("/users/me", authenticateMiddleware, (req, res) => {
+  console.log(req);
+  res.send(req.user);
+});
 app.get("/users/login", (req, res) => {
-  res.send({ saludo: "hola" });
+  res.send(req.header);
+});
+app.post("/users/login", (req, res) => {
+  var { email, password } = req.body;
+  User.findByCredentials({ email, password })
+    .then(user => {
+      user.generateAuthToken().then(token => {
+        res.header("x-auth", token).send(user);
+      });
+    })
+    .catch(e => {
+      res.status(400).send(e);
+    });
+});
+app.get("/user", (req, res) => {
+  User.find()
+    .then(users => {
+      res.send({ users });
+    })
+
+    .catch(err => {
+      res.send(err);
+    });
 });
 app.get("/ping", (req, res) => {
   Ping.find()
     .then(ping => {
       res.send({ ping, working: "is working" });
     })
-    .catch(err => {
-      res.send(err);
-    });
-});
-app.get("/user", (req, res) => {
-  // let javi = new User({ nombre: "javi", password: "wendimola2018" });
-  // javi
-  //   .save()
-  //   .then(SavedUser => {
-  User.find()
-    .then(users => {
-      res.send({ users });
-    })
-
     .catch(err => {
       res.send(err);
     });

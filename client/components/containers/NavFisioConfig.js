@@ -20,64 +20,62 @@ class NavFisioConfig extends React.Component {
   }
   render() {
     return (
-      <div>
-        <Nav className=" w-100 justify-content-around">
-          <NavItem>
-            <NavLink
-              style={{ paddingLeft: "6px", cursor: "pointer" }}
-              id="inicio"
-              onClick={this.handleOnClick.bind(this)}
-            >
-              INICIO
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink
-              style={{ paddingLeft: "6px", cursor: "pointer" }}
-              id="equipo"
-              onClick={this.handleOnClick.bind(this)}
-            >
-              EQUIPO
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink
-              style={{ paddingLeft: "6px", cursor: "pointer" }}
-              id="instalaciones"
-              onClick={this.handleOnClick.bind(this)}
-            >
-              INSTALACIONES
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink
-              style={{ paddingLeft: "6px", cursor: "pointer" }}
-              id="servicios"
-              onClick={this.handleOnClick.bind(this)}
-            >
-              SERVICIOS
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink
-              style={{ paddingLeft: "6px", cursor: "pointer" }}
-              id="tarifas"
-              onClick={this.handleOnClick.bind(this)}
-            >
-              TARIFAS
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink
-              style={{ paddingLeft: "6px", cursor: "pointer" }}
-              id="contacto"
-              onClick={this.handleOnClick.bind(this)}
-            >
-              CONTACTO
-            </NavLink>
-          </NavItem>
-        </Nav>
-      </div>
+      <Nav className=" w-100 justify-content-around">
+        <NavItem>
+          <NavLink
+            style={{ paddingLeft: "6px", cursor: "pointer" }}
+            id="inicio"
+            onClick={this.handleOnClick.bind(this)}
+          >
+            INICIO
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink
+            style={{ paddingLeft: "6px", cursor: "pointer" }}
+            id="equipo"
+            onClick={this.handleOnClick.bind(this)}
+          >
+            EQUIPO
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink
+            style={{ paddingLeft: "6px", cursor: "pointer" }}
+            id="instalaciones"
+            onClick={this.handleOnClick.bind(this)}
+          >
+            INSTALACIONES
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink
+            style={{ paddingLeft: "6px", cursor: "pointer" }}
+            id="servicios"
+            onClick={this.handleOnClick.bind(this)}
+          >
+            SERVICIOS
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink
+            style={{ paddingLeft: "6px", cursor: "pointer" }}
+            id="tarifas"
+            onClick={this.handleOnClick.bind(this)}
+          >
+            TARIFAS
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink
+            style={{ paddingLeft: "6px", cursor: "pointer" }}
+            id="contacto"
+            onClick={this.handleOnClick.bind(this)}
+          >
+            CONTACTO
+          </NavLink>
+        </NavItem>
+      </Nav>
     );
   }
 }
