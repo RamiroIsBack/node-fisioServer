@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { Jumbotron } from "reactstrap";
 
 import actions from "../../actions";
 import NavFisioConfig from "./NavFisioConfig";
@@ -39,9 +40,9 @@ class Header extends Component {
   render() {
     return (
       <div>
-        <div className="jumbotron">
+        <Jumbotron style={{ textAlign: "center", padding: 20 }}>
           <h1>Hola Javi!</h1>
-        </div>
+        </Jumbotron>
         {!this.props.user.logedIn && (
           <div>
             <h2>logueate lo primero</h2>
