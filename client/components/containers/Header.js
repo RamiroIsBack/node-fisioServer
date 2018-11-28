@@ -1,20 +1,18 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+
+import actions from "../../actions";
 import NavFisioConfig from "./NavFisioConfig";
 import axios from "axios";
 
 class Header extends Component {
-  constructor() {
-    super();
-    this.state = {
-      logedIn: false
-    };
-  }
-  componentDidUpdate() {
-    if (!this.state.logedIn) {
+  componentDidMount() {
+    if (!this.props.user.logedIn) {
       axios
         .get("https://stormy-meadow-66204.herokuapp.com/users/login")
         .then(res => {
+          this.props.isTheDude(res.data.saludo);
           console.log(res);
         })
         .catch(err => {
@@ -27,7 +25,7 @@ class Header extends Component {
     if (loading) {
       return <div />;
     }
-    if (this.state.logedIn) {
+    if (this.props.user.logedIn) {
       //render here all the liks to modify everything
       return <NavFisioConfig />;
     } else {
@@ -41,9 +39,12 @@ class Header extends Component {
   render() {
     return (
       <div>
-        {!this.state.logedIn && (
+        <div className="jumbotron">
+          <h1>Hola Javi!</h1>
+        </div>
+        {!this.props.user.logedIn && (
           <div>
-            <h1> Hola Javi, logueate lo primero</h1>
+            <h2>logueate lo primero</h2>
           </div>
         )}
 
@@ -56,5 +57,19 @@ class Header extends Component {
     );
   }
 }
+const dispatchToProps = dispatch => {
+  return {
+    isTheDude: theMan => dispatch(actions.isTheDude(theMan))
+  };
+};
 
-export default Header;
+const stateToProps = state => {
+  return {
+    user: state.user
+  };
+};
+
+export default connect(
+  stateToProps,
+  dispatchToProps
+)(Header);
