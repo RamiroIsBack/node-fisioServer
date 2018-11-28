@@ -11,11 +11,11 @@ class Header extends Component {
   componentDidMount() {
     if (!this.props.user.logedIn) {
       axios
-        .get("http://localhost:4000/users/login", {
+        .get("/users/login", {
           headers: { auth: "hommmmme" }
         })
         .then(res => {
-          this.props.isTheDude(res.data.saludo);
+          this.props.isTheDude(res.data);
           console.log(res);
         })
         .catch(err => {

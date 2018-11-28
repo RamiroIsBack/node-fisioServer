@@ -20,7 +20,7 @@ app.get("/users/me", authenticateMiddleware, (req, res) => {
   res.send(req.user);
 });
 app.get("/users/login", (req, res) => {
-  res.send(req.header);
+  res.send(req.headers);
 });
 app.post("/users/login", (req, res) => {
   var { email, password } = req.body;
