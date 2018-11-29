@@ -7,6 +7,7 @@ var { authenticateMiddleware } = require("./middleware/authenticate");
 var { Ping } = require("./models/Ping");
 var { User } = require("./models/User");
 var { Inicio } = require("./midels/Inicio");
+var { Instalaciones } = require("./midels/Instalaciones");
 
 connectWithDBThroughMongoose()
   .then(message => console.log("connectingDB: ", message))
@@ -21,9 +22,16 @@ app.get("/users/me", authenticateMiddleware, (req, res) => {
 });
 app.post("/copy/inicio", (req, res) => {
   var newInicio = new Inicio({
-    textoCorto: req.body.textoCorto,
-    textoLargo: req.body.textoLargo,
-    items: req.body.carousell
+    textoCortoHome: req.body.textoCortoInicio,
+    textoLargoHome: req.body.textoLargoInicio,
+    items: req.body.items
+  });
+});
+app.post("/copy/instalaciones", (req, res) => {
+  var newInstalaciones = new Instalaciones({
+    textoCortoInstalaciones: req.body.textoCortoInstalaciones,
+    textoLargoInstalaciones: req.body.textoLargoInstalaciones,
+    items: req.body.items
   });
 });
 app.post("/users/login", (req, res) => {
