@@ -3,32 +3,31 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Jumbotron } from "reactstrap";
 
-import actions from "../../actions";
 import NavFisioConfig from "./NavFisioConfig";
+import actions from "../../actions";
 import axios from "axios";
 
 class Header extends Component {
   componentDidMount() {
-    if (!this.props.user.logedIn) {
-      axios
-        .get("/users/login", {
-          headers: { auth: "hommmmme" }
-        })
-        .then(res => {
-          this.props.isTheDude(res.data);
-          console.log(res);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+    if (this.props.user) {
+      let dude = this.props.user.dudeObject;
+      if (dude) {
+        axios
+          .get("/users/me", {
+            headers: { "x-auth": dude.token }
+          })
+          .then(res => {
+            this.props.theDude(res.data);
+            console.log(res);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
     }
   }
   renderButtons() {
-    let loading = null;
-    if (loading) {
-      return <div />;
-    }
-    if (this.props.user.logedIn) {
+    if (this.props.user.dudeObject) {
       //render here all the liks to modify everything
       return <NavFisioConfig />;
     }
@@ -39,7 +38,7 @@ class Header extends Component {
         <Jumbotron style={{ textAlign: "center", padding: 10 }}>
           <h1>Hola Javi!</h1>
         </Jumbotron>
-        {!this.props.user.logedIn && (
+        {!this.props.user.dudeObject && (
           <div style={{ padding: 10 }}>
             <Link style={{ fontSize: 30 }} to="/login">
               Pincha aqui para loguearte lo primero

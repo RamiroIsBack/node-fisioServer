@@ -1,14 +1,14 @@
 import constants from "../constants";
 
 var initialState = {
-  logedIn: false
+  dudeObject: null
 };
 
 export default (state = initialState, action) => {
   let newState = Object.assign({}, state);
   switch (action.type) {
-    case constants.IS_THE_DUDE: {
-      newState["logedIn"] = action.data;
+    case constants.THE_DUDE: {
+      newState["dudeObject"] = action.data;
       return newState;
     }
     case constants.CIERRA_COOKIES_AVISO:

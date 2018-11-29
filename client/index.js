@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { Router, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 
-import store from "./stores";
+import { giveMeStore } from "./stores";
 import history from "./utils/history";
 
 import Header from "./components/containers/Header";
@@ -17,7 +17,7 @@ import ServiciosContainer from "./components/containers/ServiciosContainer";
 
 const Root = () => {
   return (
-    <Provider store={store.configure(null)}>
+    <Provider store={giveMeStore()}>
       <Router history={history}>
         <div>
           <Route path="/" component={Header} />

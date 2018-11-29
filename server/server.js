@@ -16,15 +16,12 @@ var app = express();
 app.use(bodyParser.json());
 app.use(cors());
 app.get("/users/me", authenticateMiddleware, (req, res) => {
-  console.log(req);
   res.send(req.user);
 });
-app.get("/users/login", (req, res) => {
-  res.send(req.headers);
-});
+
 app.post("/users/login", (req, res) => {
-  var { email, password } = req.body;
-  User.findByCredentials({ email, password })
+  var { nombre, password } = req.body.params;
+  User.findByCredentials({ nombre, password })
     .then(user => {
       user.generateAuthToken().then(token => {
         res.header("x-auth", token).send(user);

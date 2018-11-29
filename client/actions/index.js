@@ -7,9 +7,9 @@ export default {
       data: open
     };
   },
-  isTheDude: theMan => {
+  theDude: theMan => {
     return {
-      type: constants.IS_THE_DUDE,
+      type: constants.THE_DUDE,
       data: theMan
     };
   },
