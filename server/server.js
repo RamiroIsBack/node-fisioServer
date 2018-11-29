@@ -6,6 +6,7 @@ var { authenticateMiddleware } = require("./middleware/authenticate");
 
 var { Ping } = require("./models/Ping");
 var { User } = require("./models/User");
+var { Inicio } = require("./midels/Inicio");
 
 connectWithDBThroughMongoose()
   .then(message => console.log("connectingDB: ", message))
@@ -18,7 +19,13 @@ app.use(cors());
 app.get("/users/me", authenticateMiddleware, (req, res) => {
   res.send(req.user);
 });
-
+app.post("/copy/inicio", (req, res) => {
+  var newInicio = new Inicio({
+    textoCorto: req.body.textoCorto,
+    textoLargo: req.body.textoLargo,
+    items: req.body.carousell
+  });
+});
 app.post("/users/login", (req, res) => {
   var { nombre, password } = req.body.params;
   User.findByCredentials({ nombre, password })
@@ -29,16 +36,6 @@ app.post("/users/login", (req, res) => {
     })
     .catch(e => {
       res.status(400).send(e);
-    });
-});
-app.get("/user", (req, res) => {
-  User.find()
-    .then(users => {
-      res.send({ users });
-    })
-
-    .catch(err => {
-      res.send(err);
     });
 });
 app.get("/ping", (req, res) => {
