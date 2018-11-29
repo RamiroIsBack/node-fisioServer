@@ -7,6 +7,13 @@ import history from "../../utils/history";
 import actions from "../../actions";
 
 class LoginContainer extends Component {
+  constructor() {
+    super();
+    this.state = {
+      errors: []
+    };
+  }
+
   onSubmit({ nombre, password }) {
     axios
       .post("/users/login", {
@@ -23,6 +30,7 @@ class LoginContainer extends Component {
         history.push("/inicio");
       })
       .catch(err => {
+        this.setState({ errors: ["nombre o password incorrectos"] });
         console.log(err);
       });
   }

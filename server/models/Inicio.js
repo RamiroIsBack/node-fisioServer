@@ -13,10 +13,10 @@ var InicioSchema = mongoose.Schema({
         type: String
       },
       caption: {
-        type
+        type: String
       }
     }
   ]
 });
-var Instalaciones = mongoose.model("Inicio", InicioSchema);
+var Inicio = mongoose.model("Inicio", InicioSchema);
 module.exports = { Inicio };

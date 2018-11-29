@@ -6,8 +6,8 @@ var { authenticateMiddleware } = require("./middleware/authenticate");
 
 var { Ping } = require("./models/Ping");
 var { User } = require("./models/User");
-var { Inicio } = require("./midels/Inicio");
-var { Instalaciones } = require("./midels/Instalaciones");
+var { Inicio } = require("./models/Inicio");
+var { Instalaciones } = require("./models/Instalaciones");
 
 connectWithDBThroughMongoose()
   .then(message => console.log("connectingDB: ", message))
@@ -25,6 +25,9 @@ app.post("/copy/inicio", (req, res) => {
     textoCortoHome: req.body.textoCortoInicio,
     textoLargoHome: req.body.textoLargoInicio,
     items: req.body.items
+  });
+  newInicio.save().then(doc => {
+    res.send(doc);
   });
 });
 app.post("/copy/instalaciones", (req, res) => {
