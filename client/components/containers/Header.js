@@ -36,7 +36,8 @@ class Header extends Component {
     return (
       <div>
         <Jumbotron style={{ textAlign: "center", padding: 10 }}>
-          <h1>Hola Javi!</h1>
+          <h1 style={{ display: "inline" }}>Hola Javi! </h1>
+          <h3 style={{ display: "inline" }}>configura la web:</h3>
         </Jumbotron>
         {!this.props.user.dudeObject && (
           <div style={{ padding: 10 }}>

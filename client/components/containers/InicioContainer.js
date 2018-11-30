@@ -15,7 +15,7 @@ class InicioContainer extends Component {
   render(props) {
     return (
       <div className="container">
-        <h3>Inicio</h3>
+        <h3 style={{ textAlign: "center" }}>Home</h3>
         <InicioForm
           onSubmit={this.onSubmit.bind(this)}
           errors={this.state.errors}

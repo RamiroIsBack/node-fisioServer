@@ -40,7 +40,7 @@ class AuthForm extends Component {
               <div key={error}>{error}</div>
             ))}
           </div>
-          <button className="btn">submit</button>
+          <button className="btn">entrar</button>
         </form>
       </div>
     );
