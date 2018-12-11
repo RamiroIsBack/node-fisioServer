@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { Jumbotron } from "reactstrap";
 
+import history from "../../utils/history";
 import NavFisioConfig from "./NavFisioConfig";
 import actions from "../../actions";
 import axios from "axios";
@@ -17,8 +18,7 @@ class Header extends Component {
             headers: { "x-auth": dude.token }
           })
           .then(res => {
-            this.props.theDude(res.data);
-            console.log(res);
+            history.push("./inicio");
           })
           .catch(err => {
             console.log(err);
@@ -54,7 +54,7 @@ class Header extends Component {
 }
 const dispatchToProps = dispatch => {
   return {
-    isTheDude: theMan => dispatch(actions.isTheDude(theMan))
+    theDude: theMan => dispatch(actions.theDude(theMan))
   };
 };
 

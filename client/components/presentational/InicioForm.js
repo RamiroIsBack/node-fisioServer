@@ -8,71 +8,92 @@ class InicioForm extends Component {
   }
   handleOnChange(e) {
     let obj = Object.assign({}, this.state);
-    obj.parameters[e.target.name] = e.target.value;
+    obj.parameters[e.target.id] = e.target.value;
     this.setState(obj);
   }
   handleOnSubmit(e) {
     e.preventDefault();
     this.props.onSubmit(this.state.parameters);
   }
+  subirTextoCorto(e) {
+    this.props.subirTextoCorto(this.state.parameters.inicioTextoCorto);
+  }
+  subirTextoLargo(e) {
+    this.props.subirTextoLargo(this.state.parameters.inicioTextoLargo);
+  }
   render() {
     return (
-      <div>
+      <div style={{ padding: 15 }}>
         <p>
-          primero te aparece lo que hay en la base de datos, que es lo q esta
-          apareciendo en la web hasta ahora, debajo tienes hueco para escribir o
-          subir una foto y debajo un boton para hacer el cambio
+          primero te aparece lo que hay en la base de datos (en gris, no lo
+          puedes modificar), que es lo q esta apareciendo en la web hasta ahora,
+          debajo tienes hueco para escribir o subir una foto y debajo un boton
+          para hacer el cambio:
         </p>
         <br />
-        <FormGroup>
-          <Label for="textoCortoDB">
-            Texto corto que aparece arriba en la pagina de inicio
+        <div>
+          <h4 style={{ display: "inline" }}>Texto Corto </h4>
+          <p style={{ display: "inline" }}>
+            que aparece arriba en la pagina de inicio
+          </p>
+        </div>
+        <FormGroup
+          style={{
+            padding: "2px",
+            borderRadius: "4px",
+            border: "1px solid black"
+          }}
+        >
+          <Label style={{ marginBottom: 0, marginLeft: "5px" }}>
+            esto hay en la base de datos:
           </Label>
           <Input id="textoCortoDB" readOnly="readonly" />
-          <Label for="textoCorto">
-            Texto corto que aparece arriba en la pagina de inicio
-          </Label>
+          <Label for="textoCorto">introduce lo q quieres que aparezca</Label>
           <Input
-            id="textoCorto"
+            id="inicioTextoCorto"
             placeholder="la mejor clinica de fisioterapia del mundo :P"
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label for="textoCorto">
-            Texto corto que aparece arriba en la pagina de inicio
-          </Label>
-          <Input
-            type="textarea"
-            id="textoLargo"
-            placeholder="bla bla bla lskjwopobz oxbzpoxiasd vaspodivs osiv o sdviopsvopsdv osd.
-poxcivoxivapoij vapoisdjv poivjsdovi jsodiv sdpoivj sd jpaoijvposdij vasoj asdvioasoijsdvpoijsdv poiasdj oiaj bla bla bla.
-lxjosj vkjsoijfwpoei uapoiuwerpo oqwieufoiweupweapdif oisadf pou pi iaoisuf ioaweuf oaieuf paoiudf poaiweuf poaiweufosivujoijavaopi asoivmasdoimasodiv mas asoivm aoim aoisdm aoi maois maosim vasoivm apoivm asiovm aopisdmv pdimv aopidmv poaidmv ma.
-bla bla bla bla bla!"
-          />
-        </FormGroup>
-        <div className="input-field">
-          <input
-            name="inicioTextoCorto"
-            placeholder="inicioTextoCorto"
             value={this.state.inicioTextoCorto}
             onChange={this.handleOnChange.bind(this)}
           />
+          <Button onClick={this.subirTextoCorto.bind(this)} color="primary">
+            Subir Texto Corto
+          </Button>
+        </FormGroup>
+
+        <br />
+        <div>
+          <h4 style={{ display: "inline" }}>Texto Largo </h4>
+          <p style={{ display: "inline" }}>
+            que aparece arriba en la pagina de inicio
+          </p>
         </div>
-        <div className="input-field">
-          <input
-            name="inicioTextoLargo"
-            placeholder="inicioTextoLargo"
+        <FormGroup
+          style={{
+            padding: "2px",
+            borderRadius: "4px",
+            border: "1px solid black"
+          }}
+        >
+          <Label style={{ marginBottom: 0, marginLeft: "5px" }}>
+            esto hay en la base de datos:
+          </Label>
+          <Input id="textoLargoDB" readOnly="readonly" />
+          <Label for="textoLargo">introduce lo q quieres que aparezca</Label>
+          <Input
+            type="textarea"
+            rows="5"
+            id="inicioTextoLargo"
             value={this.state.inicioTextoLargo}
             onChange={this.handleOnChange.bind(this)}
+            placeholder={`bla bla bla lskjwopobz oxbzpoxiasd vaspodivs osiv o sdviopsvopsdv osd.
+poxcivoxivapoij vapoisdjv poivjsdovi jsodiv sdpoivj sd jpaoijvposdij vasoj asdvioasoijsdvpoijsdv poiasdj oiaj bla bla bla.
+lxjosj vkjsoijfwpoei uapoiuwerpo oqwieufoiweupweapdif oisadf pou pi iaoisuf ioaweuf oaieuf paoiudf poaiweuf poaiweufosivujoijavaopi asoivmasdoimasodiv mas asoivm aoim aoisdm aoi maois maosim vasoivm apoivm asiovm aopisdmv pdimv aopidmv poaidmv ma.
+bla bla bla bla bla!`}
           />
-        </div>
-
-        <div className="errors">
-          {this.props.errors.map(error => (
-            <div key={error}>{error}</div>
-          ))}
-        </div>
-        <button className="btn">submit</button>
+          <Button onClick={this.subirTextoLargo.bind(this)} color="primary">
+            Subir Texto Largo
+          </Button>
+        </FormGroup>
       </div>
     );
   }

@@ -19,7 +19,7 @@ const Root = () => {
   return (
     <Provider store={giveMeStore()}>
       <Router history={history}>
-        <div>
+        <div style={{ marginRight: "20px", marginLeft: "20px" }}>
           <Route path="/" component={Header} />
           <Route path="/login" component={LoginContainer} />
           <Route path="/contacto" component={ContactoContainer} />

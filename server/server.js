@@ -22,8 +22,8 @@ app.get("/users/me", authenticateMiddleware, (req, res) => {
 });
 app.post("/copy/inicio", (req, res) => {
   var newInicio = new Inicio({
-    textoCortoHome: req.body.textoCortoInicio,
-    textoLargoHome: req.body.textoLargoInicio,
+    inicioTextoCortoInicio: req.body.inicioTextoCorto,
+    inicioTextoLargo: req.body.inicioTextoLargo,
     items: req.body.items
   });
   newInicio.save().then(doc => {
@@ -65,6 +65,8 @@ app.listen(port, () => {
 });
 // Webpack runs as a middleware.  If any request comes in for the root route ('/')
 // Webpack will respond with the output of the webpack process: an HTML file and
+
+// TODO::: configure webpack without webpack-dev-middleware
 
 var webpackConfig = "";
 if (port === 4000) {

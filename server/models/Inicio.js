@@ -1,10 +1,10 @@
 var mongoose = require("mongoose");
 
 var InicioSchema = mongoose.Schema({
-  textoLargo: {
+  inicioTextoLargo: {
     type: String
   },
-  textoCorto: {
+  inicioTextoCorto: {
     type: String
   },
   items: [
