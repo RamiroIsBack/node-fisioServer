@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 var { connectWithDBThroughMongoose } = require("./db/mongoose");
 var cors = require("cors");
 var { authenticateMiddleware } = require("./middleware/authenticate");
+const { ObjectID } = require("mongodb");
 
 var { Ping } = require("./models/Ping");
 var { User } = require("./models/User");
@@ -20,23 +21,51 @@ app.use(cors());
 app.get("/users/me", authenticateMiddleware, (req, res) => {
   res.send(req.user);
 });
+
+////////////////////inicio//////////////////////////
+
 app.post("/copy/inicio", (req, res) => {
   var newInicio = new Inicio({
-    inicioTextoCortoInicio: req.body.inicioTextoCorto,
-    inicioTextoLargo: req.body.inicioTextoLargo,
-    items: req.body.items
+    inicioTextoCorto: req.body.params.inicioTextoCorto,
+    inicioTextoLargo: req.body.params.inicioTextoLargo,
+    items: req.body.params.items
   });
   newInicio.save().then(doc => {
     res.send(doc);
   });
 });
+app.patch("/copy/inicio", authenticateMiddleware, (req, res) => {
+  var body = req.body.parms;
+  var { id } = req.body.id;
+  if (!body.inicioTextoCorto && !body.inicioTextoLargo && !body.items) {
+    return res.status(400).send();
+  }
+  if (!ObjectID.isValid(id)) {
+    return res.status(404).send();
+  }
+  body.updatedAt = new Date().toString();
+  Inicio.findOneAndUpdate({ _id: id }, { $set: body }, { new: true })
+    .then(inicioObject => {
+      if (!inicioObject) {
+        return res.status(404).send();
+      }
+      res.send(inicioObject);
+    })
+    .catch(e => res.status(400).send(e));
+});
+
+//////////////////instalaciones///////////////////////////
+
 app.post("/copy/instalaciones", (req, res) => {
   var newInstalaciones = new Instalaciones({
-    textoCortoInstalaciones: req.body.textoCortoInstalaciones,
-    textoLargoInstalaciones: req.body.textoLargoInstalaciones,
+    instalacionesTextoCorto: req.body.instalacionesTextoCorto,
+    instalacionesTextoLargo: req.body.instalacionesTextoLargo,
     items: req.body.items
   });
 });
+
+//////////////////user/////////////////////////////////////
+
 app.post("/users/login", (req, res) => {
   var { nombre, password } = req.body.params;
   User.findByCredentials({ nombre, password })

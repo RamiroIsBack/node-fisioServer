@@ -11,26 +11,21 @@ class InicioContainer extends Component {
     };
   }
 
-  subirTextoCorto({ inicioTextoCorto, inicioTextoLargo }) {
+  subirTextoCorto(inicioTextoCorto) {
     if (this.props.user) {
       let dude = this.props.user.dudeObject;
       if (dude) {
         axios
-          .post("/coy/inicio", {
+          .patch("/copy/inicio", {
             headers: { "x-auth": dude.token },
             params: {
-              inicioTextoCorto,
-              inicioTextoLargo
+              inicioTextoCorto
             }
           })
           .then(res => {
-            let token = res.headers["x-auth"];
-            let { nombre, _id } = res.data;
-            this.props.theDude({ nombre, _id, token });
-            history.push("/inicio");
+            console.log(res);
           })
           .catch(err => {
-            this.setState({ errors: ["nombre o password incorrectos"] });
             console.log(err);
           });
       }
