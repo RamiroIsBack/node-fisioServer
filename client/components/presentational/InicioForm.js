@@ -47,7 +47,15 @@ class InicioForm extends Component {
           <Label style={{ marginBottom: 0, marginLeft: "5px" }}>
             esto hay en la base de datos:
           </Label>
-          <Input id="textoCortoDB" readOnly="readonly" />
+          <Input
+            value={
+              this.props.copy
+                ? this.props.copy.inicioTextoCorto
+                : "cargando....."
+            }
+            id="textoCortoDB"
+            readOnly="readonly"
+          />
           <Label for="textoCorto">introduce lo q quieres que aparezca</Label>
           <Input
             id="inicioTextoCorto"
@@ -77,7 +85,17 @@ class InicioForm extends Component {
           <Label style={{ marginBottom: 0, marginLeft: "5px" }}>
             esto hay en la base de datos:
           </Label>
-          <Input id="textoLargoDB" readOnly="readonly" />
+          <Input
+            type="textarea"
+            rows="5"
+            value={
+              this.props.copy
+                ? this.props.copy.inicioTextoLargo
+                : "cargando....."
+            }
+            id="textoLargoDB"
+            readOnly="readonly"
+          />
           <Label for="textoLargo">introduce lo q quieres que aparezca</Label>
           <Input
             type="textarea"
@@ -85,9 +103,7 @@ class InicioForm extends Component {
             id="inicioTextoLargo"
             value={this.state.inicioTextoLargo}
             onChange={this.handleOnChange.bind(this)}
-            placeholder={`bla bla bla lskjwopobz oxbzpoxiasd vaspodivs osiv o sdviopsvopsdv osd.
-poxcivoxivapoij vapoisdjv poivjsdovi jsodiv sdpoivj sd jpaoijvposdij vasoj asdvioasoijsdvpoijsdv poiasdj oiaj bla bla bla.
-lxjosj vkjsoijfwpoei uapoiuwerpo oqwieufoiweupweapdif oisadf pou pi iaoisuf ioaweuf oaieuf paoiudf poaiweuf poaiweufosivujoijavaopi asoivmasdoimasodiv mas asoivm aoim aoisdm aoi maois maosim vasoivm apoivm asiovm aopisdmv pdimv aopidmv poaidmv ma.
+            placeholder={`bla bla bla ......
 bla bla bla bla bla!`}
           />
           <Button onClick={this.subirTextoLargo.bind(this)} color="primary">

@@ -2,6 +2,7 @@ var { User } = require("../models/User");
 
 var authenticateMiddleware = (req, res, next) => {
   var token = req.header("x-auth");
+
   User.findByToken(token)
     .then(user => {
       if (!user) {

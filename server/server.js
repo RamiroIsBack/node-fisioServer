@@ -34,14 +34,23 @@ app.post("/copy/inicio", (req, res) => {
     res.send(doc);
   });
 });
+app.get("/copy/inicio", (req, res) => {
+  Inicio.find()
+    .then(inicioCopy => {
+      res.send({ inicioCopy });
+    })
+    .catch(err => {
+      res.send(err);
+    });
+});
 app.patch("/copy/inicio", authenticateMiddleware, (req, res) => {
-  var body = req.body.parms;
-  var { id } = req.body.id;
+  var body = req.body;
+  var { id } = body;
   if (!body.inicioTextoCorto && !body.inicioTextoLargo && !body.items) {
-    return res.status(400).send();
+    return res.status(400).send({ err: "give me something!" });
   }
   if (!ObjectID.isValid(id)) {
-    return res.status(404).send();
+    return res.status(404).send({ err: "id not valid dude" });
   }
   body.updatedAt = new Date().toString();
   Inicio.findOneAndUpdate({ _id: id }, { $set: body }, { new: true })
@@ -78,6 +87,8 @@ app.post("/users/login", (req, res) => {
       res.status(400).send(e);
     });
 });
+
+/////////////////ping to keep the server awake https://uptimerobot.com/dashboard#mainDashboard /////////////
 app.get("/ping", (req, res) => {
   Ping.find()
     .then(ping => {

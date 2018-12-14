@@ -3,6 +3,8 @@ import InicioForm from "../presentational/InicioForm";
 import axios from "axios";
 import { connect } from "react-redux";
 
+import actions from "../../actions";
+
 class InicioContainer extends Component {
   constructor() {
     super();
@@ -10,20 +12,34 @@ class InicioContainer extends Component {
       errors: []
     };
   }
+  componentDidMount() {
+    axios({
+      method: "get",
+      url: "/copy/inicio"
+    })
+      .then(res => {
+        this.props.inicioReceived(res.data.inicioCopy[0]);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
 
   subirTextoCorto(inicioTextoCorto) {
     if (this.props.user) {
       let dude = this.props.user.dudeObject;
-      if (dude) {
-        axios
-          .patch("/copy/inicio", {
-            headers: { "x-auth": dude.token },
-            params: {
-              inicioTextoCorto
-            }
-          })
+      if (dude && this.props.copy.inicioCopy) {
+        let id = this.props.copy.inicioCopy._id;
+
+        axios({
+          method: "patch",
+          url: "/copy/inicio",
+          data: { id, inicioTextoCorto },
+          headers: { "x-auth": dude.token }
+        })
           .then(res => {
             console.log(res);
+            this.props.inicioReceived(res.data);
           })
           .catch(err => {
             console.log(err);
@@ -39,6 +55,7 @@ class InicioContainer extends Component {
       <div>
         <h3 style={{ textAlign: "center" }}>Home</h3>
         <InicioForm
+          copy={this.props.copy.inicioCopy}
           subirTextoLargo={this.subirTextoLargo.bind(this)}
           errors={this.state.errors}
           subirTextoCorto={this.subirTextoCorto.bind(this)}
@@ -49,7 +66,7 @@ class InicioContainer extends Component {
 }
 const dispatchToProps = dispatch => {
   return {
-    theDude: theMan => dispatch(actions.theDude(theMan))
+    inicioReceived: inicioCopy => dispatch(actions.inicioReceived(inicioCopy))
   };
 };
 

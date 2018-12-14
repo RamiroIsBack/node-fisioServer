@@ -11,9 +11,6 @@ export default (state = initialState, action) => {
       newState["dudeObject"] = action.data;
       return newState;
     }
-    case constants.CIERRA_COOKIES_AVISO:
-      newState.showAvisoCookies = action.data;
-      return newState;
 
     default:
       return state;
