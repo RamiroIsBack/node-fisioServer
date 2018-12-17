@@ -8,9 +8,7 @@ import actions from "../../actions";
 class InicioContainer extends Component {
   constructor() {
     super();
-    this.state = {
-      errors: []
-    };
+    this.state = {};
   }
   componentDidMount() {
     axios({
@@ -47,8 +45,27 @@ class InicioContainer extends Component {
       }
     }
   }
-  subirTextoLargo(parameters) {
-    console.log(parameters);
+  subirChunk(chunkID, chunkData) {
+    if (this.props.user) {
+      let dude = this.props.user.dudeObject;
+      if (dude && this.props.copy.inicioCopy) {
+        let id = this.props.copy.inicioCopy._id;
+
+        axios({
+          method: "patch",
+          url: "/copy/inicio",
+          data: { id, [chunkID]: chunkData },
+          headers: { "x-auth": dude.token }
+        })
+          .then(res => {
+            console.log(res);
+            this.props.inicioReceived(res.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
+    }
   }
   render(props) {
     return (
@@ -56,9 +73,7 @@ class InicioContainer extends Component {
         <h3 style={{ textAlign: "center" }}>Home</h3>
         <InicioForm
           copy={this.props.copy.inicioCopy}
-          subirTextoLargo={this.subirTextoLargo.bind(this)}
-          errors={this.state.errors}
-          subirTextoCorto={this.subirTextoCorto.bind(this)}
+          subirChunk={this.subirChunk.bind(this)}
         />
       </div>
     );

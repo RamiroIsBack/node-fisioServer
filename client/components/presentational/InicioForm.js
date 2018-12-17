@@ -1,25 +1,45 @@
 import React, { Component } from "react";
-import { Button, Form, FormGroup, Label, Input, FormText } from "reactstrap";
+import { Button, Row, FormGroup, Label, Input, Col } from "reactstrap";
 
 class InicioForm extends Component {
   constructor() {
     super();
-    this.state = { parameters: { inicioTextoCorto: "", inicioTextoLargo: "" } };
+    this.state = {
+      newPic0Src: "",
+      newPic1Src: "",
+      newPic2Src: "",
+      newPic3Src: "",
+      parameters: {
+        inicioTextoCorto: "",
+        inicioTextoLargo: "",
+        items: [
+          {
+            src: ""
+          },
+          {
+            src: ""
+          },
+          {
+            src: ""
+          },
+          {
+            src: ""
+          }
+        ]
+      }
+    };
   }
   handleOnChange(e) {
     let obj = Object.assign({}, this.state);
     obj.parameters[e.target.id] = e.target.value;
     this.setState(obj);
   }
-  handleOnSubmit(e) {
-    e.preventDefault();
-    this.props.onSubmit(this.state.parameters);
+  guardarPic(e) {
+    //upload pick to firebase bucket
   }
-  subirTextoCorto(e) {
-    this.props.subirTextoCorto(this.state.parameters.inicioTextoCorto);
-  }
-  subirTextoLargo(e) {
-    this.props.subirTextoLargo(this.state.parameters.inicioTextoLargo);
+
+  subirChunk(e) {
+    this.props.subirChunk(e.target.id, this.state.parameters[e.target.id]);
   }
   render() {
     return (
@@ -63,7 +83,11 @@ class InicioForm extends Component {
             value={this.state.inicioTextoCorto}
             onChange={this.handleOnChange.bind(this)}
           />
-          <Button onClick={this.subirTextoCorto.bind(this)} color="primary">
+          <Button
+            id="inicioTextoCorto"
+            onClick={this.subirChunk.bind(this)}
+            color="primary"
+          >
             Subir Texto Corto
           </Button>
         </FormGroup>
@@ -104,10 +128,79 @@ class InicioForm extends Component {
             value={this.state.inicioTextoLargo}
             onChange={this.handleOnChange.bind(this)}
             placeholder={`bla bla bla ......
-bla bla bla bla bla!`}
+              bla bla bla bla bla!`}
           />
-          <Button onClick={this.subirTextoLargo.bind(this)} color="primary">
+          <Button
+            id="inicioTextoLargo"
+            onClick={this.subirChunk.bind(this)}
+            color="primary"
+          >
             Subir Texto Largo
+          </Button>
+        </FormGroup>
+        <br />
+        <div>
+          <h3 style={{ display: "inline" }}>Carousell de fotos </h3>
+          <p style={{ display: "inline" }}>
+            que luego son tambien fotos de los diferentes servicios
+          </p>
+        </div>
+        <br />
+        <FormGroup
+          style={{
+            padding: "2px",
+            borderRadius: "4px",
+            border: "1px solid black"
+          }}
+        >
+          <Row>
+            <Col sm="4">
+              <h4>Foto de Fisioterapia</h4>
+              <Label style={{ marginBottom: 0, marginLeft: "5px" }}>
+                esto hay en la base de datos:
+              </Label>
+            </Col>
+            <Col sm="8">
+              <img
+                src={this.props.copy ? this.props.copy.items[0].src : ""}
+                id="picFisioDB"
+                className="img-responsive"
+                alt="foto fisio en base de datos"
+                style={{ height: "100px" }}
+              />
+            </Col>
+          </Row>
+          <br />
+          <Row>
+            <Col sm="4">
+              <Label>elige una foto para Fisioterapia</Label>
+              <Input
+                type="file"
+                id="picFisio"
+                number="0"
+                style={{ padding: "10px" }}
+                onChange={this.guardarPic.bind(this)}
+              />
+            </Col>
+            <Col sm="8">
+              <Label>
+                hasta que no se rellene este campo no est'a la foto lista para
+                subir a la base de datos, espera a que haya algo escrito aqui
+                para darle al boton de subir foto
+              </Label>
+              <Input
+                value={this.state.newPic0Src}
+                id="textoCortoDB"
+                readOnly="readonly"
+              />
+            </Col>
+          </Row>
+          <Button
+            id="inicioPicFisio"
+            onClick={this.subirChunk.bind(this)}
+            color="primary"
+          >
+            Subir Foto
           </Button>
         </FormGroup>
       </div>
