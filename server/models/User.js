@@ -17,6 +17,9 @@ var UserSchema = new mongoose.Schema({
     required: true,
     minlength: 6
   },
+  email: {
+    type: String
+  },
   tokens: [
     {
       access: {

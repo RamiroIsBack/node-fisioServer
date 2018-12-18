@@ -1,4 +1,5 @@
 import constants from "../constants";
+import Firebase from "../utils/firebase";
 
 export default {
   theDude: theMan => {
@@ -7,6 +8,19 @@ export default {
       data: theMan
     };
   },
+  loginFirebase: user => {
+    return dispatch => {
+      return dispatch(
+        Firebase.loginFirebase(user, constants.INITIALIZE_FIREBASE)
+      );
+    };
+  },
+  subirFoto: (id, archivo) => {
+    return dispatch => {
+      return dispatch(Firebase.subirFoto(id, archivo, constants.UPLOAD_PIC));
+    };
+  },
+
   inicioReceived: inicioCopy => {
     return {
       type: constants.INICIO_RECEIVED,

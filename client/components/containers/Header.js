@@ -19,6 +19,10 @@ class Header extends Component {
           })
           .then(res => {
             history.push("./inicio");
+            this.props.loginFirebase({
+              email: "javi@fisiob.com",
+              password: "javifisiob"
+            });
           })
           .catch(err => {
             console.log(err);
@@ -54,7 +58,8 @@ class Header extends Component {
 }
 const dispatchToProps = dispatch => {
   return {
-    theDude: theMan => dispatch(actions.theDude(theMan))
+    theDude: theMan => dispatch(actions.theDude(theMan)),
+    loginFirebase: user => dispatch(actions.loginFirebase(user))
   };
 };
 

@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import InicioForm from "../presentational/InicioForm";
 import axios from "axios";
 import { connect } from "react-redux";
 
 import actions from "../../actions";
+import InicioForm from "../presentational/InicioForm";
+import InicioFormPictures from "../presentational/InicioFormPictures";
 
 class InicioContainer extends Component {
   constructor() {
@@ -22,48 +23,52 @@ class InicioContainer extends Component {
         console.log(err);
       });
   }
-
-  subirTextoCorto(inicioTextoCorto) {
-    if (this.props.user) {
-      let dude = this.props.user.dudeObject;
-      if (dude && this.props.copy.inicioCopy) {
-        let id = this.props.copy.inicioCopy._id;
-
-        axios({
-          method: "patch",
-          url: "/copy/inicio",
-          data: { id, inicioTextoCorto },
-          headers: { "x-auth": dude.token }
-        })
-          .then(res => {
-            console.log(res);
-            this.props.inicioReceived(res.data);
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      }
+  subirFoto(id, archivo) {
+    if (archivo) {
+      this.props.subirFoto(id, archivo);
+    } else {
+      console.log("no hay archivo q subir" + archivo);
     }
   }
-  subirChunk(chunkID, chunkData) {
+  subirChunk(num, chunkID, chunkData) {
     if (this.props.user) {
       let dude = this.props.user.dudeObject;
       if (dude && this.props.copy.inicioCopy) {
         let id = this.props.copy.inicioCopy._id;
-
-        axios({
-          method: "patch",
-          url: "/copy/inicio",
-          data: { id, [chunkID]: chunkData },
-          headers: { "x-auth": dude.token }
-        })
-          .then(res => {
-            console.log(res);
-            this.props.inicioReceived(res.data);
+        if (num === 100) {
+          //text
+          axios({
+            method: "patch",
+            url: "/copy/inicio",
+            data: { id, [chunkID]: chunkData },
+            headers: { "x-auth": dude.token }
           })
-          .catch(err => {
-            console.log(err);
-          });
+            .then(res => {
+              console.log(res);
+              this.props.inicioReceived(res.data);
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        } else {
+          // just to create them
+          //let items = [{ src: "" }, { src: "" }, { src: "" }, { src: "" }];
+          let items = this.props.copy.inicioCopy.items;
+          items[num].src = chunkData;
+          axios({
+            method: "patch",
+            url: "/copy/inicio",
+            data: { id, items },
+            headers: { "x-auth": dude.token }
+          })
+            .then(res => {
+              console.log(res);
+              this.props.inicioReceived(res.data);
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        }
       }
     }
   }
@@ -75,13 +80,57 @@ class InicioContainer extends Component {
           copy={this.props.copy.inicioCopy}
           subirChunk={this.subirChunk.bind(this)}
         />
+        <div>
+          <h3 style={{ display: "inline" }}>Carousell de fotos </h3>
+          <p style={{ display: "inline" }}>
+            que luego son tambien fotos de los diferentes servicios
+          </p>
+        </div>
+        <br />
+        <InicioFormPictures
+          copy={this.props.copy.inicioCopy}
+          pics={this.props.copy.pics}
+          number="0"
+          id="picFisio"
+          servicio="Fisioterapia"
+          subirChunk={this.subirChunk.bind(this)}
+          subirFoto={this.subirFoto.bind(this)}
+        />
+        <InicioFormPictures
+          copy={this.props.copy.inicioCopy}
+          pics={this.props.copy.pics}
+          number="1"
+          id="picOsteo"
+          servicio="Osteopatia"
+          subirChunk={this.subirChunk.bind(this)}
+          subirFoto={this.subirFoto.bind(this)}
+        />
+        <InicioFormPictures
+          copy={this.props.copy.inicioCopy}
+          pics={this.props.copy.pics}
+          number="2"
+          id="picPodo"
+          servicio="Podologia"
+          subirChunk={this.subirChunk.bind(this)}
+          subirFoto={this.subirFoto.bind(this)}
+        />
+        <InicioFormPictures
+          copy={this.props.copy.inicioCopy}
+          pics={this.props.copy.pics}
+          number="3"
+          id="picPilates"
+          servicio="Pilates"
+          subirChunk={this.subirChunk.bind(this)}
+          subirFoto={this.subirFoto.bind(this)}
+        />
       </div>
     );
   }
 }
 const dispatchToProps = dispatch => {
   return {
-    inicioReceived: inicioCopy => dispatch(actions.inicioReceived(inicioCopy))
+    inicioReceived: inicioCopy => dispatch(actions.inicioReceived(inicioCopy)),
+    subirFoto: (id, archivo) => dispatch(actions.subirFoto(id, archivo))
   };
 };
 

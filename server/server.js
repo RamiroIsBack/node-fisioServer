@@ -18,9 +18,6 @@ var app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
-app.get("/users/me", authenticateMiddleware, (req, res) => {
-  res.send(req.user);
-});
 
 ////////////////////inicio//////////////////////////
 
@@ -88,6 +85,9 @@ app.post("/users/login", (req, res) => {
     });
 });
 
+app.get("/users/me", authenticateMiddleware, (req, res) => {
+  res.send(req.user);
+});
 /////////////////ping to keep the server awake https://uptimerobot.com/dashboard#mainDashboard /////////////
 app.get("/ping", (req, res) => {
   Ping.find()

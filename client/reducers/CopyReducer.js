@@ -1,10 +1,28 @@
 import constants from "../constants";
 
-var initialState = {};
+var initialState = {
+  pics: {
+    picFisio: "",
+    picOsteo: "",
+    picPodo: "",
+    picPilates: ""
+  }
+};
 
 export default (state = initialState, action) => {
   let newState = Object.assign({}, state);
   switch (action.type) {
+    case constants.INITIALIZE_FIREBASE: {
+      newState["firebase"] = action.data;
+      return newState;
+    }
+    case constants.UPLOAD_PIC: {
+      if (action.data.error) {
+        return newState;
+      }
+      newState.pics[action.params] = action.data;
+      return newState;
+    }
     case constants.INICIO_RECEIVED: {
       newState["inicioCopy"] = action.data;
 
