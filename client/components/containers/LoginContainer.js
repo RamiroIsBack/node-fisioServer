@@ -28,6 +28,10 @@ class LoginContainer extends Component {
         let { nombre, _id } = res.data;
         this.props.theDude({ nombre, _id, token });
         history.push("/inicio");
+        this.props.loginFirebase({
+          email: "javi@fisiob.com",
+          password: "javifisiob"
+        });
       })
       .catch(err => {
         this.setState({ errors: ["nombre o password incorrectos"] });
@@ -48,7 +52,8 @@ class LoginContainer extends Component {
 }
 const dispatchToProps = dispatch => {
   return {
-    theDude: theMan => dispatch(actions.theDude(theMan))
+    theDude: theMan => dispatch(actions.theDude(theMan)),
+    loginFirebase: user => dispatch(actions.loginFirebase(user))
   };
 };
 
