@@ -87,6 +87,7 @@ class InicioContainer extends Component {
           </p>
         </div>
         <br />
+
         <InicioFormPictures
           copy={this.props.copy.inicioCopy}
           pics={this.props.copy.pics}
