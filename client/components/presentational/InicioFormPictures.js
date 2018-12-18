@@ -56,7 +56,11 @@ class InicioFormPictures extends Component {
                 type="file"
                 id={this.props.id}
                 number={this.props.number}
-                style={{ padding: "10px" }}
+                style={{
+                  padding: "10px",
+                  cursor: "pointer",
+                  backgroundColor: "yellow"
+                }}
                 onChange={this.guardarPic.bind(this)}
               />
             </Col>
