@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Button, Row, FormGroup, Label, Input, Col } from "reactstrap";
 
-class InicioFormPictures extends Component {
+class FormPictures extends Component {
   guardarPic(e) {
     this.props.subirFoto(e.target.id, e.target.files[0]);
   }
@@ -59,7 +59,11 @@ class InicioFormPictures extends Component {
                 style={{
                   padding: "10px",
                   cursor: "pointer",
-                  backgroundColor: "yellow"
+                  backgroundColor: this.props.pics
+                    ? this.props.pics[this.props.id] === ""
+                      ? "yellow"
+                      : "transparent"
+                    : "yellow"
                 }}
                 onChange={this.guardarPic.bind(this)}
               />
@@ -96,4 +100,4 @@ class InicioFormPictures extends Component {
   }
 }
 
-export default InicioFormPictures;
+export default FormPictures;

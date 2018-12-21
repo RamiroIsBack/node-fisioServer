@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import actions from "../../actions";
 import InicioForm from "../presentational/InicioForm";
-import InicioFormPictures from "../presentational/InicioFormPictures";
+import FormPictures from "../presentational/FormPictures";
 
 class InicioContainer extends Component {
   constructor() {
@@ -72,7 +72,7 @@ class InicioContainer extends Component {
       }
     }
   }
-  render(props) {
+  render() {
     return (
       <div>
         <h3 style={{ textAlign: "center" }}>Home</h3>
@@ -88,7 +88,7 @@ class InicioContainer extends Component {
         </div>
         <br />
 
-        <InicioFormPictures
+        <FormPictures
           copy={this.props.copy.inicioCopy}
           pics={this.props.copy.pics}
           number="0"
@@ -97,7 +97,7 @@ class InicioContainer extends Component {
           subirChunk={this.subirChunk.bind(this)}
           subirFoto={this.subirFoto.bind(this)}
         />
-        <InicioFormPictures
+        <FormPictures
           copy={this.props.copy.inicioCopy}
           pics={this.props.copy.pics}
           number="1"
@@ -106,7 +106,7 @@ class InicioContainer extends Component {
           subirChunk={this.subirChunk.bind(this)}
           subirFoto={this.subirFoto.bind(this)}
         />
-        <InicioFormPictures
+        <FormPictures
           copy={this.props.copy.inicioCopy}
           pics={this.props.copy.pics}
           number="2"
@@ -115,7 +115,7 @@ class InicioContainer extends Component {
           subirChunk={this.subirChunk.bind(this)}
           subirFoto={this.subirFoto.bind(this)}
         />
-        <InicioFormPictures
+        <FormPictures
           copy={this.props.copy.inicioCopy}
           pics={this.props.copy.pics}
           number="3"
