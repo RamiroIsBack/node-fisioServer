@@ -1,13 +1,6 @@
 import constants from "../constants";
 
-var initialState = {
-  pics: {
-    picFisio: "",
-    picOsteo: "",
-    picPodo: "",
-    picPilates: ""
-  }
-};
+var initialState = { pics: [] };
 
 export default (state = initialState, action) => {
   let newState = Object.assign({}, state);
@@ -21,16 +14,21 @@ export default (state = initialState, action) => {
         return newState;
       }
       newState.pics[action.params] = action.data;
+
       return newState;
     }
     case constants.INICIO_RECEIVED: {
       newState["inicioCopy"] = action.data;
-
+      action.data.items.map(pic => {
+        newState.pics[pic.nombre] = "";
+      });
       return newState;
     }
     case constants.EQUIPO_RECEIVED: {
       newState["equipoCopy"] = action.data;
-
+      action.data.equipo.map(persona => {
+        newState.pics[persona.nombre] = "";
+      });
       return newState;
     }
     case constants.INSTALACIONES_RECEIVED: {

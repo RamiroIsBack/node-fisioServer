@@ -30,12 +30,12 @@ class InicioContainer extends Component {
       console.log("no hay archivo q subir" + archivo);
     }
   }
-  subirChunk(num, chunkID, chunkData) {
+  subirChunk(distincion, chunkID, chunkData) {
     if (this.props.user) {
       let dude = this.props.user.dudeObject;
       if (dude && this.props.copy.inicioCopy) {
         let id = this.props.copy.inicioCopy._id;
-        if (num === 100) {
+        if (distincion === "texto") {
           //text
           axios({
             method: "patch",
@@ -54,7 +54,15 @@ class InicioContainer extends Component {
           // just to create them
           //let items = [{ src: "" }, { src: "" }, { src: "" }, { src: "" }];
           let items = this.props.copy.inicioCopy.items;
-          items[num].src = chunkData;
+          let index = items.map((item, index) => {
+            if (item.nombre === chunkID) {
+              return index;
+            }
+          });
+          items[index] = {
+            nombre: chunkID,
+            src: chunkData
+          };
           axios({
             method: "patch",
             url: "/copy/inicio",
@@ -87,43 +95,21 @@ class InicioContainer extends Component {
           </p>
         </div>
         <br />
-
-        <FormPictures
-          copy={this.props.copy.inicioCopy}
-          pics={this.props.copy.pics}
-          number="0"
-          id="picFisio"
-          servicio="Fisioterapia"
-          subirChunk={this.subirChunk.bind(this)}
-          subirFoto={this.subirFoto.bind(this)}
-        />
-        <FormPictures
-          copy={this.props.copy.inicioCopy}
-          pics={this.props.copy.pics}
-          number="1"
-          id="picOsteo"
-          servicio="Osteopatia"
-          subirChunk={this.subirChunk.bind(this)}
-          subirFoto={this.subirFoto.bind(this)}
-        />
-        <FormPictures
-          copy={this.props.copy.inicioCopy}
-          pics={this.props.copy.pics}
-          number="2"
-          id="picPodo"
-          servicio="Podologia"
-          subirChunk={this.subirChunk.bind(this)}
-          subirFoto={this.subirFoto.bind(this)}
-        />
-        <FormPictures
-          copy={this.props.copy.inicioCopy}
-          pics={this.props.copy.pics}
-          number="3"
-          id="picPilates"
-          servicio="Pilates"
-          subirChunk={this.subirChunk.bind(this)}
-          subirFoto={this.subirFoto.bind(this)}
-        />
+        {this.props.copy.inicioCopy ? (
+          this.props.copy.inicioCopy.items.map((foto, index) => (
+            <FormPictures
+              key={foto._id}
+              number={index}
+              copy={this.props.copy.inicioCopy}
+              pics={this.props.copy.pics}
+              id={foto.nombre}
+              subirChunk={this.subirChunk.bind(this)}
+              subirFoto={this.subirFoto.bind(this)}
+            />
+          ))
+        ) : (
+          <div />
+        )}
       </div>
     );
   }

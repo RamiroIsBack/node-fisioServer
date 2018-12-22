@@ -5,7 +5,7 @@ import { Button } from "reactstrap";
 
 import actions from "../../actions";
 import EquipoForm from "../presentational/EquipoForm";
-import FormPictures from "../presentational/FormPictures";
+import FormPersona from "../presentational/FormPersonas";
 
 class EquipoContainer extends Component {
   constructor() {
@@ -76,6 +76,9 @@ class EquipoContainer extends Component {
   newPerson(e) {
     console.log("you just hired a new guy!");
   }
+  modifyPerson(personModified) {
+    console.log("modificando", personModified);
+  }
   render() {
     return (
       <div>
@@ -97,43 +100,22 @@ class EquipoContainer extends Component {
           </Button>
         </div>
         <br />
-
-        {/* <FormPictures
-          copy={this.props.copy.equipoCopy}
-          pics={this.props.copy.pics}
-          number="0"
-          id="picFisio"
-          servicio="Fisioterapia"
-          subirChunk={this.subirChunk.bind(this)}
-          subirFoto={this.subirFoto.bind(this)}
-        />
-        <FormPictures
-          copy={this.props.copy.equipoCopy}
-          pics={this.props.copy.pics}
-          number="1"
-          id="picOsteo"
-          servicio="Osteopatia"
-          subirChunk={this.subirChunk.bind(this)}
-          subirFoto={this.subirFoto.bind(this)}
-        />
-        <FormPictures
-          copy={this.props.copy.equipoCopy}
-          pics={this.props.copy.pics}
-          number="2"
-          id="picPodo"
-          servicio="Podologia"
-          subirChunk={this.subirChunk.bind(this)}
-          subirFoto={this.subirFoto.bind(this)}
-        />
-        <FormPictures
-          copy={this.props.copy.equipoCopy}
-          pics={this.props.copy.pics}
-          number="3"
-          id="picPilates"
-          servicio="Pilates"
-          subirChunk={this.subirChunk.bind(this)}
-          subirFoto={this.subirFoto.bind(this)}
-        /> */}
+        {this.props.copy.equipoCopy ? (
+          this.props.copy.equipoCopy.equipo.map(persona => {
+            return (
+              <FormPersona
+                key={persona.apellido}
+                persona={persona}
+                pics={this.props.copy.pics}
+                modifyPerson={this.modifyPerson.bind(this)}
+                subirChunk={this.subirChunk.bind(this)}
+                subirFoto={this.subirFoto.bind(this)}
+              />
+            );
+          })
+        ) : (
+          <div />
+        )}
       </div>
     );
   }

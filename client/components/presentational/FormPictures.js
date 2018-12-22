@@ -7,15 +7,7 @@ class FormPictures extends Component {
   }
 
   subirChunk(e) {
-    let numero = 0;
-    if (e.target.id === "picOsteo") {
-      numero = 1;
-    } else if (e.target.id === "picPodo") {
-      numero = 2;
-    } else if (e.target.id === "picPilates") {
-      numero = 3;
-    }
-    this.props.subirChunk(numero, e.target.id, this.props.pics[e.target.id]);
+    this.props.subirChunk("pic", e.target.id, this.props.pics[e.target.id]);
   }
 
   render() {
@@ -30,7 +22,7 @@ class FormPictures extends Component {
         >
           <Row>
             <Col sm="4">
-              <h4>Foto de {this.props.servicio}</h4>
+              <h4>Foto de {this.props.id}</h4>
               <Label style={{ marginBottom: 0, marginLeft: "5px" }}>
                 esto hay en la base de datos:
               </Label>

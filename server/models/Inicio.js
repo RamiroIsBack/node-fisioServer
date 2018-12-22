@@ -12,7 +12,8 @@ var InicioSchema = mongoose.Schema({
       src: {
         type: String
       },
-      caption: {
+
+      nombre: {
         type: String
       }
     }
