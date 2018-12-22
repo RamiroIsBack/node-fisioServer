@@ -8,6 +8,7 @@ const { ObjectID } = require("mongodb");
 var { Ping } = require("./models/Ping");
 var { User } = require("./models/User");
 var { Inicio } = require("./models/Inicio");
+var { Equipo } = require("./models/Equipo");
 var { Instalaciones } = require("./models/Instalaciones");
 
 connectWithDBThroughMongoose()
@@ -56,6 +57,43 @@ app.patch("/copy/inicio", authenticateMiddleware, (req, res) => {
         return res.status(404).send();
       }
       res.send(inicioObject);
+    })
+    .catch(e => res.status(400).send(e));
+});
+
+////////////////////equipo//////////////////////////
+
+app.post("/copy/equipo", (req, res) => {
+  var newEquipo = new Equipo(req.body);
+  newEquipo.save().then(doc => {
+    res.send(doc);
+  });
+});
+app.get("/copy/equipo", (req, res) => {
+  Equipo.find()
+    .then(equipoCopy => {
+      res.send({ equipoCopy });
+    })
+    .catch(err => {
+      res.send(err);
+    });
+});
+app.patch("/copy/equipo", authenticateMiddleware, (req, res) => {
+  var body = req.body;
+  var { id } = body;
+  if (!body.equipoTextoCorto && !body.equipoTextoLargo && !body.items) {
+    return res.status(400).send({ err: "give me something!" });
+  }
+  if (!ObjectID.isValid(id)) {
+    return res.status(404).send({ err: "id not valid dude" });
+  }
+  body.updatedAt = new Date().toString();
+  Equipo.findOneAndUpdate({ _id: id }, { $set: body }, { new: true })
+    .then(equipoObject => {
+      if (!equipoObject) {
+        return res.status(404).send();
+      }
+      res.send(equipoObject);
     })
     .catch(e => res.status(400).send(e));
 });

@@ -76,7 +76,7 @@ class InicioForm extends Component {
         <div>
           <h4 style={{ display: "inline" }}>Texto Largo </h4>
           <p style={{ display: "inline" }}>
-            que aparece arriba en la pagina de inicio
+            que aparece abajo en la pagina de inicio
           </p>
         </div>
         <FormGroup

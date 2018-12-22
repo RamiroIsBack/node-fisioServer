@@ -27,6 +27,12 @@ export default {
       data: inicioCopy
     };
   },
+  equipoReceived: equipoCopy => {
+    return {
+      type: constants.EQUIPO_RECEIVED,
+      data: equipoCopy
+    };
+  },
   instalacionesReceived: instalacionesCopy => {
     return {
       type: constants.INSTALACIONES_RECEIVED,

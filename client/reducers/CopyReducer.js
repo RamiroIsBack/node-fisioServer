@@ -28,6 +28,11 @@ export default (state = initialState, action) => {
 
       return newState;
     }
+    case constants.EQUIPO_RECEIVED: {
+      newState["equipoCopy"] = action.data;
+
+      return newState;
+    }
     case constants.INSTALACIONES_RECEIVED: {
       newState["instalacionesCopy"] = action.data;
       return newState;
