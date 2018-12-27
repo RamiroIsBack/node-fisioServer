@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Row, Col, Button, FormGroup, Label, Input } from "reactstrap";
 
-import FormPictures from "./FormPictures";
+import FormFormacion from "./FormFormacion";
+import FormTecnica from "./FormTecnica";
 
 class FormPersonas extends Component {
   constructor() {
@@ -22,9 +23,21 @@ class FormPersonas extends Component {
   guardarPic(e) {
     this.props.subirFoto(e.target.id, e.target.files[0]);
   }
-
+  subirChunkTecnicaOrFormacion(partID, chunkID, chunkData) {
+    this.props.subirChunk({
+      personaIndex: this.props.personaIndex,
+      partID,
+      chunkID,
+      chunkData
+    });
+  }
   subirChunk(e) {
-    this.props.subirChunk(100, e.target.id, this.state.parameters[e.target.id]);
+    this.props.subirChunk({
+      personaIndex: this.props.personaIndex,
+      partID: e.target.name,
+      chunkID: e.target.id,
+      chunkData: this.state.parameters[e.target.id]
+    });
   }
 
   render() {
@@ -37,9 +50,7 @@ class FormPersonas extends Component {
             border: "1px solid black"
           }}
         >
-          <Label for="textoLargo">
-            cambiar los datos de {this.props.persona.nombre}
-          </Label>
+          <Label>cambiar los datos de {this.props.persona.nombre}</Label>
 
           {/* //////////////////////////////////////////////////////////nombre////////////////////////////////// */}
           <Row>
@@ -59,6 +70,7 @@ class FormPersonas extends Component {
             <Col sm="4">
               <Button
                 id="nombre"
+                name="persona"
                 onClick={this.subirChunk.bind(this)}
                 color="primary"
               >
@@ -84,6 +96,7 @@ class FormPersonas extends Component {
             <Col sm="4">
               <Button
                 id="apellido"
+                name="persona"
                 onClick={this.subirChunk.bind(this)}
                 color="primary"
               >
@@ -110,6 +123,7 @@ class FormPersonas extends Component {
             <Col sm="4">
               <Button
                 id="cargo"
+                name="persona"
                 onClick={this.subirChunk.bind(this)}
                 color="primary"
               >
@@ -150,6 +164,7 @@ class FormPersonas extends Component {
             <Col sm="3">
               <Button
                 id="textoPersona"
+                name="persona"
                 onClick={this.subirChunk.bind(this)}
                 color="primary"
               >
@@ -224,6 +239,7 @@ class FormPersonas extends Component {
             <Button
               id={this.props.persona.nombre}
               onClick={this.subirChunk.bind(this)}
+              name="persona"
               color="primary"
               disabled={
                 this.props.pics
@@ -236,6 +252,34 @@ class FormPersonas extends Component {
               Subir Foto
             </Button>
           </FormGroup>
+          {this.props.persona ? (
+            this.props.persona.tecnicas.map((tecnica, index) => {
+              return (
+                <FormTecnica
+                  key={index}
+                  tecnicaIndex={index}
+                  tecnica={tecnica}
+                  subirChunk={this.subirChunk.bind(this)}
+                />
+              );
+            })
+          ) : (
+            <div />
+          )}
+          {this.props.persona ? (
+            this.props.persona.formacion.map((formacion, index) => {
+              return (
+                <FormFormacion
+                  key={index}
+                  formacionIndex={index}
+                  formacion={formacion}
+                  subirChunk={this.subirChunk.bind(this)}
+                />
+              );
+            })
+          ) : (
+            <div />
+          )}
         </FormGroup>
       </div>
     );

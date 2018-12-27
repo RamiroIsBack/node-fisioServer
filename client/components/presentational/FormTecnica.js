@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Button, FormGroup, Label, Input } from "reactstrap";
 
-class EquipoForm extends Component {
+class FormTecnica extends Component {
   constructor() {
     super();
     this.state = {
@@ -53,8 +53,8 @@ class EquipoForm extends Component {
             type="textarea"
             rows="5"
             value={
-              this.props.copy
-                ? this.props.copy.equipoTextoLargo
+              this.props.tecnica
+                ? this.props.tecnica.equipoTextoLargo
                 : "cargando....."
             }
             id="textoLargoDB"
@@ -83,4 +83,4 @@ class EquipoForm extends Component {
   }
 }
 
-export default EquipoForm;
+export default FormTecnica;

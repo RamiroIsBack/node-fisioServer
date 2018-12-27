@@ -31,17 +31,16 @@ class EquipoContainer extends Component {
       console.log("no hay archivo q subir" + archivo);
     }
   }
-  subirChunk(num, chunkID, chunkData) {
+  subirChunk(dataObject) {
     if (this.props.user) {
       let dude = this.props.user.dudeObject;
       if (dude && this.props.copy.equipoCopy) {
         let id = this.props.copy.equipoCopy._id;
-        if (num === 100) {
-          //text
+        if (dataObject.chunkID === "equipoTextoLargo") {
           axios({
             method: "patch",
             url: "/copy/equipo",
-            data: { id, [chunkID]: chunkData },
+            data: { id, partID, [dataObject.chunkID]: dataObject.chunkData },
             headers: { "x-auth": dude.token }
           })
             .then(res => {
@@ -52,23 +51,60 @@ class EquipoContainer extends Component {
               console.log(err);
             });
         } else {
-          // just to create them
-          //let items = [{ src: "" }, { src: "" }, { src: "" }, { src: "" }];
-          let items = this.props.copy.equipoCopy.items;
-          items[num].src = chunkData;
-          axios({
-            method: "patch",
-            url: "/copy/equipo",
-            data: { id, items },
-            headers: { "x-auth": dude.token }
-          })
-            .then(res => {
-              console.log(res);
-              this.props.equipoReceived(res.data);
+          //we are inside personas []
+          let equipo = this.props.copy.equipoCopy.equipo;
+          if (dataObject.partID === "tecnicas") {
+            equipo[dataObject.personaIndex].tecnicas[dataObject.tecnicaIndex][
+              dataObject.chunkID
+            ] = dataObject.chunkData;
+            axios({
+              method: "patch",
+              url: "/copy/equipo",
+              data: { id, equipo },
+              headers: { "x-auth": dude.token }
             })
-            .catch(err => {
-              console.log(err);
-            });
+              .then(res => {
+                console.log(res);
+                this.props.equipoReceived(res.data);
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          } else if (partID === "formacion") {
+            equipo[dataObject.personaIndex].formacion[
+              dataObject.formacionIndex
+            ][dataObject.chunkID] = dataObject.chunkData;
+            axios({
+              method: "patch",
+              url: "/copy/equipo",
+              data: { id, equipo },
+              headers: { "x-auth": dude.token }
+            })
+              .then(res => {
+                console.log(res);
+                this.props.equipoReceived(res.data);
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          } else {
+            // persona field
+            equipo[dataObject.personaIndex][dataObject.chunkID] =
+              dataObject.chunkData;
+            axios({
+              method: "patch",
+              url: "/copy/equipo",
+              data: { id, equipo },
+              headers: { "x-auth": dude.token }
+            })
+              .then(res => {
+                console.log(res);
+                this.props.equipoReceived(res.data);
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          }
         }
       }
     }
@@ -101,10 +137,11 @@ class EquipoContainer extends Component {
         </div>
         <br />
         {this.props.copy.equipoCopy ? (
-          this.props.copy.equipoCopy.equipo.map(persona => {
+          this.props.copy.equipoCopy.equipo.map((persona, index) => {
             return (
               <FormPersona
                 key={persona.apellido}
+                personaIndex={index}
                 persona={persona}
                 pics={this.props.copy.pics}
                 modifyPerson={this.modifyPerson.bind(this)}

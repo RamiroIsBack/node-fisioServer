@@ -80,8 +80,13 @@ app.get("/copy/equipo", (req, res) => {
 });
 app.patch("/copy/equipo", authenticateMiddleware, (req, res) => {
   var body = req.body;
-  var { id } = body;
-  if (!body.equipoTextoCorto && !body.equipoTextoLargo && !body.items) {
+  var { personaNombre, id } = body;
+  if (
+    !body.equipoTextoLargo &&
+    !body.persona &&
+    !body.tecnicas &&
+    !body.formacion
+  ) {
     return res.status(400).send({ err: "give me something!" });
   }
   if (!ObjectID.isValid(id)) {
