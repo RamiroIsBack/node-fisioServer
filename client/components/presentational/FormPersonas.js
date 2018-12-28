@@ -11,10 +11,12 @@ class FormPersonas extends Component {
       parameters: {
         nombre: "",
         apellido: "",
-        cargo: ""
+        cargo: "",
+        urlPic: ""
       }
     };
   }
+
   handleOnChange(e) {
     let obj = Object.assign({}, this.state);
     obj.parameters[e.target.id] = e.target.value;
@@ -23,21 +25,33 @@ class FormPersonas extends Component {
   guardarPic(e) {
     this.props.subirFoto(e.target.id, e.target.files[0]);
   }
-  subirChunkTecnicaOrFormacion(partID, chunkID, chunkData) {
-    this.props.subirChunk({
-      personaIndex: this.props.personaIndex,
-      partID,
-      chunkID,
-      chunkData
-    });
+  subirChunkTecnicaOrFormacion(chunkObject) {
+    chunkObject.personaIndex = this.props.personaIndex;
+    this.props.subirChunk(chunkObject);
   }
   subirChunk(e) {
     this.props.subirChunk({
       personaIndex: this.props.personaIndex,
       partID: e.target.name,
       chunkID: e.target.id,
-      chunkData: this.state.parameters[e.target.id]
+      chunkData:
+        e.target.id === "urlPic"
+          ? this.props.pics[this.props.persona.nombre]
+          : this.state.parameters[e.target.id]
     });
+  }
+  newTecnica(e) {
+    console.log("new tecnica!! rass!@!");
+  }
+  newFormacion(e) {
+    console.log("new formacion!! rass!@!");
+  }
+  subirFotoFormacion(id, archivo) {
+    if (archivo) {
+      this.props.subirFoto(id, archivo);
+    } else {
+      console.log("no hay archivo q subir" + archivo);
+    }
   }
 
   render() {
@@ -47,7 +61,7 @@ class FormPersonas extends Component {
           style={{
             padding: "2px",
             borderRadius: "4px",
-            border: "1px solid black"
+            border: "2px solid black"
           }}
         >
           <Label>cambiar los datos de {this.props.persona.nombre}</Label>
@@ -252,34 +266,87 @@ class FormPersonas extends Component {
               Subir Foto
             </Button>
           </FormGroup>
-          {this.props.persona ? (
-            this.props.persona.tecnicas.map((tecnica, index) => {
-              return (
-                <FormTecnica
-                  key={index}
-                  tecnicaIndex={index}
-                  tecnica={tecnica}
-                  subirChunk={this.subirChunk.bind(this)}
-                />
-              );
-            })
-          ) : (
-            <div />
-          )}
-          {this.props.persona ? (
-            this.props.persona.formacion.map((formacion, index) => {
-              return (
-                <FormFormacion
-                  key={index}
-                  formacionIndex={index}
-                  formacion={formacion}
-                  subirChunk={this.subirChunk.bind(this)}
-                />
-              );
-            })
-          ) : (
-            <div />
-          )}
+
+          {/* ///////////////////////////////    tecnicas    ////////////////////////////// */}
+          <FormGroup
+            style={{
+              margin: 10,
+              padding: "2px",
+              borderRadius: "4px",
+              border: "1px solid black"
+            }}
+          >
+            <div style={{ padding: "15px" }}>
+              <h3 style={{ display: "inline" }}>
+                Tecnicas de {this.props.persona.nombre}{" "}
+              </h3>
+              <p style={{ display: "inline" }}>tambien puedes anadir una</p>
+              <Button
+                id="newPerson"
+                onClick={this.newTecnica.bind(this)}
+                color="success"
+                style={{ display: "inline" }}
+              >
+                + Nueva tecnica
+              </Button>
+            </div>
+            {this.props.persona ? (
+              this.props.persona.tecnicas.map((tecnica, index) => {
+                return (
+                  <FormTecnica
+                    key={index}
+                    tecnicaIndex={index}
+                    tecnica={tecnica}
+                    subirChunk={this.subirChunkTecnicaOrFormacion.bind(this)}
+                  />
+                );
+              })
+            ) : (
+              <div />
+            )}
+          </FormGroup>
+
+          {/* ///////////////////////////////    formacion ////////////////////////////// */}
+          <FormGroup
+            style={{
+              margin: "10px",
+              marginTop: "25px",
+              padding: "2px",
+              borderRadius: "4px",
+              border: "1px solid black"
+            }}
+          >
+            <div style={{ padding: "15px" }}>
+              <h3 style={{ display: "inline" }}>
+                Formacion de {this.props.persona.nombre}{" "}
+              </h3>
+              <p style={{ display: "inline" }}>tambien puedes anadir </p>
+              <Button
+                id="newPerson"
+                onClick={this.newFormacion.bind(this)}
+                color="success"
+                style={{ display: "inline" }}
+              >
+                + estudios
+              </Button>
+            </div>
+            {this.props.persona ? (
+              this.props.persona.formacion.map((formacion, index) => {
+                return (
+                  <FormFormacion
+                    key={index}
+                    formacionIndex={index}
+                    formacion={formacion}
+                    pics={this.props.pics}
+                    subirChunk={this.subirChunkTecnicaOrFormacion.bind(this)}
+                    subirFoto={this.subirFotoFormacion.bind(this)}
+                  />
+                );
+              })
+            ) : (
+              <div />
+            )}
+          </FormGroup>
         </FormGroup>
       </div>
     );

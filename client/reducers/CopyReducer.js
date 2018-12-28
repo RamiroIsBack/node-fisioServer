@@ -28,6 +28,9 @@ export default (state = initialState, action) => {
       newState["equipoCopy"] = action.data;
       action.data.equipo.map(persona => {
         newState.pics[persona.nombre] = "";
+        persona.formacion.map(formacion => {
+          newState.pics[formacion.centroFormativo] = "";
+        });
       });
       return newState;
     }

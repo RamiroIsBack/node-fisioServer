@@ -53,7 +53,7 @@ class EquipoContainer extends Component {
         } else {
           //we are inside personas []
           let equipo = this.props.copy.equipoCopy.equipo;
-          if (dataObject.partID === "tecnicas") {
+          if (dataObject.partID === "tecnica") {
             equipo[dataObject.personaIndex].tecnicas[dataObject.tecnicaIndex][
               dataObject.chunkID
             ] = dataObject.chunkData;
@@ -70,7 +70,7 @@ class EquipoContainer extends Component {
               .catch(err => {
                 console.log(err);
               });
-          } else if (partID === "formacion") {
+          } else if (dataObject.partID === "formacion") {
             equipo[dataObject.personaIndex].formacion[
               dataObject.formacionIndex
             ][dataObject.chunkID] = dataObject.chunkData;
@@ -87,7 +87,7 @@ class EquipoContainer extends Component {
               .catch(err => {
                 console.log(err);
               });
-          } else {
+          } else if (dataObject.partID === "persona") {
             // persona field
             equipo[dataObject.personaIndex][dataObject.chunkID] =
               dataObject.chunkData;
@@ -104,6 +104,11 @@ class EquipoContainer extends Component {
               .catch(err => {
                 console.log(err);
               });
+          } else {
+            console.log(
+              "partID no corresponde con persona, formacion o tecnica",
+              partID
+            );
           }
         }
       }
