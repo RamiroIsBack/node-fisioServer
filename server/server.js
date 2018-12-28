@@ -101,11 +101,38 @@ app.patch("/copy/equipo", authenticateMiddleware, (req, res) => {
 //////////////////instalaciones///////////////////////////
 
 app.post("/copy/instalaciones", (req, res) => {
-  var newInstalaciones = new Instalaciones({
-    instalacionesTextoCorto: req.body.instalacionesTextoCorto,
-    instalacionesTextoLargo: req.body.instalacionesTextoLargo,
-    items: req.body.items
+  var newInstalaciones = new Instalaciones(req.body);
+  newInstalaciones.save().then(doc => {
+    res.send(doc);
   });
+});
+app.get("/copy/instalaciones", (req, res) => {
+  Instalaciones.find()
+    .then(instalacionesCopy => {
+      res.send({ instalacionesCopy });
+    })
+    .catch(err => {
+      res.send(err);
+    });
+});
+app.patch("/copy/instalaciones", authenticateMiddleware, (req, res) => {
+  var body = req.body;
+  var { id } = body;
+  if (!body.instalacionesTextoLargo && !body.items) {
+    return res.status(400).send({ err: "give me something!" });
+  }
+  if (!ObjectID.isValid(id)) {
+    return res.status(404).send({ err: "id not valid dude" });
+  }
+  body.updatedAt = new Date().toString();
+  Instalaciones.findOneAndUpdate({ _id: id }, { $set: body }, { new: true })
+    .then(instalacionesObject => {
+      if (!instalacionesObject) {
+        return res.status(404).send();
+      }
+      res.send(instalacionesObject);
+    })
+    .catch(e => res.status(400).send(e));
 });
 
 //////////////////user/////////////////////////////////////
