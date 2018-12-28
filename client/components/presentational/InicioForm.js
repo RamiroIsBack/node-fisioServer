@@ -18,7 +18,11 @@ class InicioForm extends Component {
   }
 
   subirChunk(e) {
-    this.props.subirChunk(100, e.target.id, this.state.parameters[e.target.id]);
+    this.props.subirChunk({
+      partID: e.target.name,
+      chunkID: e.target.id,
+      chunkData: this.state.parameters[e.target.id]
+    });
   }
 
   render() {
@@ -65,6 +69,7 @@ class InicioForm extends Component {
           />
           <Button
             id="inicioTextoCorto"
+            name="texto"
             onClick={this.subirChunk.bind(this)}
             color="primary"
           >
@@ -112,6 +117,7 @@ class InicioForm extends Component {
           />
           <Button
             id="inicioTextoLargo"
+            name="texto"
             onClick={this.subirChunk.bind(this)}
             color="primary"
           >

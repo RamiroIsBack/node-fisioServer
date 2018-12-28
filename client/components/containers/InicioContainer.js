@@ -30,12 +30,12 @@ class InicioContainer extends Component {
       console.log("no hay archivo q subir" + archivo);
     }
   }
-  subirChunk(distincion, chunkID, chunkData) {
+  subirChunk({ partID, chunkID, chunkData }) {
     if (this.props.user) {
       let dude = this.props.user.dudeObject;
       if (dude && this.props.copy.inicioCopy) {
         let id = this.props.copy.inicioCopy._id;
-        if (distincion === "texto") {
+        if (partID === "texto") {
           //text
           axios({
             method: "patch",
@@ -51,14 +51,18 @@ class InicioContainer extends Component {
               console.log(err);
             });
         } else {
-          // just to create them
-          //let items = [{ src: "" }, { src: "" }, { src: "" }, { src: "" }];
           let items = this.props.copy.inicioCopy.items;
-          let index = items.map((item, index) => {
+          let index = "";
+          items.map((item, i) => {
             if (item.nombre === chunkID) {
-              return index;
+              index = i;
             }
           });
+          if (index === "") {
+            return console.log(
+              "chunkID doesnt match any item.nombre on carouselPics"
+            );
+          }
           items[index] = {
             nombre: chunkID,
             src: chunkData
@@ -98,11 +102,11 @@ class InicioContainer extends Component {
         {this.props.copy.inicioCopy ? (
           this.props.copy.inicioCopy.items.map((foto, index) => (
             <FormPictures
-              key={foto._id}
-              number={index}
-              copy={this.props.copy.inicioCopy}
+              key={index}
+              src={foto.src}
               pics={this.props.copy.pics}
               id={foto.nombre}
+              name={"pic"}
               subirChunk={this.subirChunk.bind(this)}
               subirFoto={this.subirFoto.bind(this)}
             />

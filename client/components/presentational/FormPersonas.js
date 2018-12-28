@@ -3,6 +3,7 @@ import { Row, Col, Button, FormGroup, Label, Input } from "reactstrap";
 
 import FormFormacion from "./FormFormacion";
 import FormTecnica from "./FormTecnica";
+import FormPictures from "./FormPictures";
 
 class FormPersonas extends Component {
   constructor() {
@@ -22,23 +23,35 @@ class FormPersonas extends Component {
     obj.parameters[e.target.id] = e.target.value;
     this.setState(obj);
   }
-  guardarPic(e) {
-    this.props.subirFoto(e.target.id, e.target.files[0]);
+  subirFoto(id, archivo) {
+    if (archivo) {
+      this.props.subirFoto(id, archivo);
+    } else {
+      console.log("no hay archivo q subir" + archivo);
+    }
   }
   subirChunkTecnicaOrFormacion(chunkObject) {
     chunkObject.personaIndex = this.props.personaIndex;
     this.props.subirChunk(chunkObject);
   }
   subirChunk(e) {
-    this.props.subirChunk({
-      personaIndex: this.props.personaIndex,
-      partID: e.target.name,
-      chunkID: e.target.id,
-      chunkData:
-        e.target.id === "urlPic"
-          ? this.props.pics[this.props.persona.nombre]
-          : this.state.parameters[e.target.id]
-    });
+    if (e.chunkID) {
+      //this is not the event object
+      let dataObject = Object.assign({}, e);
+      dataObject.chunkID = "urlPic";
+      dataObject.personaIndex = this.props.personaIndex;
+      this.props.subirChunk(dataObject);
+    } else {
+      this.props.subirChunk({
+        personaIndex: this.props.personaIndex,
+        partID: e.target.name,
+        chunkID: e.target.id,
+        chunkData:
+          e.target.id === "urlPic"
+            ? this.props.pics[this.props.persona.nombre]
+            : this.state.parameters[e.target.id]
+      });
+    }
   }
   newTecnica(e) {
     console.log("new tecnica!! rass!@!");
@@ -190,82 +203,14 @@ class FormPersonas extends Component {
           <br />
 
           {/* //////////////////////////////////////////////////////////urlPic////////////////////////////////// */}
-          <FormGroup
-            style={{
-              padding: "2px",
-              borderRadius: "4px",
-              width: "92%",
-              marginLeft: 20,
-              border: "1px solid gray"
-            }}
-          >
-            <Row>
-              <Col sm="4">
-                <h4>Foto</h4>
-                <Label style={{ marginBottom: 0, marginLeft: "5px" }}>
-                  esto hay en la base de datos:
-                </Label>
-              </Col>
-              <Col sm="8">
-                <img
-                  src={this.props.persona.urlPic}
-                  className="img-responsive"
-                  alt="foto en base de datos"
-                  style={{ height: "100px" }}
-                />
-              </Col>
-            </Row>
-            <br />
-            <Row>
-              <Col sm="4">
-                <Label>elige una foto </Label>
-                <Input
-                  type="file"
-                  id={this.props.persona.nombre}
-                  style={{
-                    padding: "10px",
-                    cursor: "pointer",
-                    backgroundColor: this.props.pics
-                      ? this.props.pics[this.props.persona.nombre] === ""
-                        ? "yellow"
-                        : "transparent"
-                      : "yellow"
-                  }}
-                  onChange={this.guardarPic.bind(this)}
-                />
-              </Col>
-              <Col sm="8">
-                <Label>
-                  hasta que no se rellene este campo no est'a la foto lista para
-                  subir a la base de datos, espera a que haya algo escrito aqui
-                  para darle al boton de subir foto
-                </Label>
-                <Input
-                  value={
-                    this.props.pics
-                      ? this.props.pics[this.props.persona.nombre]
-                      : ""
-                  }
-                  readOnly="readonly"
-                />
-              </Col>
-            </Row>
-            <Button
-              id={this.props.persona.nombre}
-              onClick={this.subirChunk.bind(this)}
-              name="persona"
-              color="primary"
-              disabled={
-                this.props.pics
-                  ? this.props.pics[this.props.persona.nombre] === ""
-                    ? true
-                    : false
-                  : true
-              }
-            >
-              Subir Foto
-            </Button>
-          </FormGroup>
+          <FormPictures
+            src={this.props.persona.urlPic}
+            pics={this.props.pics}
+            id={this.props.persona.nombre}
+            name={"persona"}
+            subirChunk={this.subirChunk.bind(this)}
+            subirFoto={this.subirFoto.bind(this)}
+          />
 
           {/* ///////////////////////////////    tecnicas    ////////////////////////////// */}
           <FormGroup

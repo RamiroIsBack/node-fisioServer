@@ -7,7 +7,11 @@ class FormPictures extends Component {
   }
 
   subirChunk(e) {
-    this.props.subirChunk("pic", e.target.id, this.props.pics[e.target.id]);
+    this.props.subirChunk({
+      partID: e.target.name,
+      chunkID: e.target.id,
+      chunkData: this.props.pics[e.target.id]
+    });
   }
 
   render() {
@@ -29,11 +33,7 @@ class FormPictures extends Component {
             </Col>
             <Col sm="8">
               <img
-                src={
-                  this.props.copy
-                    ? this.props.copy.items[this.props.number].src
-                    : ""
-                }
+                src={this.props.src}
                 className="img-responsive"
                 alt="foto en base de datos"
                 style={{ height: "100px" }}
@@ -47,7 +47,6 @@ class FormPictures extends Component {
               <Input
                 type="file"
                 id={this.props.id}
-                number={this.props.number}
                 style={{
                   padding: "10px",
                   cursor: "pointer",
@@ -74,6 +73,7 @@ class FormPictures extends Component {
           </Row>
           <Button
             id={this.props.id}
+            name={this.props.name}
             onClick={this.subirChunk.bind(this)}
             color="primary"
             disabled={
