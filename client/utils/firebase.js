@@ -1,25 +1,23 @@
-import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firebase-storage";
+import firebase from "firebase/app";
 
-var config = {
-  apiKey: "AIzaSyAHzW4IhoBC01Ymd9ufcddAgmYot08uODg",
-  authDomain: "fisiob-f5aca.firebaseapp.com",
-  projectId: "fisiob-f5aca",
-  storageBucket: "fisiob-f5aca.appspot.com"
-};
-firebase.initializeApp(config);
+var storageRef = undefined;
+var storage = undefined;
 
-var storage = firebase.storage();
-var storageRef = storage.ref();
-
-const loginFirebase = (user, actionType) => {
-  return dispatch =>
+const loginFirebase = (firebaseObject, actionType) => {
+  return dispatch => {
+    firebase.initializeApp(firebaseObject.firebaseConfig);
+    storage = firebase.storage();
+    storageRef = storage.ref();
     firebase
       .auth()
-      .signInWithEmailAndPassword(user.email, user.password)
+      .signInWithEmailAndPassword(
+        firebaseObject.firebaseUser.email,
+        firebaseObject.firebaseUser.password
+      )
       .then(result => {
-        console.log(`${result.email} ha iniciado sesion`);
+        console.log(`${result.user.email} ha iniciado sesion`);
         if (actionType !== null) {
           dispatch({
             type: actionType,
@@ -38,6 +36,7 @@ const loginFirebase = (user, actionType) => {
           });
         }
       });
+  };
 };
 const subirFoto = (id, archivo, actionType) => {
   return dispatch => {

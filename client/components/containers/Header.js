@@ -18,14 +18,16 @@ class Header extends Component {
             headers: { "x-auth": dude.token }
           })
           .then(res => {
-            history.push("./inicio");
-            this.props.loginFirebase({
-              email: "javi@fisiob.com",
-              password: "javifisiob"
+            var { nombre, _id, firebaseUser, firebaseConfig } = res.data;
+            this.props.theDude({
+              nombre,
+              _id,
+              firebaseUser,
+              firebaseConfig,
+              token: dude.token
             });
-          })
-          .catch(err => {
-            console.log(err);
+            history.push("./inicio");
+            this.props.loginFirebase({ firebaseUser, firebaseConfig });
           });
       }
     }
@@ -59,7 +61,8 @@ class Header extends Component {
 const dispatchToProps = dispatch => {
   return {
     theDude: theMan => dispatch(actions.theDude(theMan)),
-    loginFirebase: user => dispatch(actions.loginFirebase(user))
+    loginFirebase: firebaseObject =>
+      dispatch(actions.loginFirebase(firebaseObject))
   };
 };
 

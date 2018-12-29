@@ -25,13 +25,16 @@ class LoginContainer extends Component {
       })
       .then(res => {
         let token = res.headers["x-auth"];
-        let { nombre, _id } = res.data;
-        this.props.theDude({ nombre, _id, token });
-        history.push("/inicio");
-        this.props.loginFirebase({
-          email: "javi@fisiob.com",
-          password: "javifisiob"
+        var { nombre, _id, firebaseUser, firebaseConfig } = res.data;
+        this.props.theDude({
+          nombre,
+          _id,
+          firebaseUser,
+          firebaseConfig,
+          token
         });
+        history.push("/inicio");
+        this.props.loginFirebase({ firebaseUser, firebaseConfig });
       })
       .catch(err => {
         this.setState({ errors: ["nombre o password incorrectos"] });
@@ -53,7 +56,8 @@ class LoginContainer extends Component {
 const dispatchToProps = dispatch => {
   return {
     theDude: theMan => dispatch(actions.theDude(theMan)),
-    loginFirebase: user => dispatch(actions.loginFirebase(user))
+    loginFirebase: firebaseObject =>
+      dispatch(actions.loginFirebase(firebaseObject))
   };
 };
 

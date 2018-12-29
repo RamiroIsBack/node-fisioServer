@@ -17,8 +17,27 @@ var UserSchema = new mongoose.Schema({
     required: true,
     minlength: 6
   },
-  email: {
-    type: String
+  firebaseUser: {
+    email: {
+      type: String
+    },
+    password: {
+      type: String
+    }
+  },
+  firebaseConfig: {
+    apiKey: {
+      type: String
+    },
+    authDomain: {
+      type: String
+    },
+    projectId: {
+      type: String
+    },
+    storageBucket: {
+      type: String
+    }
   },
   tokens: [
     {
@@ -38,7 +57,12 @@ UserSchema.methods.toJSON = function() {
   //overwritting this method
   var user = this;
   var userObject = user.toObject();
-  return _.pick(userObject, ["_id", "nombre"]);
+  return _.pick(userObject, [
+    "_id",
+    "nombre",
+    "firebaseUser",
+    "firebaseConfig"
+  ]);
 };
 
 UserSchema.methods.generateAuthToken = function() {
