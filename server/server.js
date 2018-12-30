@@ -10,6 +10,8 @@ var { User } = require("./models/User");
 var { Inicio } = require("./models/Inicio");
 var { Equipo } = require("./models/Equipo");
 var { Instalaciones } = require("./models/Instalaciones");
+var { Servicios } = require("./models/Servicios");
+var { Contacto } = require("./models/Contacto");
 
 connectWithDBThroughMongoose()
   .then(message => console.log("connectingDB: ", message))
@@ -131,6 +133,80 @@ app.patch("/copy/instalaciones", authenticateMiddleware, (req, res) => {
         return res.status(404).send();
       }
       res.send(instalacionesObject);
+    })
+    .catch(e => res.status(400).send(e));
+});
+
+////////////////// servicios y tarifas ///////////////////////////
+
+app.post("/copy/servicios", (req, res) => {
+  var newServicios = new Servicios(req.body);
+  newServicios.save().then(doc => {
+    res.send(doc);
+  });
+});
+app.get("/copy/servicios", (req, res) => {
+  Servicios.find()
+    .then(serviciosCopy => {
+      res.send({ serviciosCopy });
+    })
+    .catch(err => {
+      res.send(err);
+    });
+});
+app.patch("/copy/servicios", authenticateMiddleware, (req, res) => {
+  var body = req.body;
+  var { id } = body;
+  if (!body.servicios) {
+    return res.status(400).send({ err: "give me something!" });
+  }
+  if (!ObjectID.isValid(id)) {
+    return res.status(404).send({ err: "id not valid dude" });
+  }
+  body.updatedAt = new Date().toString();
+  Servicios.findOneAndUpdate({ _id: id }, { $set: body }, { new: true })
+    .then(serviciosObject => {
+      if (!serviciosObject) {
+        return res.status(404).send();
+      }
+      res.send(serviciosObject);
+    })
+    .catch(e => res.status(400).send(e));
+});
+
+////////////////// contacto ///////////////////////////
+
+app.post("/copy/contacto", (req, res) => {
+  var newContacto = new Contacto(req.body);
+  newContacto.save().then(doc => {
+    res.send(doc);
+  });
+});
+app.get("/copy/contacto", (req, res) => {
+  Contacto.find()
+    .then(contactoCopy => {
+      res.send({ contactoCopy });
+    })
+    .catch(err => {
+      res.send(err);
+    });
+});
+app.patch("/copy/contacto", authenticateMiddleware, (req, res) => {
+  var body = req.body;
+  var { id } = body;
+  if (!body.contacto) {
+    return res.status(400).send({ err: "give me something!" });
+  }
+  if (!ObjectID.isValid(id)) {
+    return res.status(404).send({ err: "id not valid dude" });
+  }
+  body.updatedAt = new Date().toString();
+  Contacto.findOneAndUpdate({ _id: id }, { $set: body }, { new: true })
+    .then(contactoObject => {
+      if (!contactoObject) {
+        return res.status(404).send();
+      }
+      res.send(contactoObject);
     })
     .catch(e => res.status(400).send(e));
 });

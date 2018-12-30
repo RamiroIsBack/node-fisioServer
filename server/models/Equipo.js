@@ -1,5 +1,4 @@
 var mongoose = require("mongoose");
-var Persona = require("./Persona");
 
 var EquipoSchema = mongoose.Schema({
   equipoTextoLargo: {

@@ -6,6 +6,9 @@ var tecnicaSchema = mongoose.Schema({
   },
   servicio: {
     type: "String"
+  },
+  texto: {
+    type: "String"
   }
 });
 var Tecnica = mongoose.model("Tecnica", tecnicaSchema);

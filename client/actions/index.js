@@ -8,13 +8,6 @@ export default {
       data: theMan
     };
   },
-  initializeFirebase: config => {
-    return dispatch => {
-      return dispatch(
-        Firebase.initializeFirebase(config, constants.INITIALIZE_FIREBASE)
-      );
-    };
-  },
   loginFirebase: firebaseObject => {
     return dispatch => {
       return dispatch(
