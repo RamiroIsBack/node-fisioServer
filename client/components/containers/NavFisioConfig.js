@@ -125,19 +125,10 @@ class NavFisioConfig extends React.Component {
             className={this.state.activeServicios}
             onClick={this.handleOnClick.bind(this)}
           >
-            SERVICIOS
+            SERVICIOS (tecnicas y tarifas)
           </NavLink>
         </NavItem>
-        <NavItem>
-          <NavLink
-            style={{ paddingLeft: "6px", cursor: "pointer" }}
-            id="tarifas"
-            className={this.state.activeTarifas}
-            onClick={this.handleOnClick.bind(this)}
-          >
-            TARIFAS
-          </NavLink>
-        </NavItem>
+
         <NavItem>
           <NavLink
             style={{ paddingLeft: "6px", cursor: "pointer" }}
