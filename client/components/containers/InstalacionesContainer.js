@@ -3,7 +3,7 @@ import axios from "axios";
 import { connect } from "react-redux";
 
 import actions from "../../actions";
-import InstalacionesForm from "../presentational/InstalacionesForm";
+import FormInstalaciones from "../presentational/FormInstalaciones";
 import FormPictures from "../presentational/FormPictures";
 
 class InstalacionesContainer extends Component {
@@ -88,7 +88,7 @@ class InstalacionesContainer extends Component {
     return (
       <div>
         <h3 style={{ textAlign: "center" }}>Instalaciones</h3>
-        <InstalacionesForm
+        <FormInstalaciones
           copy={this.props.copy.instalacionesCopy}
           subirChunk={this.subirChunk.bind(this)}
         />

@@ -26,7 +26,7 @@ var ServiciosSchema = mongoose.Schema({
       urlPic: {
         type: String
       },
-      textoLargo: {
+      servicioTextoLargo: {
         type: String
       },
       tecnicas: ["Tecnica"]
