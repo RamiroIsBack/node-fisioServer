@@ -31,11 +31,32 @@ class ServiciosContainer extends Component {
       let dude = this.props.user.dudeObject;
       if (dude && this.props.copy.serviciosCopy) {
         let id = this.props.copy.serviciosCopy._id;
-        if (dataObject.chunkID === "serviciosTextoLargo") {
+        let servicios = this.props.copy.serviciosCopy.servicios;
+        if (dataObject.partID === "tecnica") {
+          servicios[dataObject.servicioIndex].tecnicas[dataObject.tecnicaIndex][
+            dataObject.chunkID
+          ] = dataObject.chunkData;
           axios({
             method: "patch",
             url: "/copy/servicios",
-            data: { id, partID, [dataObject.chunkID]: dataObject.chunkData },
+            data: { id, servicios },
+            headers: { "x-auth": dude.token }
+          })
+            .then(res => {
+              console.log(res);
+              this.props.serviciosReceived(res.data);
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        } else if (dataObject.partID === "servicio") {
+          // servicio field
+          servicios[dataObject.servicioIndex][dataObject.chunkID] =
+            dataObject.chunkData;
+          axios({
+            method: "patch",
+            url: "/copy/servicios",
+            data: { id, servicios },
             headers: { "x-auth": dude.token }
           })
             .then(res => {
@@ -46,65 +67,10 @@ class ServiciosContainer extends Component {
               console.log(err);
             });
         } else {
-          //we are inside each servicio []
-          let servicios = this.props.copy.serviciosCopy.servicios;
-          if (dataObject.partID === "tecnica") {
-            servicios[dataObject.personaIndex].tecnicas[
-              dataObject.tecnicaIndex
-            ][dataObject.chunkID] = dataObject.chunkData;
-            axios({
-              method: "patch",
-              url: "/copy/servicios",
-              data: { id, servicios },
-              headers: { "x-auth": dude.token }
-            })
-              .then(res => {
-                console.log(res);
-                this.props.serviciosReceived(res.data);
-              })
-              .catch(err => {
-                console.log(err);
-              });
-          } else if (dataObject.partID === "formacion") {
-            servicios[dataObject.personaIndex].formacion[
-              dataObject.formacionIndex
-            ][dataObject.chunkID] = dataObject.chunkData;
-            axios({
-              method: "patch",
-              url: "/copy/servicios",
-              data: { id, servicios },
-              headers: { "x-auth": dude.token }
-            })
-              .then(res => {
-                console.log(res);
-                this.props.serviciosReceived(res.data);
-              })
-              .catch(err => {
-                console.log(err);
-              });
-          } else if (dataObject.partID === "persona") {
-            // persona field
-            servicios[dataObject.personaIndex][dataObject.chunkID] =
-              dataObject.chunkData;
-            axios({
-              method: "patch",
-              url: "/copy/servicios",
-              data: { id, servicios },
-              headers: { "x-auth": dude.token }
-            })
-              .then(res => {
-                console.log(res);
-                this.props.serviciosReceived(res.data);
-              })
-              .catch(err => {
-                console.log(err);
-              });
-          } else {
-            console.log(
-              "partID no corresponde con persona, formacion o tecnica",
-              partID
-            );
-          }
+          console.log(
+            "partID no corresponde con servicio o tecnica",
+            dataObject.partID
+          );
         }
       }
     }

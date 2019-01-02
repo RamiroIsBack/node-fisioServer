@@ -61,16 +61,6 @@ class ServiciosForm extends Component {
   newTecnica(e) {
     console.log("new tecnica!! rass!@!");
   }
-  newFormacion(e) {
-    console.log("new formacion!! rass!@!");
-  }
-  subirFotoFormacion(id, archivo) {
-    if (archivo) {
-      this.props.subirFoto(id, archivo);
-    } else {
-      console.log("no hay archivo q subir" + archivo);
-    }
-  }
 
   render() {
     return (
@@ -212,7 +202,7 @@ class ServiciosForm extends Component {
           <FormPictures
             src={this.props.servicio.urlPic}
             pics={this.props.pics}
-            id={this.props.servicio.nombre}
+            id={`servicio${this.props.servicio.nombre}`}
             name={"servicio"}
             subirChunk={this.subirChunk.bind(this)}
             subirFoto={this.subirFoto.bind(this)}

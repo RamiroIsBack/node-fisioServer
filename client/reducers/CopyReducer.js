@@ -38,12 +38,12 @@ export default (state = initialState, action) => {
       newState["instalacionesCopy"] = action.data;
       return newState;
     }
-    case constants.TARIFAS_RECEIVED: {
-      newState["tarifasCopy"] = action.data;
-      return newState;
-    }
+
     case constants.SERVICIOS_RECEIVED: {
       newState["serviciosCopy"] = action.data;
+      action.data.servicios.map(servicio => {
+        newState.pics[`servicio${servicio.nombre}`] = "";
+      });
       return newState;
     }
     case constants.CONTACTO_RECEIVED: {

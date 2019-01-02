@@ -107,7 +107,7 @@ class EquipoContainer extends Component {
           } else {
             console.log(
               "partID no corresponde con persona, formacion o tecnica",
-              partID
+              dataObject.partID
             );
           }
         }
