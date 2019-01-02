@@ -36,6 +36,9 @@ export default (state = initialState, action) => {
     }
     case constants.INSTALACIONES_RECEIVED: {
       newState["instalacionesCopy"] = action.data;
+      action.data.items.map(item => {
+        newState.pics[item.nombre] = "";
+      });
       return newState;
     }
 
