@@ -177,7 +177,7 @@ app.patch("/copy/servicios", authenticateMiddleware, (req, res) => {
 ////////////////// contacto ///////////////////////////
 
 app.post("/copy/contacto", (req, res) => {
-  var newContacto = new Contacto(req.body);
+  var newContacto = new Contacto(req.body.object);
   newContacto.save().then(doc => {
     res.send(doc);
   });
