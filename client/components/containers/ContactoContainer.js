@@ -19,40 +19,37 @@ class ContactoContainer extends Component {
         console.log(err);
       });
   }
-  subirFoto(id, archivo) {
-    if (archivo) {
-      this.props.subirFoto(id, archivo);
-    } else {
-      console.log("no hay archivo q subir" + archivo);
-    }
-  }
+
   subirChunk(dataObject) {
     if (this.props.user) {
       let dude = this.props.user.dudeObject;
       if (dude && this.props.copy.contactoCopy) {
         let id = this.props.copy.contactoCopy._id;
-        let contacto = this.props.copy.contactoCopy;
-        if (dataObject.partID === "contacto") {
-          contacto[dataObject.chunkID] = dataObject.chunkData;
-          axios({
-            method: "patch",
-            url: "/copy/contacto",
-            data: { id, contacto },
-            headers: { "x-auth": dude.token }
-          })
-            .then(res => {
-              console.log(res);
-              this.props.contactoReceived(res.data);
-            })
-            .catch(err => {
-              console.log(err);
-            });
-        } else {
-          console.log(
-            "partID no corresponde con servicio o tecnica",
-            dataObject.partID
-          );
+        let contacto = Object.assign({}, this.props.copy.contactoCopy);
+        if (
+          dataObject.partID === "direccion" ||
+          dataObject.partID === "telCopy" ||
+          dataObject.partID === "emailCopy"
+        ) {
+          contacto[dataObject.partID][dataObject.chunkID] =
+            dataObject.chunkData;
+          dataObject.chunkID = dataObject.partID;
+          dataObject.chunkData = contacto[dataObject.partID];
         }
+
+        axios({
+          method: "patch",
+          url: "/copy/contacto",
+          data: { id, [dataObject.chunkID]: dataObject.chunkData },
+          headers: { "x-auth": dude.token }
+        })
+          .then(res => {
+            console.log(res);
+            this.props.contactoReceived(res.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
     }
   }

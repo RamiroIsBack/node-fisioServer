@@ -194,7 +194,14 @@ app.get("/copy/contacto", (req, res) => {
 app.patch("/copy/contacto", authenticateMiddleware, (req, res) => {
   var body = req.body;
   var { id } = body;
-  if (!body.contacto) {
+  if (
+    !body.direccion &&
+    !body.horario &&
+    !body.telCopy &&
+    !body.emailCopy &&
+    !body.cookiesTextoLargo &&
+    !body.cookiesTextoCorto
+  ) {
     return res.status(400).send({ err: "give me something!" });
   }
   if (!ObjectID.isValid(id)) {
