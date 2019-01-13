@@ -5,8 +5,20 @@ import { connect } from "react-redux";
 
 import FormServicio from "../presentational/FormServicio";
 import actions from "../../actions";
+import FormModal from "../presentational/formModal";
 
 class ServiciosContainer extends Component {
+  constructor() {
+    super();
+    this.state = {
+      modalShow: false,
+      modal: {
+        modalName: "Quires mostrar un nuevo servicio?",
+        actionName: "",
+        modalBodie: ""
+      }
+    };
+  }
   componentDidMount() {
     axios({
       method: "get",
@@ -32,11 +44,9 @@ class ServiciosContainer extends Component {
       if (dude && this.props.copy.serviciosCopy) {
         let id = this.props.copy.serviciosCopy._id;
         let servicios = this.props.copy.serviciosCopy.servicios;
-        if (dataObject.target) {
-          //we are comming from this component event
-          if (dataObject.target.name === "newServicio") {
-            servicios = this.newServicio(servicios);
-          }
+
+        if (dataObject.partID === "newServicio") {
+          servicios = this.newServicio(servicios);
         } else if (dataObject.partID === "tecnica") {
           servicios[dataObject.servicioIndex].tecnicas[dataObject.tecnicaIndex][
             dataObject.chunkID
@@ -68,8 +78,8 @@ class ServiciosContainer extends Component {
       }
     }
   }
+
   newServicio(servicios) {
-    console.log("Ahora prestas un nuevo servicio!!");
     servicios.push({
       nombre: "*******************",
       precio: 0,
@@ -93,6 +103,13 @@ class ServiciosContainer extends Component {
     });
     return servicios;
   }
+  doSomething() {
+    this.subirChunk({ partID: "newServicio" });
+    this.toggleModal();
+  }
+  toggleModal() {
+    this.setState({ modalShow: !this.state.modalShow });
+  }
   render(props) {
     return (
       <div>
@@ -110,10 +127,18 @@ class ServiciosContainer extends Component {
           </Container>
           <h3 style={{ display: "inline" }}>Servicios prestados </h3>
           <p style={{ display: "inline" }}>tambien puedes anadir </p>
+
+          <FormModal
+            modalShow={this.state.modalShow}
+            modal={this.state.modal}
+            toggleModal={this.toggleModal.bind(this)}
+            doSomething={this.doSomething.bind(this)}
+          />
+
           <Button
             id="newServicio"
             name="newServicio"
-            onClick={this.subirChunk.bind(this)}
+            onClick={() => this.setState({ modalShow: true })}
             color="success"
             style={{ display: "inline" }}
           >
