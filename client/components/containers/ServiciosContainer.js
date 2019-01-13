@@ -32,51 +32,66 @@ class ServiciosContainer extends Component {
       if (dude && this.props.copy.serviciosCopy) {
         let id = this.props.copy.serviciosCopy._id;
         let servicios = this.props.copy.serviciosCopy.servicios;
-        if (dataObject.partID === "tecnica") {
+        if (dataObject.target) {
+          //we are comming from this component event
+          if (dataObject.target.name === "newServicio") {
+            servicios = this.newServicio(servicios);
+          }
+        } else if (dataObject.partID === "tecnica") {
           servicios[dataObject.servicioIndex].tecnicas[dataObject.tecnicaIndex][
             dataObject.chunkID
           ] = dataObject.chunkData;
-          axios({
-            method: "patch",
-            url: "/copy/servicios",
-            data: { id, servicios },
-            headers: { "x-auth": dude.token }
-          })
-            .then(res => {
-              console.log(res);
-              this.props.serviciosReceived(res.data);
-            })
-            .catch(err => {
-              console.log(err);
-            });
         } else if (dataObject.partID === "servicio") {
           // servicio field
           servicios[dataObject.servicioIndex][dataObject.chunkID] =
             dataObject.chunkData;
-          axios({
-            method: "patch",
-            url: "/copy/servicios",
-            data: { id, servicios },
-            headers: { "x-auth": dude.token }
-          })
-            .then(res => {
-              console.log(res);
-              this.props.serviciosReceived(res.data);
-            })
-            .catch(err => {
-              console.log(err);
-            });
         } else {
           console.log(
             "partID no corresponde con servicio o tecnica",
             dataObject.partID
           );
+          return;
         }
+        axios({
+          method: "patch",
+          url: "/copy/servicios",
+          data: { id, servicios },
+          headers: { "x-auth": dude.token }
+        })
+          .then(res => {
+            console.log(res);
+            this.props.serviciosReceived(res.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
     }
   }
-  newServicio(e) {
-    console.log("you just hired a new guy!");
+  newServicio(servicios) {
+    console.log("Ahora prestas un nuevo servicio!!");
+    servicios.push({
+      nombre: "*******************",
+      precio: 0,
+      duracion: 0,
+      bono: {
+        modalidad: "Bono",
+        numero: 0,
+        precio: 0
+      },
+      urlPic: "*******************",
+
+      servicioTextoLargo: `*******************`,
+
+      tecnicas: [
+        {
+          nombre: "******************",
+          servicio: "*******************",
+          texto: `*******************`
+        }
+      ]
+    });
+    return servicios;
   }
   render(props) {
     return (
@@ -97,7 +112,8 @@ class ServiciosContainer extends Component {
           <p style={{ display: "inline" }}>tambien puedes anadir </p>
           <Button
             id="newServicio"
-            onClick={this.newServicio.bind(this)}
+            name="newServicio"
+            onClick={this.subirChunk.bind(this)}
             color="success"
             style={{ display: "inline" }}
           >

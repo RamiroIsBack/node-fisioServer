@@ -7,7 +7,8 @@ class FormTecnica extends Component {
     this.state = {
       parameters: {
         nombre: "",
-        servicio: ""
+        servicio: "",
+        texto: ""
       }
     };
   }
@@ -58,6 +59,34 @@ class FormTecnica extends Component {
                 color="primary"
               >
                 Cambiar nombre
+              </Button>
+            </Col>
+          </Row>
+          {/* ////////////////////////////////////////////// texto ////////////////////////////////// */}
+          <Row style={{ width: "95%", paddingTop: 5 }}>
+            <h5 style={{ backgroundColor: "gainsboro" }}>
+              {this.props.tecnica.texto}{" "}
+            </h5>
+          </Row>
+          <Row style={{ width: "95%", paddingTop: 5 }}>
+            <Col sm="10">
+              <Input
+                type="textarea"
+                rows="5"
+                id="texto"
+                value={this.state.texto}
+                onChange={this.handleOnChange.bind(this)}
+                placeholder={`texto`}
+              />
+            </Col>
+            <Col sm="2">
+              <Button
+                id="texto"
+                name="tecnica"
+                onClick={this.subirChunk.bind(this)}
+                color="primary"
+              >
+                Cambiar texto de la tecnica
               </Button>
             </Col>
           </Row>
