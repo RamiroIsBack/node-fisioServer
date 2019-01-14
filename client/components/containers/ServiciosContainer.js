@@ -5,17 +5,26 @@ import { connect } from "react-redux";
 
 import FormServicio from "../presentational/FormServicio";
 import actions from "../../actions";
-import FormModal from "../presentational/formModal";
+import FormModalNewServicio from "../presentational/FormModalNewServicio";
 
 class ServiciosContainer extends Component {
   constructor() {
     super();
     this.state = {
-      modalShow: false,
-      modal: {
+      modalNewServicioShow: false,
+      modalNewServicio: {
         modalName: "Quires mostrar un nuevo servicio?",
-        actionName: "",
-        modalBodie: ""
+        actionName: "crear el servicio",
+        modalBodie: `tienes la foto para el servicio y todos los datos q tienes que rellenar listos?
+        Tienes que rellenarlo todo y luego darle a publicar.
+        Si no publicas y cierras sesion se perderan los datos que hayas rellenado`
+      },
+      modalEliminarServicioShow: false,
+      modalEliminarServicio: {
+        modalName: "Quires eliminar este servicio?",
+        actionName: "eliminar servicio",
+        modalBodie:
+          "Si lo eliminas se pierden los datos, si quieres copiar algun texto o algo, hazlo antes de eliminar el servicio"
       }
     };
   }
@@ -46,7 +55,7 @@ class ServiciosContainer extends Component {
         let servicios = this.props.copy.serviciosCopy.servicios;
 
         if (dataObject.partID === "newServicio") {
-          servicios = this.newServicio(servicios);
+          servicios.push(dataObject.newServicio);
         } else if (dataObject.partID === "tecnica") {
           servicios[dataObject.servicioIndex].tecnicas[dataObject.tecnicaIndex][
             dataObject.chunkID
@@ -79,36 +88,12 @@ class ServiciosContainer extends Component {
     }
   }
 
-  newServicio(servicios) {
-    servicios.push({
-      nombre: "*******************",
-      precio: 0,
-      duracion: 0,
-      bono: {
-        modalidad: "Bono",
-        numero: 0,
-        precio: 0
-      },
-      urlPic: "*******************",
-
-      servicioTextoLargo: `*******************`,
-
-      tecnicas: [
-        {
-          nombre: "******************",
-          servicio: "*******************",
-          texto: `*******************`
-        }
-      ]
-    });
-    return servicios;
+  createNewServicio(newServicio) {
+    this.subirChunk({ newServicio, partID: "newServicio" });
+    this.toggleModalNewServicio();
   }
-  doSomething() {
-    this.subirChunk({ partID: "newServicio" });
-    this.toggleModal();
-  }
-  toggleModal() {
-    this.setState({ modalShow: !this.state.modalShow });
+  toggleModalNewServicio() {
+    this.setState({ modalNewServicioShow: !this.state.modalNewServicioShow });
   }
   render(props) {
     return (
@@ -128,17 +113,19 @@ class ServiciosContainer extends Component {
           <h3 style={{ display: "inline" }}>Servicios prestados </h3>
           <p style={{ display: "inline" }}>tambien puedes anadir </p>
 
-          <FormModal
-            modalShow={this.state.modalShow}
-            modal={this.state.modal}
-            toggleModal={this.toggleModal.bind(this)}
-            doSomething={this.doSomething.bind(this)}
+          <FormModalNewServicio
+            modalShow={this.state.modalNewServicioShow}
+            modal={this.state.modalNewServicio}
+            pics={this.props.copy.pics}
+            toggleModal={this.toggleModalNewServicio.bind(this)}
+            createNewServicio={this.createNewServicio.bind(this)}
+            subirFoto={this.subirFoto.bind(this)}
           />
 
           <Button
             id="newServicio"
             name="newServicio"
-            onClick={() => this.setState({ modalShow: true })}
+            onClick={() => this.setState({ modalNewServicioShow: true })}
             color="success"
             style={{ display: "inline" }}
           >

@@ -72,7 +72,21 @@ class ServiciosForm extends Component {
             border: "2px solid black"
           }}
         >
-          <Label>cambiar los datos de {this.props.servicio.nombre}</Label>
+          <Row style={{ marginBottom: 15 }}>
+            <Col sm="4">
+              <Label>cambiar los datos de {this.props.servicio.nombre}</Label>
+            </Col>
+            <Col sm="8" style={{ textAlign: "right" }}>
+              <Button
+                id="eliminar"
+                name="servicio"
+                onClick={this.subirChunk.bind(this)}
+                color="danger"
+              >
+                Eliminar servicio: {this.props.servicio.nombre}
+              </Button>
+            </Col>
+          </Row>
 
           {/* //////////////////////////////////////////////////////////nombre////////////////////////////////// */}
           <Row>

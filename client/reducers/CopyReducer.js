@@ -22,6 +22,7 @@ export default (state = initialState, action) => {
       action.data.items.map(pic => {
         newState.pics[pic.nombre] = "";
       });
+      newState.pics["newServicio"] = "";
       return newState;
     }
     case constants.EQUIPO_RECEIVED: {
