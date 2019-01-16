@@ -14,10 +14,7 @@ class ServiciosContainer extends Component {
       modalNewServicioShow: false,
       modalNewServicio: {
         modalName: "Quires mostrar un nuevo servicio?",
-        actionName: "crear el servicio",
-        modalBodie: `tienes la foto para el servicio y todos los datos q tienes que rellenar listos?
-        Tienes que rellenarlo todo y luego darle a publicar.
-        Si no publicas y cierras sesion se perderan los datos que hayas rellenado`
+        actionName: "crear el servicio"
       },
       modalEliminarServicioShow: false,
       modalEliminarServicio: {
@@ -54,14 +51,27 @@ class ServiciosContainer extends Component {
         let id = this.props.copy.serviciosCopy._id;
         let servicios = this.props.copy.serviciosCopy.servicios;
 
-        if (dataObject.partID === "newServicio") {
-          servicios.push(dataObject.newServicio);
-        } else if (dataObject.partID === "tecnica") {
-          servicios[dataObject.servicioIndex].tecnicas[dataObject.tecnicaIndex][
-            dataObject.chunkID
-          ] = dataObject.chunkData;
+        if (dataObject.partID === "tecnica") {
+          if (dataObject.chunkID === "newTecnica") {
+            servicios[dataObject.servicioIndex].tecnicas.push(
+              dataObject.newTecnica
+            );
+          } else if (dataObject.chunkID === "eliminar") {
+            servicios[dataObject.servicioIndex].tecnicas = servicios[
+              dataObject.servicioIndex
+            ].tecnicas.filter(
+              (tecnica, index) => dataObject.tecnicaIndex !== index
+            );
+          } else {
+            servicios[dataObject.servicioIndex].tecnicas[
+              dataObject.tecnicaIndex
+            ][dataObject.chunkID] = dataObject.chunkData;
+          }
         } else if (dataObject.partID === "servicio") {
           // servicio field
+          if (dataObject.chunkID === "newServicio") {
+            servicios.push(dataObject.newServicio);
+          }
           if (dataObject.chunkID === "eliminar") {
             servicios = servicios.filter(
               (servicio, index) => dataObject.servicioIndex !== index
@@ -95,7 +105,11 @@ class ServiciosContainer extends Component {
   }
 
   createNewServicio(newServicio) {
-    this.subirChunk({ newServicio, partID: "newServicio" });
+    this.subirChunk({
+      newServicio,
+      partID: "servicio",
+      chunkID: "newServicio"
+    });
     this.toggleModalNewServicio();
   }
   toggleModalNewServicio() {

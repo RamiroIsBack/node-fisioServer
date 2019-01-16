@@ -1,11 +1,12 @@
 import React from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
-class FormModal extends React.Component {
+class FormModalEliminar extends React.Component {
   constructor() {
     super();
     this.state = {};
   }
+
   render() {
     return (
       <Modal
@@ -16,9 +17,9 @@ class FormModal extends React.Component {
         <ModalHeader toggle={this.props.toggleModal}>
           {this.props.modal.modalName}
         </ModalHeader>
-        <ModalBody>{this.props.modal.modalBody}</ModalBody>
+        <ModalBody>{this.props.modal.modalBodie}</ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={this.props.doSomething}>
+          <Button color="danger" onClick={this.props.eliminar}>
             {this.props.modal.actionName}
           </Button>{" "}
           <Button color="secondary" onClick={this.props.toggleModal}>
@@ -30,4 +31,4 @@ class FormModal extends React.Component {
   }
 }
 
-export default FormModal;
+export default FormModalEliminar;

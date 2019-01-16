@@ -3,6 +3,7 @@ import { Row, Col, Button, FormGroup, Label, Input } from "reactstrap";
 
 import FormTecnica from "./FormTecnica";
 import FormPictures from "./FormPictures";
+import FormModalNewTecnica from "./FormModalNewTecnica";
 
 class ServiciosForm extends Component {
   constructor() {
@@ -19,6 +20,11 @@ class ServiciosForm extends Component {
           precio: 0
         },
         urlPic: ""
+      },
+      modalNewTecnicaShow: false,
+      modalNewTecnica: {
+        modalName: "Quires mostrar una nueva Tecnica?",
+        actionName: "crear la Tecnica"
       }
     };
   }
@@ -47,14 +53,6 @@ class ServiciosForm extends Component {
       dataObject.servicioIndex = this.props.servicioIndex;
       this.props.subirChunk(dataObject);
     } else {
-      if (e.target.id === "eliminar") {
-        this.props.subirChunk({
-          servicioIndex: this.props.servicioIndex,
-          partID: e.target.name,
-          chunkID: e.target.id,
-          chunkData: undefined
-        });
-      }
       this.props.subirChunk({
         servicioIndex: this.props.servicioIndex,
         partID: e.target.name,
@@ -66,8 +64,25 @@ class ServiciosForm extends Component {
       });
     }
   }
-  newTecnica(e) {
-    console.log("new tecnica!! rass!@!");
+  createNewTecnica(newTecnica) {
+    this.subirChunkTecnica({
+      newTecnica,
+      partID: "tecnica",
+      chunkID: "newTecnica"
+    });
+    this.toggleModalNewTecnica();
+  }
+  eliminarTecnica(tecnicaIndex) {
+    this.props.subirChunk({
+      tecnicaIndex,
+      servicioIndex: this.props.servicioIndex,
+      partID: "tecnica",
+      chunkID: "eliminar",
+      chunkData: undefined
+    });
+  }
+  toggleModalNewTecnica() {
+    this.setState({ modalNewTecnicaShow: !this.state.modalNewTecnicaShow });
   }
 
   render() {
@@ -231,6 +246,14 @@ class ServiciosForm extends Component {
           />
 
           {/* ///////////////////////////////    tecnicas    ////////////////////////////// */}
+          <FormModalNewTecnica
+            modalShow={this.state.modalNewTecnicaShow}
+            modal={this.state.modalNewTecnica}
+            servicio={this.props.servicio.nombre}
+            toggleModal={this.toggleModalNewTecnica.bind(this)}
+            createNewTecnica={this.createNewTecnica.bind(this)}
+          />
+
           <FormGroup
             style={{
               margin: 10,
@@ -246,7 +269,7 @@ class ServiciosForm extends Component {
               <p style={{ display: "inline" }}>tambien puedes anadir una</p>
               <Button
                 id="newPerson"
-                onClick={this.newTecnica.bind(this)}
+                onClick={() => this.setState({ modalNewTecnicaShow: true })}
                 color="success"
                 style={{ display: "inline" }}
               >
@@ -256,12 +279,14 @@ class ServiciosForm extends Component {
             {this.props.servicio ? (
               this.props.servicio.tecnicas.map((tecnica, index) => {
                 return (
-                  <FormTecnica
-                    key={index}
-                    tecnicaIndex={index}
-                    tecnica={tecnica}
-                    subirChunk={this.subirChunkTecnica.bind(this)}
-                  />
+                  <div key={index}>
+                    <FormTecnica
+                      tecnicaIndex={index}
+                      tecnica={tecnica}
+                      subirChunk={this.subirChunkTecnica.bind(this)}
+                      eliminarTecnica={this.eliminarTecnica.bind(this)}
+                    />
+                  </div>
                 );
               })
             ) : (

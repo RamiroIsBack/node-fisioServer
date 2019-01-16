@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Button, FormGroup, Row, Col, Input } from "reactstrap";
+import { Label, Button, FormGroup, Row, Col, Input } from "reactstrap";
+import FormModalEliminar from "./FormModalEliminar";
 
 class FormTecnica extends Component {
   constructor() {
@@ -9,6 +10,12 @@ class FormTecnica extends Component {
         nombre: "",
         servicio: "",
         texto: ""
+      },
+      modalEliminarTecnicaShow: false,
+      modalEliminarTecnica: {
+        modalName: "Quires eliminar esta Tecnica?",
+        actionName: "eliminar Tecnica",
+        modalBodie: `Si lo eliminas se pierden los datos, si quieres copiar algun texto o algo, hazlo antes de eliminar la tecnica. `
       }
     };
   }
@@ -26,10 +33,24 @@ class FormTecnica extends Component {
       chunkData: this.state.parameters[e.target.id]
     });
   }
-
+  eliminarTecnica() {
+    this.props.eliminarTecnica(this.props.tecnicaIndex);
+    this.toggleModalEliminarTecnica();
+  }
+  toggleModalEliminarTecnica() {
+    this.setState({
+      modalEliminarTecnicaShow: !this.state.modalEliminarTecnicaShow
+    });
+  }
   render() {
     return (
       <div style={{ padding: 15 }}>
+        <FormModalEliminar
+          modalShow={this.state.modalEliminarTecnicaShow}
+          modal={this.state.modalEliminarTecnica}
+          eliminar={this.eliminarTecnica.bind(this)}
+          toggleModal={this.toggleModalEliminarTecnica.bind(this)}
+        />
         <FormGroup
           style={{
             padding: "2px",
@@ -37,6 +58,23 @@ class FormTecnica extends Component {
             border: "1px solid black"
           }}
         >
+          <Row style={{ marginBottom: 15 }}>
+            <Col sm="4">
+              <Label>cambiar los datos de {this.props.tecnica.nombre}</Label>
+            </Col>
+            <Col sm="8" style={{ textAlign: "right" }}>
+              <Button
+                id="eliminar"
+                name="tecnica"
+                onClick={() =>
+                  this.setState({ modalEliminarTecnicaShow: true })
+                }
+                color="danger"
+              >
+                Eliminar tecnica: {this.props.tecnica.nombre}
+              </Button>
+            </Col>
+          </Row>
           <Row>
             <Col sm="4">
               <h5 style={{ backgroundColor: "gainsboro" }}>
