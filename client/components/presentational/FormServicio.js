@@ -47,6 +47,14 @@ class ServiciosForm extends Component {
       dataObject.servicioIndex = this.props.servicioIndex;
       this.props.subirChunk(dataObject);
     } else {
+      if (e.target.id === "eliminar") {
+        this.props.subirChunk({
+          servicioIndex: this.props.servicioIndex,
+          partID: e.target.name,
+          chunkID: e.target.id,
+          chunkData: undefined
+        });
+      }
       this.props.subirChunk({
         servicioIndex: this.props.servicioIndex,
         partID: e.target.name,

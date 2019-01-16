@@ -62,8 +62,14 @@ class ServiciosContainer extends Component {
           ] = dataObject.chunkData;
         } else if (dataObject.partID === "servicio") {
           // servicio field
-          servicios[dataObject.servicioIndex][dataObject.chunkID] =
-            dataObject.chunkData;
+          if (dataObject.chunkID === "eliminar") {
+            servicios = servicios.filter(
+              (servicio, index) => dataObject.servicioIndex !== index
+            );
+          } else {
+            servicios[dataObject.servicioIndex][dataObject.chunkID] =
+              dataObject.chunkData;
+          }
         } else {
           console.log(
             "partID no corresponde con servicio o tecnica",
