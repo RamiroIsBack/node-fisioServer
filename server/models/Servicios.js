@@ -29,7 +29,13 @@ var ServiciosSchema = mongoose.Schema({
       servicioTextoLargo: {
         type: String
       },
-      tecnicas: ["Tecnica"]
+      tecnicas: [
+        {
+          tecnicaNombre: {
+            type: String
+          }
+        }
+      ]
     }
   ]
 });

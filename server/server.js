@@ -11,6 +11,7 @@ var { Inicio } = require("./models/Inicio");
 var { Equipo } = require("./models/Equipo");
 var { Instalaciones } = require("./models/Instalaciones");
 var { Servicios } = require("./models/Servicios");
+var { Tecnicas } = require("./models/Tecnicas");
 var { Contacto } = require("./models/Contacto");
 
 connectWithDBThroughMongoose()
@@ -170,6 +171,43 @@ app.patch("/copy/servicios", authenticateMiddleware, (req, res) => {
         return res.status(404).send();
       }
       res.send(serviciosObject);
+    })
+    .catch(e => res.status(400).send(e));
+});
+
+////////////////// tecnicas ///////////////////////////
+
+app.post("/copy/tecnicas", (req, res) => {
+  var newTecnicas = new Tecnicas(req.body);
+  newTecnicas.save().then(doc => {
+    res.send(doc);
+  });
+});
+app.get("/copy/tecnicas", (req, res) => {
+  Tecnicas.find()
+    .then(tecnicasCopy => {
+      res.send({ tecnicasCopy });
+    })
+    .catch(err => {
+      res.send(err);
+    });
+});
+app.patch("/copy/tecnicas", authenticateMiddleware, (req, res) => {
+  var body = req.body;
+  var { id } = body;
+  if (!body.tecnicas) {
+    return res.status(400).send({ err: "give me something!" });
+  }
+  if (!ObjectID.isValid(id)) {
+    return res.status(404).send({ err: "id not valid dude" });
+  }
+  body.updatedAt = new Date().toString();
+  Tecnicas.findOneAndUpdate({ _id: id }, { $set: body }, { new: true })
+    .then(tecnicasObject => {
+      if (!tecnicasObject) {
+        return res.status(404).send();
+      }
+      res.send(tecnicasObject);
     })
     .catch(e => res.status(400).send(e));
 });
