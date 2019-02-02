@@ -51,6 +51,13 @@ export default {
       data: serviciosCopy
     };
   },
+  tecnicasReceived: tecnicasCopy => {
+    return {
+      type: constants.TECNICAS_RECEIVED,
+      data: tecnicasCopy
+    };
+  },
+
   contactoReceived: contactoCopy => {
     return {
       type: constants.CONTACTO_RECEIVED,

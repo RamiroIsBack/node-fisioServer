@@ -50,6 +50,13 @@ export default (state = initialState, action) => {
       });
       return newState;
     }
+    case constants.TECNICAS_RECEIVED: {
+      newState["tecnicasCopy"] = action.data;
+      action.data.tecnicas.map(tecnica => {
+        newState.pics[`tecnica${tecnica.nombre}`] = "";
+      });
+      return newState;
+    }
     case constants.CONTACTO_RECEIVED: {
       newState["contactoCopy"] = action.data;
       return newState;
