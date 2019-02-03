@@ -10,7 +10,7 @@ import Header from "./components/containers/Header";
 import LoginContainer from "./components/containers/LoginContainer";
 import ContactoContainer from "./components/containers/ContactoContainer";
 import InicioContainer from "./components/containers/InicioContainer";
-import TarifasContainer from "./components/containers/TarifasContainer";
+import TecnicasContainer from "./components/containers/TecnicasContainer";
 import InstalacionesContainer from "./components/containers/InstalacionesContainer";
 import EquipoContainer from "./components/containers/EquipoContainer";
 import ServiciosContainer from "./components/containers/ServiciosContainer";
@@ -26,7 +26,7 @@ const Root = () => {
           <Route path="/inicio" component={InicioContainer} />
           <Route path="/servicios" component={ServiciosContainer} />
           <Route path="/instalaciones" component={InstalacionesContainer} />
-          <Route path="/tarifas" component={TarifasContainer} />
+          <Route path="/tecnicas" component={TecnicasContainer} />
           <Route path="/equipo" component={EquipoContainer} />
         </div>
       </Router>

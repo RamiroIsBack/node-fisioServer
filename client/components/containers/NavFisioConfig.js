@@ -13,7 +13,7 @@ class NavFisioConfig extends React.Component {
       aciveEquipo: "",
       activeInstalaciones: "",
       activeServicios: "",
-      activeTarifas: ""
+      activeTecnicas: ""
     };
   }
   handleOnClick(e) {
@@ -24,7 +24,7 @@ class NavFisioConfig extends React.Component {
         aciveEquipo: "",
         activeInstalaciones: "",
         activeServicios: "",
-        activeTarifas: "",
+        activeTecnicas: "",
         activeContacto: ""
       });
       history.push("/inicio");
@@ -35,7 +35,7 @@ class NavFisioConfig extends React.Component {
         aciveEquipo: "active",
         activeInstalaciones: "",
         activeServicios: "",
-        activeTarifas: "",
+        activeTecnicas: "",
         activeContacto: ""
       });
       history.push("/equipo");
@@ -46,21 +46,21 @@ class NavFisioConfig extends React.Component {
         aciveEquipo: "",
         activeInstalaciones: "active",
         activeServicios: "",
-        activeTarifas: "",
+        activeTecnicas: "",
         activeContacto: ""
       });
       history.push("/instalaciones");
-    } else if (e.target.id === "tarifas") {
+    } else if (e.target.id === "tecnicas") {
       this.setState({
         activeTab: e.target.id,
         activeInicio: "",
         aciveEquipo: "",
         activeInstalaciones: "",
         activeServicios: "",
-        activeTarifas: "active",
+        activeTecnicas: "active",
         activeContacto: ""
       });
-      history.push("/tarifas");
+      history.push("/tecnicas");
     } else if (e.target.id === "contacto") {
       this.setState({
         activeTab: e.target.id,
@@ -68,7 +68,7 @@ class NavFisioConfig extends React.Component {
         aciveEquipo: "",
         activeInstalaciones: "",
         activeServicios: "",
-        activeTarifas: "",
+        activeTecnicas: "",
         activeContacto: "active"
       });
       history.push("/contacto");
@@ -79,7 +79,7 @@ class NavFisioConfig extends React.Component {
         aciveEquipo: "",
         activeInstalaciones: "",
         activeServicios: "active",
-        activeTarifas: "",
+        activeTecnicas: "",
         activeContacto: ""
       });
       history.push("/servicios");
@@ -125,7 +125,18 @@ class NavFisioConfig extends React.Component {
             className={this.state.activeServicios}
             onClick={this.handleOnClick.bind(this)}
           >
-            SERVICIOS (tecnicas y tarifas)
+            SERVICIOS (y tarifas)
+          </NavLink>
+        </NavItem>
+
+        <NavItem>
+          <NavLink
+            style={{ paddingLeft: "6px", cursor: "pointer" }}
+            id="tecnicas"
+            className={this.state.activeTecnicas}
+            onClick={this.handleOnClick.bind(this)}
+          >
+            TECNICAS
           </NavLink>
         </NavItem>
 
