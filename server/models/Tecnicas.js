@@ -4,13 +4,13 @@ var tecnicasSchema = mongoose.Schema({
   tecnicas: [
     {
       nombre: {
-        type: "String"
+        type: String
       },
       servicioNombre: {
-        type: "String"
+        type: String
       },
       texto: {
-        type: "String"
+        type: String
       },
       urlPic: {
         type: String

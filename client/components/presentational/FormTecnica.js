@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Label, Button, FormGroup, Row, Col, Input } from "reactstrap";
+
 import FormModalEliminar from "./FormModalEliminar";
+import FormPictures from "./FormPictures";
 
 class FormTecnica extends Component {
   constructor() {
@@ -9,7 +11,8 @@ class FormTecnica extends Component {
       parameters: {
         nombre: "",
         servicio: "",
-        texto: ""
+        texto: "",
+        urlPic: ""
       },
       modalEliminarTecnicaShow: false,
       modalEliminarTecnica: {
@@ -26,13 +29,29 @@ class FormTecnica extends Component {
   }
 
   subirChunk(e) {
-    this.props.subirChunk({
-      tecnicaIndex: this.props.tecnicaIndex,
-      partID: e.target.name,
-      chunkID: e.target.id,
-      chunkData: this.state.parameters[e.target.id]
-    });
+    if (e.chunkID) {
+      //this is not the event object
+      let dataObject = Object.assign({}, e);
+      dataObject.chunkID = "urlPic";
+      dataObject.tecnicaIndex = this.props.tecnicaIndex;
+      this.props.subirChunk(dataObject);
+    } else {
+      this.props.subirChunk({
+        tecnicaIndex: this.props.tecnicaIndex,
+        partID: e.target.name,
+        chunkID: e.target.id,
+        chunkData: this.state.parameters[e.target.id]
+      });
+    }
   }
+  subirFoto(id, archivo) {
+    if (archivo) {
+      this.props.subirFoto(id, archivo);
+    } else {
+      console.log("no hay archivo q subir" + archivo);
+    }
+  }
+
   eliminarTecnica() {
     this.props.eliminarTecnica(this.props.tecnicaIndex);
     this.toggleModalEliminarTecnica();
@@ -75,6 +94,7 @@ class FormTecnica extends Component {
               </Button>
             </Col>
           </Row>
+          {/* //////////////////////////////////////////////////////////nombre////////////////////////////////// */}
           <Row>
             <Col sm="4">
               <h5 style={{ backgroundColor: "gainsboro" }}>
@@ -155,6 +175,15 @@ class FormTecnica extends Component {
               </Button>
             </Col>
           </Row>
+          {/* //////////////////////////////////////////////////////////urlPic////////////////////////////////// */}
+          <FormPictures
+            src={this.props.tecnica.urlPic}
+            pics={this.props.pics}
+            id={`tecnica${this.props.tecnica.nombre}`}
+            name={"tecnica"}
+            subirChunk={this.subirChunk.bind(this)}
+            subirFoto={this.subirFoto.bind(this)}
+          />
         </FormGroup>
       </div>
     );

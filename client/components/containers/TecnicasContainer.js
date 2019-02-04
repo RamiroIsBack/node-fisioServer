@@ -18,7 +18,7 @@ class TecnicasContainer extends Component {
       },
       modalEliminarTecnicaShow: false,
       modalEliminarTecnica: {
-        modalName: "Quires eliminar este Tecnica?",
+        modalName: "Quires eliminar esta Tecnica?",
         actionName: "eliminar Tecnica",
         modalBodie:
           "Si lo eliminas se pierden los datos, si quieres copiar algun texto o algo, hazlo antes de eliminar el Tecnica"
@@ -52,27 +52,10 @@ class TecnicasContainer extends Component {
         let tecnicas = this.props.copy.tecnicasCopy.tecnicas;
 
         if (dataObject.partID === "tecnica") {
-          if (dataObject.chunkID === "newTecnica") {
-            tecnicas[dataObject.tecnicaIndex].tecnicas.push(
-              dataObject.newTecnica
-            );
-          } else if (dataObject.chunkID === "eliminar") {
-            tecnicas[dataObject.tecnicaIndex].tecnicas = tecnicas[
-              dataObject.tecnicaIndex
-            ].tecnicas.filter(
-              (tecnica, index) => dataObject.tecnicaIndex !== index
-            );
-          } else {
-            tecnicas[dataObject.tecnicaIndex].tecnicas[dataObject.tecnicaIndex][
-              dataObject.chunkID
-            ] = dataObject.chunkData;
-          }
-        } else if (dataObject.partID === "tecnica") {
           // tecnica field
           if (dataObject.chunkID === "newTecnica") {
             tecnicas.push(dataObject.newTecnica);
-          }
-          if (dataObject.chunkID === "eliminar") {
+          } else if (dataObject.chunkID === "eliminar") {
             tecnicas = tecnicas.filter(
               (tecnica, index) => dataObject.tecnicaIndex !== index
             );
@@ -134,6 +117,7 @@ class TecnicasContainer extends Component {
             modalShow={this.state.modalNewTecnicaShow}
             modal={this.state.modalNewTecnica}
             pics={this.props.copy.pics}
+            servicios={this.props.copy.serviciosCopy.servicios}
             toggleModal={this.toggleModalNewTecnica.bind(this)}
             createNewTecnica={this.createNewTecnica.bind(this)}
             subirFoto={this.subirFoto.bind(this)}
@@ -154,7 +138,7 @@ class TecnicasContainer extends Component {
           this.props.copy.tecnicasCopy.tecnicas.map((tecnica, index) => {
             return (
               <FormTecnica
-                key={tecnica._id}
+                key={tecnica.nombre}
                 tecnicaIndex={index}
                 tecnica={tecnica}
                 pics={this.props.copy.pics}

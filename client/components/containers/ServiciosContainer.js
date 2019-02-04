@@ -26,16 +26,17 @@ class ServiciosContainer extends Component {
     };
   }
   componentDidMount() {
-    axios({
-      method: "get",
-      url: "/copy/servicios"
-    })
-      .then(res => {
-        this.props.serviciosReceived(res.data.serviciosCopy[0]);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    // getting serviciosCopy at inicio
+    // axios({
+    //   method: "get",
+    //   url: "/copy/servicios"
+    // })
+    //   .then(res => {
+    //     this.props.serviciosReceived(res.data.serviciosCopy[0]);
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   });
   }
   subirFoto(id, archivo) {
     if (archivo) {

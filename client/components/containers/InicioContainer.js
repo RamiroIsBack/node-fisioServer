@@ -18,6 +18,16 @@ class InicioContainer extends Component {
     })
       .then(res => {
         this.props.inicioReceived(res.data.inicioCopy[0]);
+        axios({
+          method: "get",
+          url: "/copy/servicios"
+        })
+          .then(res => {
+            this.props.serviciosReceived(res.data.serviciosCopy[0]);
+          })
+          .catch(err => {
+            console.log(err);
+          });
       })
       .catch(err => {
         console.log(err);
@@ -121,6 +131,8 @@ class InicioContainer extends Component {
 const dispatchToProps = dispatch => {
   return {
     inicioReceived: inicioCopy => dispatch(actions.inicioReceived(inicioCopy)),
+    serviciosReceived: serviciosCopy =>
+      dispatch(actions.serviciosReceived(serviciosCopy)),
     subirFoto: (id, archivo) => dispatch(actions.subirFoto(id, archivo))
   };
 };

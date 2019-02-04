@@ -23,6 +23,7 @@ export default (state = initialState, action) => {
         newState.pics[pic.nombre] = "";
       });
       newState.pics["newServicio"] = "";
+      newState.pics["newTecnica"] = "";
       return newState;
     }
     case constants.EQUIPO_RECEIVED: {

@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { Row, Col, Button, FormGroup, Label, Input } from "reactstrap";
 
-import FormTecnica from "./FormTecnica";
 import FormPictures from "./FormPictures";
-import FormModalNewTecnica from "./FormModalNewTecnica";
+import FormModalEliminar from "./FormModalEliminar";
 
 class ServiciosForm extends Component {
   constructor() {
@@ -21,10 +20,11 @@ class ServiciosForm extends Component {
         },
         urlPic: ""
       },
-      modalNewTecnicaShow: false,
-      modalNewTecnica: {
-        modalName: "Quires mostrar una nueva Tecnica?",
-        actionName: "crear la Tecnica"
+      modalEliminarServicioShow: false,
+      modalEliminarServicio: {
+        modalName: "Quires eliminar esta Servicio?",
+        actionName: "eliminar Servicio",
+        modalBodie: `Si lo eliminas se pierden los datos, si quieres copiar algun texto o algo, hazlo antes de eliminar la Servicio. `
       }
     };
   }
@@ -41,10 +41,17 @@ class ServiciosForm extends Component {
       console.log("no hay archivo q subir" + archivo);
     }
   }
-  subirChunkTecnica(chunkObject) {
-    chunkObject.servicioIndex = this.props.servicioIndex;
-    this.props.subirChunk(chunkObject);
+
+  eliminarServicio() {
+    this.props.eliminarServicio(this.props.servicioIndex);
+    this.toggleModalEliminarServicio();
   }
+  toggleModalEliminarServicio() {
+    this.setState({
+      modalEliminarServicioShow: !this.state.modalEliminarServicioShow
+    });
+  }
+
   subirChunk(e) {
     if (e.chunkID) {
       //this is not the event object
@@ -64,30 +71,16 @@ class ServiciosForm extends Component {
       });
     }
   }
-  createNewTecnica(newTecnica) {
-    this.subirChunkTecnica({
-      newTecnica,
-      partID: "tecnica",
-      chunkID: "newTecnica"
-    });
-    this.toggleModalNewTecnica();
-  }
-  eliminarTecnica(tecnicaIndex) {
-    this.props.subirChunk({
-      tecnicaIndex,
-      servicioIndex: this.props.servicioIndex,
-      partID: "tecnica",
-      chunkID: "eliminar",
-      chunkData: undefined
-    });
-  }
-  toggleModalNewTecnica() {
-    this.setState({ modalNewTecnicaShow: !this.state.modalNewTecnicaShow });
-  }
 
   render() {
     return (
       <div style={{ padding: 15 }}>
+        <FormModalEliminar
+          modalShow={this.state.modalEliminarServicioShow}
+          modal={this.state.modalEliminarServicio}
+          eliminar={this.eliminarServicio.bind(this)}
+          toggleModal={this.toggleModalEliminarServicio.bind(this)}
+        />
         <FormGroup
           style={{
             padding: "2px",
@@ -103,7 +96,9 @@ class ServiciosForm extends Component {
               <Button
                 id="eliminar"
                 name="servicio"
-                onClick={this.subirChunk.bind(this)}
+                onClick={() =>
+                  this.setState({ modalEliminarServicioShow: true })
+                }
                 color="danger"
               >
                 Eliminar servicio: {this.props.servicio.nombre}
@@ -244,55 +239,6 @@ class ServiciosForm extends Component {
             subirChunk={this.subirChunk.bind(this)}
             subirFoto={this.subirFoto.bind(this)}
           />
-
-          {/* ///////////////////////////////    tecnicas    ////////////////////////////// */}
-          <FormModalNewTecnica
-            modalShow={this.state.modalNewTecnicaShow}
-            modal={this.state.modalNewTecnica}
-            servicio={this.props.servicio.nombre}
-            toggleModal={this.toggleModalNewTecnica.bind(this)}
-            createNewTecnica={this.createNewTecnica.bind(this)}
-          />
-
-          <FormGroup
-            style={{
-              margin: 10,
-              padding: "2px",
-              borderRadius: "4px",
-              border: "1px solid black"
-            }}
-          >
-            <div style={{ padding: "15px" }}>
-              <h3 style={{ display: "inline" }}>
-                Tecnicas de {this.props.servicio.nombre}{" "}
-              </h3>
-              <p style={{ display: "inline" }}>tambien puedes anadir una</p>
-              <Button
-                id="newPerson"
-                onClick={() => this.setState({ modalNewTecnicaShow: true })}
-                color="success"
-                style={{ display: "inline" }}
-              >
-                + Nueva tecnica
-              </Button>
-            </div>
-            {this.props.servicio ? (
-              this.props.servicio.tecnicas.map((tecnica, index) => {
-                return (
-                  <div key={index}>
-                    <FormTecnica
-                      tecnicaIndex={index}
-                      tecnica={tecnica}
-                      subirChunk={this.subirChunkTecnica.bind(this)}
-                      eliminarTecnica={this.eliminarTecnica.bind(this)}
-                    />
-                  </div>
-                );
-              })
-            ) : (
-              <div />
-            )}
-          </FormGroup>
         </FormGroup>
       </div>
     );
