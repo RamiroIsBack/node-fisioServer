@@ -43,7 +43,11 @@ class ServiciosForm extends Component {
   }
 
   eliminarServicio() {
-    this.props.eliminarServicio(this.props.servicioIndex);
+    let dataObject = {};
+    dataObject.chunkID = "eliminar";
+    dataObject.partID = "servicio";
+    dataObject.servicioIndex = this.props.servicioIndex;
+    this.props.subirChunk(dataObject);
     this.toggleModalEliminarServicio();
   }
   toggleModalEliminarServicio() {

@@ -53,7 +53,11 @@ class FormTecnica extends Component {
   }
 
   eliminarTecnica() {
-    this.props.eliminarTecnica(this.props.tecnicaIndex);
+    let dataObject = {};
+    dataObject.chunkID = "eliminar";
+    dataObject.partID = "tecnica";
+    dataObject.tecnicaIndex = this.props.tecnicaIndex;
+    this.props.subirChunk(dataObject);
     this.toggleModalEliminarTecnica();
   }
   toggleModalEliminarTecnica() {

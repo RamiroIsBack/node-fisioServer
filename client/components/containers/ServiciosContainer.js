@@ -26,17 +26,7 @@ class ServiciosContainer extends Component {
     };
   }
   componentDidMount() {
-    // getting serviciosCopy at inicio
-    // axios({
-    //   method: "get",
-    //   url: "/copy/servicios"
-    // })
-    //   .then(res => {
-    //     this.props.serviciosReceived(res.data.serviciosCopy[0]);
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
+    // getting serviciosCopy at inicioContainer cos I use them also for Tecnicas
   }
   subirFoto(id, archivo) {
     if (archivo) {
@@ -52,28 +42,11 @@ class ServiciosContainer extends Component {
         let id = this.props.copy.serviciosCopy._id;
         let servicios = this.props.copy.serviciosCopy.servicios;
 
-        if (dataObject.partID === "tecnica") {
-          if (dataObject.chunkID === "newTecnica") {
-            servicios[dataObject.servicioIndex].tecnicas.push(
-              dataObject.newTecnica
-            );
-          } else if (dataObject.chunkID === "eliminar") {
-            servicios[dataObject.servicioIndex].tecnicas = servicios[
-              dataObject.servicioIndex
-            ].tecnicas.filter(
-              (tecnica, index) => dataObject.tecnicaIndex !== index
-            );
-          } else {
-            servicios[dataObject.servicioIndex].tecnicas[
-              dataObject.tecnicaIndex
-            ][dataObject.chunkID] = dataObject.chunkData;
-          }
-        } else if (dataObject.partID === "servicio") {
+        if (dataObject.partID === "servicio") {
           // servicio field
           if (dataObject.chunkID === "newServicio") {
             servicios.push(dataObject.newServicio);
-          }
-          if (dataObject.chunkID === "eliminar") {
+          } else if (dataObject.chunkID === "eliminar") {
             servicios = servicios.filter(
               (servicio, index) => dataObject.servicioIndex !== index
             );
