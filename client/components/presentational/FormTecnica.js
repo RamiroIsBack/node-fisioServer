@@ -1,5 +1,16 @@
 import React, { Component } from "react";
-import { Label, Button, FormGroup, Row, Col, Input } from "reactstrap";
+import {
+  Label,
+  Button,
+  FormGroup,
+  Row,
+  Col,
+  Input,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
+} from "reactstrap";
 
 import FormModalEliminar from "./FormModalEliminar";
 import FormPictures from "./FormPictures";
@@ -10,7 +21,7 @@ class FormTecnica extends Component {
     this.state = {
       parameters: {
         nombre: "",
-        servicio: "",
+        servicioNombre: "cambiar servicio",
         texto: "",
         urlPic: ""
       },
@@ -19,9 +30,17 @@ class FormTecnica extends Component {
         modalName: "Quires eliminar esta Tecnica?",
         actionName: "eliminar Tecnica",
         modalBodie: `Si lo eliminas se pierden los datos, si quieres copiar algun texto o algo, hazlo antes de eliminar la tecnica. `
-      }
+      },
+      dropDownServicio: false
     };
   }
+
+  dropdownChange(e) {
+    let obj = Object.assign({}, this.state.parameters);
+    obj["servicioNombre"] = e.target.name;
+    this.setState({ parameters: obj });
+  }
+
   handleOnChange(e) {
     let obj = Object.assign({}, this.state);
     obj.parameters[e.target.id] = e.target.value;
@@ -152,33 +171,66 @@ class FormTecnica extends Component {
               </Button>
             </Col>
           </Row>
-          {/* ////////////////////////////////////////////////////////// servicio ////////////////////////////////// */}
+          <br />
+          {/* //////////////////////////////////////////////////////////servicio////////////////////////////////// */}
           <Row style={{ paddingTop: 5 }}>
-            <Col sm="4">
+            <Col sm="3">
+              <h5>servicio:</h5>
+            </Col>
+            <Col sm="3">
               <h5 style={{ backgroundColor: "gainsboro" }}>
-                {this.props.tecnica.servicio}{" "}
+                {this.props.tecnica.servicioNombre}{" "}
               </h5>
             </Col>
-            <Col sm="4">
-              <Input
-                id="servicio"
-                value={this.state.servicio}
-                onChange={this.handleOnChange.bind(this)}
-                placeholder={`servicio al que pertenece`}
-              />
+            <Col sm="3">
+              <Dropdown
+                direction="right"
+                isOpen={this.state.dropDownServicio}
+                toggle={() => {
+                  this.setState({
+                    dropDownServicio: !this.state.dropDownServicio
+                  });
+                }}
+              >
+                <DropdownToggle caret>
+                  {this.state.parameters.servicioNombre}
+                </DropdownToggle>
+                <DropdownMenu>
+                  {this.props.servicios.map((servicio, index) => (
+                    <DropdownItem
+                      key={index}
+                      name={servicio.nombre}
+                      onClick={this.dropdownChange.bind(this)}
+                    >
+                      {servicio.nombre}
+                    </DropdownItem>
+                  ))}
+                  <DropdownItem
+                    name="ninguno"
+                    onClick={this.dropdownChange.bind(this)}
+                  >
+                    ninguno
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
             </Col>
-            <Col sm="4">
+            <Col sm="3">
               <Button
-                id="servicio"
+                id="servicioNombre"
                 name="tecnica"
                 onClick={this.subirChunk.bind(this)}
                 color="primary"
-                disabled={true}
+                disabled={
+                  this.state.parameters.servicioNombre === "cambiar servicio"
+                    ? true
+                    : false
+                }
               >
-                Cambiar servicio (esto tiene q ser un dropdown)
+                Cambiar servicio
               </Button>
             </Col>
           </Row>
+
           {/* //////////////////////////////////////////////////////////urlPic////////////////////////////////// */}
           <FormPictures
             src={this.props.tecnica.urlPic}

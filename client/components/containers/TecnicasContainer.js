@@ -141,6 +141,7 @@ class TecnicasContainer extends Component {
                 key={tecnica.nombre}
                 tecnicaIndex={index}
                 tecnica={tecnica}
+                servicios={this.props.copy.serviciosCopy.servicios}
                 pics={this.props.copy.pics}
                 subirChunk={this.subirChunk.bind(this)}
                 subirFoto={this.subirFoto.bind(this)}
