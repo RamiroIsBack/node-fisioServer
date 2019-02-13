@@ -121,7 +121,11 @@ app.get("/copy/instalaciones", (req, res) => {
 app.patch("/copy/instalaciones", authenticateMiddleware, (req, res) => {
   var body = req.body;
   var { id } = body;
-  if (!body.instalacionesTextoLargo && !body.items) {
+  if (
+    !body.instalacionesTextoLargo &&
+    !body.items &&
+    !body.instalacionesTextoCorto
+  ) {
     return res.status(400).send({ err: "give me something!" });
   }
   if (!ObjectID.isValid(id)) {

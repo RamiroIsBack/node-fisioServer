@@ -10,7 +10,7 @@ class InstalacionesForm extends Component {
   }
   handleOnChange(e) {
     let obj = Object.assign({}, this.state);
-    obj.parameters[e.target.name] = e.target.value;
+    obj.parameters[e.target.id] = e.target.value;
     this.setState(obj);
   }
   subirChunk(e) {

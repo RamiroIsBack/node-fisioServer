@@ -1,8 +1,18 @@
 import React, { Component } from "react";
-import { Row, Col, Button, FormGroup, Label, Input } from "reactstrap";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Row,
+  Col,
+  Button,
+  FormGroup,
+  Label,
+  Input
+} from "reactstrap";
 
 import FormFormacion from "./FormFormacion";
-import FormTecnica from "./FormTecnica";
 import FormPictures from "./FormPictures";
 
 class FormPersonas extends Component {
@@ -13,8 +23,10 @@ class FormPersonas extends Component {
         nombre: "",
         apellido: "",
         cargo: "",
-        urlPic: ""
-      }
+        urlPic: "",
+        addedTecnica: "asignar tecnica"
+      },
+      dropDownTecnica: false
     };
   }
 
@@ -22,6 +34,11 @@ class FormPersonas extends Component {
     let obj = Object.assign({}, this.state);
     obj.parameters[e.target.id] = e.target.value;
     this.setState(obj);
+  }
+  dropdownChange(e) {
+    let obj = Object.assign({}, this.state.parameters);
+    obj["addedTecnica"] = e.target.name;
+    this.setState({ parameters: obj });
   }
   subirFoto(id, archivo) {
     if (archivo) {
@@ -53,8 +70,8 @@ class FormPersonas extends Component {
       });
     }
   }
-  newTecnica(e) {
-    console.log("new tecnica!! rass!@!");
+  desasignarTecnica(e) {
+    console.log("desasignar tecnica!! rass!@!");
   }
   newFormacion(e) {
     console.log("new formacion!! rass!@!");
@@ -222,33 +239,104 @@ class FormPersonas extends Component {
             }}
           >
             <div style={{ padding: "15px" }}>
-              <h3 style={{ display: "inline" }}>
-                Tecnicas de {this.props.persona.nombre}{" "}
-              </h3>
-              <p style={{ display: "inline" }}>tambien puedes anadir una</p>
-              <Button
-                id="newPerson"
-                onClick={this.newTecnica.bind(this)}
-                color="success"
-                style={{ display: "inline" }}
-              >
-                + Nueva tecnica
-              </Button>
+              <h3>Tecnicas de {this.props.persona.nombre} </h3>
+
+              <div>
+                {this.props.persona.tecnicas.map((tecnica, tecnicaIndex) => {
+                  return (
+                    <div
+                      key={tecnica.id}
+                      style={{
+                        display: "inline",
+                        padding: "2px"
+                      }}
+                    >
+                      <p
+                        style={{
+                          display: "inline",
+                          backgroundColor: "gainsboro"
+                        }}
+                      >
+                        {tecnica.nombre}{" "}
+                      </p>
+                      <Button
+                        id="desasignarTecnica"
+                        name="tecnica"
+                        onClick={this.desasignarTecnica.bind(this)}
+                        color="danger"
+                        style={{
+                          margin: 0,
+                          height: "20px",
+                          paddingTop: 0
+                        }}
+                      >
+                        x
+                      </Button>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <p style={{ display: "inline" }}>
+                tambien puedes anadir una tecnica:{" "}
+              </p>
+
+              <Row style={{ paddingTop: 5 }}>
+                <Col sm="3">
+                  <h5>nueva tecnica:</h5>
+                </Col>
+                <Col sm="6">
+                  <Dropdown
+                    direction="right"
+                    isOpen={this.state.dropDownTecnica}
+                    toggle={() => {
+                      this.setState({
+                        dropDownTecnica: !this.state.dropDownTecnica
+                      });
+                    }}
+                  >
+                    <DropdownToggle caret>
+                      {this.state.parameters.addedTecnica}
+                    </DropdownToggle>
+                    <DropdownMenu>
+                      {this.props.tecnicas ? (
+                        this.props.tecnicas.map((tecnica, index) => (
+                          <DropdownItem
+                            key={index}
+                            name={tecnica.nombre}
+                            onClick={this.dropdownChange.bind(this)}
+                          >
+                            {tecnica.nombre}
+                          </DropdownItem>
+                        ))
+                      ) : (
+                        <div />
+                      )}
+                    </DropdownMenu>
+                  </Dropdown>
+                </Col>
+                <Col sm="3">
+                  <Button
+                    id="addedTecnica"
+                    name="tecnica"
+                    onClick={this.subirChunk.bind(this)}
+                    color="primary"
+                    disabled={
+                      this.state.parameters.addedTecnica === "asignar tecnica"
+                        ? true
+                        : false
+                    }
+                  >
+                    Asignar esta tecnica
+                  </Button>
+                </Col>
+              </Row>
+
+              <p>
+                si quieres crearla nueva, hazlo en la seccion de tecnicas y
+                luego se la asignas a la persona aqui ;)
+              </p>
             </div>
-            {this.props.persona ? (
-              this.props.persona.tecnicas.map((tecnica, index) => {
-                return (
-                  <FormTecnica
-                    key={index}
-                    tecnicaIndex={index}
-                    tecnica={tecnica}
-                    subirChunk={this.subirChunkTecnicaOrFormacion.bind(this)}
-                  />
-                );
-              })
-            ) : (
-              <div />
-            )}
           </FormGroup>
 
           {/* ///////////////////////////////    formacion ////////////////////////////// */}

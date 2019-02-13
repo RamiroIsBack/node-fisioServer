@@ -5,7 +5,7 @@ import { Button } from "reactstrap";
 
 import actions from "../../actions";
 import EquipoForm from "../presentational/EquipoForm";
-import FormPersona from "../presentational/FormPersonas";
+import FormPersonas from "../presentational/FormPersonas";
 
 class EquipoContainer extends Component {
   constructor() {
@@ -144,10 +144,11 @@ class EquipoContainer extends Component {
         {this.props.copy.equipoCopy ? (
           this.props.copy.equipoCopy.equipo.map((persona, index) => {
             return (
-              <FormPersona
+              <FormPersonas
                 key={persona.apellido}
                 personaIndex={index}
                 persona={persona}
+                tecnicas={this.props.copy.tecnicasCopy.tecnicas}
                 pics={this.props.copy.pics}
                 modifyPerson={this.modifyPerson.bind(this)}
                 subirChunk={this.subirChunk.bind(this)}

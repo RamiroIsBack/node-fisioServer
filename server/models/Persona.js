@@ -20,9 +20,16 @@ var personaSchema = mongoose.Schema({
   formacion: {
     type: ["Formacion"]
   },
-  tecnicas: {
-    type: ["Tecnica"]
-  }
+  tecnicas: [
+    {
+      nombre: {
+        type: String
+      },
+      id: {
+        type: String
+      }
+    }
+  ]
 });
 var Persona = mongoose.model("Persona", personaSchema);
 module.exports = { Persona };

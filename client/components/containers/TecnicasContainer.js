@@ -26,16 +26,7 @@ class TecnicasContainer extends Component {
     };
   }
   componentDidMount() {
-    axios({
-      method: "get",
-      url: "/copy/tecnicas"
-    })
-      .then(res => {
-        this.props.tecnicasReceived(res.data.tecnicasCopy[0]);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    // getting tecnicasCopy at inicioContainer cos I use them also for Equipo
   }
   subirFoto(id, archivo) {
     if (archivo) {

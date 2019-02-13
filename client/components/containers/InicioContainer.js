@@ -21,13 +21,15 @@ class InicioContainer extends Component {
         axios({
           method: "get",
           url: "/copy/servicios"
-        })
-          .then(res => {
-            this.props.serviciosReceived(res.data.serviciosCopy[0]);
-          })
-          .catch(err => {
-            console.log(err);
+        }).then(res => {
+          this.props.serviciosReceived(res.data.serviciosCopy[0]);
+          axios({
+            method: "get",
+            url: "/copy/tecnicas"
+          }).then(res => {
+            this.props.tecnicasReceived(res.data.tecnicasCopy[0]);
           });
+        });
       })
       .catch(err => {
         console.log(err);
@@ -133,6 +135,8 @@ const dispatchToProps = dispatch => {
     inicioReceived: inicioCopy => dispatch(actions.inicioReceived(inicioCopy)),
     serviciosReceived: serviciosCopy =>
       dispatch(actions.serviciosReceived(serviciosCopy)),
+    tecnicasReceived: tecnicasCopy =>
+      dispatch(actions.tecnicasReceived(tecnicasCopy)),
     subirFoto: (id, archivo) => dispatch(actions.subirFoto(id, archivo))
   };
 };
