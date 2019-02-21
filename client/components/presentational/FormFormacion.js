@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Button, FormGroup, Row, Col, Input } from "reactstrap";
+import { Button, FormGroup, Row, Col, Input, Label } from "reactstrap";
 
 import FormPictures from "./FormPictures";
+import FormModalEliminar from "./FormModalEliminar";
 
 class FormFormacion extends Component {
   constructor() {
@@ -13,6 +14,18 @@ class FormFormacion extends Component {
         centroUrlPic: "",
         centroUrl: "",
         fecha: ""
+      },
+      modalNewFormacionShow: false,
+      modalNewFormacion: {
+        modalName: "Quires mostrar un nuevo Formacion?",
+        actionName: "crear el Formacion"
+      },
+      modalEliminarFormacionShow: false,
+      modalEliminarFormacion: {
+        modalName: "Quires eliminar esta Formacion?",
+        actionName: "eliminar Formacion",
+        modalBodie:
+          "Si lo eliminas se pierden los datos, si quieres copiar algun texto o algo, hazlo antes de eliminar el Formacion"
       }
     };
   }
@@ -45,6 +58,19 @@ class FormFormacion extends Component {
       console.log("no hay archivo q subir" + archivo);
     }
   }
+  eliminarFormacion() {
+    let dataObject = {};
+    dataObject.chunkID = "eliminar";
+    dataObject.partID = "formacion";
+    dataObject.formacionIndex = this.props.formacionIndex;
+    this.props.subirChunk(dataObject);
+    this.toggleModalEliminarFormacion();
+  }
+  toggleModalEliminarFormacion() {
+    this.setState({
+      modalEliminarFormacionShow: !this.state.modalEliminarFormacionShow
+    });
+  }
 
   render() {
     return (
@@ -55,6 +81,30 @@ class FormFormacion extends Component {
           border: "1px solid black"
         }}
       >
+        <FormModalEliminar
+          modalShow={this.state.modalEliminarFormacionShow}
+          modal={this.state.modalEliminarFormacion}
+          eliminar={this.eliminarFormacion.bind(this)}
+          toggleModal={this.toggleModalEliminarFormacion.bind(this)}
+        />
+
+        <Row style={{ marginBottom: 15 }}>
+          <Col sm="4">
+            <Label>cambiar los datos de {this.props.formacion.nombre}</Label>
+          </Col>
+          <Col sm="8" style={{ textAlign: "right" }}>
+            <Button
+              id="eliminar"
+              name="formacion"
+              onClick={() =>
+                this.setState({ modalEliminarFormacionShow: true })
+              }
+              color="danger"
+            >
+              Eliminar formacion: {this.props.formacion.nombre}
+            </Button>
+          </Col>
+        </Row>
         {/* ////////////////////////////////////////// estudios //////////////////////////////// */}
         <Row>
           <Col sm="4">

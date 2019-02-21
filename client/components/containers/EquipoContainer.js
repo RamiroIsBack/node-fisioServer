@@ -6,11 +6,30 @@ import { Button } from "reactstrap";
 import actions from "../../actions";
 import EquipoForm from "../presentational/EquipoForm";
 import FormPersonas from "../presentational/FormPersonas";
+import FormModalNewPersona from "../presentational/FormModalNewPersona";
 
 class EquipoContainer extends Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      modalNewPersonaShow: false,
+      modalNewPersona: {
+        modalName: "Quires mostrar un nuevo Persona?",
+        actionName: "crear el Persona"
+      },
+      modalEliminarPersonaShow: false,
+      modalEliminarPersona: {
+        modalName: "Quires eliminar esta Persona?",
+        actionName: "eliminar Persona",
+        modalBodie:
+          "Si lo eliminas se pierden los datos, si quieres copiar algun texto o algo, hazlo antes de eliminar el Persona"
+      }
+    };
+    this.subirChunk = this.subirChunk.bind(this);
+    this.subirFoto = this.subirFoto.bind(this);
+    this.newPersona = this.newPersona.bind(this);
+    this.toggleModalNewPersona = this.toggleModalNewPersona.bind(this);
+    this.createNewPersona = this.createNewPersona.bind(this);
   }
   componentDidMount() {
     axios({
@@ -53,22 +72,17 @@ class EquipoContainer extends Component {
         } else {
           //we are inside personas []
           let equipo = [...this.props.copy.equipoCopy.equipo];
-          if (dataObject.partID === "tecnica") {
-            if (
-              dataObject.tecnicaIndex &&
-              dataObject.tecnicaIndex === "newTecnica"
-            ) {
-              equipo[dataObject.personaIndex].tecnicas.push(
-                dataObject.chunkData
-              );
-            } else if (!dataObject.tecnicaIndex) {
-              console.log("problem getting tecnicaIndex");
+
+          if (dataObject.partID === "persona") {
+            if (dataObject.chunkID === "newPersona") {
+              equipo.push(dataObject.newPersona);
+            } else if (dataObject.chunkID === "eliminar") {
+              equipo.splice(dataObject.personaIndex, 1);
             } else {
-              equipo[dataObject.personaIndex].tecnicas.splice(
-                dataObject.tecnicaIndex,
-                1
-              );
+              equipo.personas[dataObject.personaIndex] =
+                dataObject.updatedPersona;
             }
+
             axios({
               method: "patch",
               url: "/copy/equipo",
@@ -82,55 +96,65 @@ class EquipoContainer extends Component {
               .catch(err => {
                 console.log(err);
               });
-          } else if (dataObject.partID === "formacion") {
-            equipo[dataObject.personaIndex].formacion[
-              dataObject.formacionIndex
-            ][dataObject.chunkID] = dataObject.chunkData;
-            axios({
-              method: "patch",
-              url: "/copy/equipo",
-              data: { id, equipo },
-              headers: { "x-auth": dude.token }
-            })
-              .then(res => {
-                console.log(res);
-                this.props.equipoReceived(res.data);
-              })
-              .catch(err => {
-                console.log(err);
-              });
-          } else if (dataObject.partID === "persona") {
-            // persona field
-            equipo[dataObject.personaIndex][dataObject.chunkID] =
-              dataObject.chunkData;
-            axios({
-              method: "patch",
-              url: "/copy/equipo",
-              data: { id, equipo },
-              headers: { "x-auth": dude.token }
-            })
-              .then(res => {
-                console.log(res);
-                this.props.equipoReceived(res.data);
-              })
-              .catch(err => {
-                console.log(err);
-              });
+            // } else if (dataObject.partID === "formacion") {
+            //   equipo[dataObject.personaIndex].formacion[
+            //     dataObject.formacionIndex
+            //   ][dataObject.chunkID] = dataObject.chunkData;
+            //   axios({
+            //     method: "patch",
+            //     url: "/copy/equipo",
+            //     data: { id, equipo },
+            //     headers: { "x-auth": dude.token }
+            //   })
+            //     .then(res => {
+            //       console.log(res);
+            //       this.props.equipoReceived(res.data);
+            //     })
+            //     .catch(err => {
+            //       console.log(err);
+            //     });
+            // } else if (dataObject.partID === "persona") {
+            //   // persona field
+            //   equipo[dataObject.personaIndex][dataObject.chunkID] =
+            //     dataObject.chunkData;
+            //   axios({
+            //     method: "patch",
+            //     url: "/copy/equipo",
+            //     data: { id, equipo },
+            //     headers: { "x-auth": dude.token }
+            //   })
+            //     .then(res => {
+            //       console.log(res);
+            //       this.props.equipoReceived(res.data);
+            //     })
+            //     .catch(err => {
+            //       console.log(err);
+            //     });
           } else {
-            console.log(
-              "partID no corresponde con persona, formacion o tecnica",
-              dataObject.partID
-            );
+            console.log("partID no corresponde con persona", dataObject.partID);
           }
         }
       }
     }
   }
-  newPerson(e) {
-    console.log("you just hired a new guy!");
+  newPersona(newPersona) {
+    this.subirChunk({
+      newPersona,
+      partID: "persona",
+      chunkID: "newPersona"
+    });
+    this.toggleModalNewPersona();
   }
-  modifyPerson(personModified) {
-    console.log("modificando", personModified);
+  toggleModalNewPersona() {
+    this.setState({ modalNewPersonaShow: !this.state.modalNewPersonaShow });
+  }
+  createNewPersona(newPersona) {
+    this.subirChunk({
+      newPersona,
+      partID: "persona",
+      chunkID: "newPersona"
+    });
+    this.toggleModalNewPersona();
   }
   render() {
     return (
@@ -138,14 +162,23 @@ class EquipoContainer extends Component {
         <h3 style={{ textAlign: "center" }}>Equipo</h3>
         <EquipoForm
           copy={this.props.copy.equipoCopy}
-          subirChunk={this.subirChunk.bind(this)}
+          subirChunk={this.subirChunk}
         />
         <div>
           <h3 style={{ display: "inline" }}>Personas del equipo </h3>
           <p style={{ display: "inline" }}>tambien puedes anadir alguien</p>
+          <FormModalNewPersona
+            modalShow={this.state.modalNewPersonaShow}
+            modal={this.state.modalNewPersona}
+            pics={this.props.copy.pics}
+            servicios={this.props.copy.serviciosCopy.servicios}
+            toggleModal={this.toggleModalNewPersona}
+            createNewPersona={this.createNewPersona}
+            subirFoto={this.subirFoto}
+          />
           <Button
             id="newPerson"
-            onClick={this.newPerson.bind(this)}
+            onClick={() => this.setState({ modalNewPersonaShow: true })}
             color="success"
             style={{ display: "inline" }}
           >
@@ -162,9 +195,9 @@ class EquipoContainer extends Component {
                 persona={persona}
                 tecnicas={this.props.copy.tecnicasCopy.tecnicas}
                 pics={this.props.copy.pics}
-                modifyPerson={this.modifyPerson.bind(this)}
-                subirChunk={this.subirChunk.bind(this)}
-                subirFoto={this.subirFoto.bind(this)}
+                modifyPerson={this.modifyPerson}
+                subirChunk={this.subirChunk}
+                subirFoto={this.subirFoto}
               />
             );
           })
