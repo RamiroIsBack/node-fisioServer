@@ -24,7 +24,7 @@ class FormPersonas extends Component {
         apellido: "",
         cargo: "",
         urlPic: "",
-        addedTecnica: "asignar tecnica"
+        addedTecnica: { nombre: "asignar tecnica", id: "" }
       },
       dropDownTecnica: false
     };
@@ -37,7 +37,7 @@ class FormPersonas extends Component {
   }
   dropdownChange(e) {
     let obj = Object.assign({}, this.state.parameters);
-    obj["addedTecnica"] = e.target.name;
+    obj["addedTecnica"] = { nombre: e.target.name, id: e.target.id };
     this.setState({ parameters: obj });
   }
   subirFoto(id, archivo) {
@@ -62,7 +62,10 @@ class FormPersonas extends Component {
       this.props.subirChunk({
         personaIndex: this.props.personaIndex,
         partID: e.target.name,
-        chunkID: e.target.id,
+        tecnicaIndex:
+          e.target.id !== "addedTecnica" ? e.target.id : "newTecnica",
+        chunkID:
+          e.target.id !== "addedTecnica" ? "desasignarTecnica" : e.target.id,
         chunkData:
           e.target.id === "urlPic"
             ? this.props.pics[this.props.persona.nombre]
@@ -70,9 +73,7 @@ class FormPersonas extends Component {
       });
     }
   }
-  desasignarTecnica(e) {
-    console.log("desasignar tecnica!! rass!@!");
-  }
+
   newFormacion(e) {
     console.log("new formacion!! rass!@!");
   }
@@ -245,7 +246,7 @@ class FormPersonas extends Component {
                 {this.props.persona.tecnicas.map((tecnica, tecnicaIndex) => {
                   return (
                     <div
-                      key={tecnica.id}
+                      key={tecnicaIndex}
                       style={{
                         display: "inline",
                         padding: "2px"
@@ -260,9 +261,9 @@ class FormPersonas extends Component {
                         {tecnica.nombre}{" "}
                       </p>
                       <Button
-                        id="desasignarTecnica"
+                        id={tecnicaIndex}
                         name="tecnica"
-                        onClick={this.desasignarTecnica.bind(this)}
+                        onClick={this.subirChunk.bind(this)}
                         color="danger"
                         style={{
                           margin: 0,
@@ -296,13 +297,14 @@ class FormPersonas extends Component {
                     }}
                   >
                     <DropdownToggle caret>
-                      {this.state.parameters.addedTecnica}
+                      {this.state.parameters.addedTecnica.nombre}
                     </DropdownToggle>
                     <DropdownMenu>
                       {this.props.tecnicas ? (
                         this.props.tecnicas.map((tecnica, index) => (
                           <DropdownItem
                             key={index}
+                            id={tecnica._id}
                             name={tecnica.nombre}
                             onClick={this.dropdownChange.bind(this)}
                           >
@@ -322,7 +324,8 @@ class FormPersonas extends Component {
                     onClick={this.subirChunk.bind(this)}
                     color="primary"
                     disabled={
-                      this.state.parameters.addedTecnica === "asignar tecnica"
+                      this.state.parameters.addedTecnica.nombre ===
+                      "asignar tecnica"
                         ? true
                         : false
                     }

@@ -35,7 +35,7 @@ class EquipoContainer extends Component {
     if (this.props.user) {
       let dude = this.props.user.dudeObject;
       if (dude && this.props.copy.equipoCopy) {
-        let id = this.props.copy.equipoCopy._id;
+        const id = this.props.copy.equipoCopy._id;
         if (dataObject.chunkID === "equipoTextoLargo") {
           axios({
             method: "patch",
@@ -52,11 +52,23 @@ class EquipoContainer extends Component {
             });
         } else {
           //we are inside personas []
-          let equipo = this.props.copy.equipoCopy.equipo;
+          let equipo = [...this.props.copy.equipoCopy.equipo];
           if (dataObject.partID === "tecnica") {
-            equipo[dataObject.personaIndex].tecnicas[dataObject.tecnicaIndex][
-              dataObject.chunkID
-            ] = dataObject.chunkData;
+            if (
+              dataObject.tecnicaIndex &&
+              dataObject.tecnicaIndex === "newTecnica"
+            ) {
+              equipo[dataObject.personaIndex].tecnicas.push(
+                dataObject.chunkData
+              );
+            } else if (!dataObject.tecnicaIndex) {
+              console.log("problem getting tecnicaIndex");
+            } else {
+              equipo[dataObject.personaIndex].tecnicas.splice(
+                dataObject.tecnicaIndex,
+                1
+              );
+            }
             axios({
               method: "patch",
               url: "/copy/equipo",
