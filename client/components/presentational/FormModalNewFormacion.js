@@ -16,19 +16,11 @@ class FormModal extends React.Component {
   constructor() {
     super();
     this.state = {
-      nombre: "",
-      precio: 0,
-      duracion: 0,
-      bono: {
-        modalidad: "Bono",
-        numero: 0,
-        precio: 0
-      },
-      urlPic: "",
-
-      formacionTextoLargo: "",
-
-      tecnicas: []
+      studios: "",
+      centroFormativo: "",
+      centroUrlPic: "",
+      centroUrl: "",
+      fecha: ""
     };
   }
   guardarPic(e) {
@@ -41,7 +33,7 @@ class FormModal extends React.Component {
   }
   createNewFormacion(e) {
     let obj = Object.assign({}, this.state);
-    obj.urlPic = this.props.pics["newFormacion"];
+    obj.centroUrlPic = this.props.pics["newFormacion"];
     this.props.createNewFormacion(obj);
   }
   render() {
@@ -62,84 +54,65 @@ class FormModal extends React.Component {
               border: "2px solid black"
             }}
           >
-            {/* //////////////////////////////////////////////////////////nombre////////////////////////////////// */}
+            {/* //////////////////////////////////////////////////////////estudios////////////////////////////////// */}
             <Row>
               <Col sm="4">
-                <h5>nombre del Formacion:</h5>
+                <h5>estdios:</h5>
               </Col>
               <Col sm="8">
                 <Input
-                  id="nombre"
+                  id="estudios"
                   value={this.state.nombre}
                   onChange={this.handleOnChange.bind(this)}
-                  placeholder={`nombre del Formacion prestado`}
+                  placeholder={`Arakiri con espada samurai`}
                 />
               </Col>
             </Row>
-
-            {/* //////////////////////////////////////////////////////////precio////////////////////////////////// */}
+            {/* //////////////////////////////////////////////////////////fecha////////////////////////////////// */}
             <Row style={{ paddingTop: 5 }}>
               <Col sm="4">
-                <h5>precio:</h5>
+                <h5>fecha:</h5>
               </Col>
               <Col sm="4">
                 <Input
-                  id="precio"
-                  value={this.state.precio}
+                  id="fecha"
+                  value={this.state.fecha}
                   onChange={this.handleOnChange.bind(this)}
-                  placeholder={`cuanto cuesta`}
+                  placeholder={`fecha en que se gradua como maestro saolin del valle oscuro`}
                 />
               </Col>
             </Row>
-            {/* //////////////////////////////////////////////////////////duracion////////////////////////////////// */}
+            {/* //////////////////////////////////////////////////////////centroFormativo////////////////////////////////// */}
+            <Row style={{ paddingTop: 5 }}>
+              <Col sm="4">
+                <h5>centroFormativo:</h5>
+              </Col>
+              <Col sm="4">
+                <Input
+                  id="centroFormativo"
+                  value={this.state.centroFormativo}
+                  onChange={this.handleOnChange.bind(this)}
+                  placeholder={`lo aprendi'o del maestro Tsakamura en Hokaido University`}
+                />
+              </Col>
+            </Row>
+            {/* //////////////////////////////////////////////////////////centroUrl////////////////////////////////// */}
 
             <Row style={{ paddingTop: 5 }}>
               <Col sm="4">
-                <h5>duracion:</h5>
+                <h5>centroUrl:</h5>
               </Col>
               <Col sm="4">
                 <Input
-                  id="duracion"
-                  value={this.state.duracion}
+                  id="centroUrl"
+                  value={this.state.centroUrl}
                   onChange={this.handleOnChange.bind(this)}
-                  placeholder={`cuanto dura la sesion`}
-                />
-              </Col>
-            </Row>
-            {/*////////////////////////////////////////////// formacionTextoLargo /////////////////////////////////*/}
-            <Row
-              style={{
-                width: "92%",
-                marginLeft: 20,
-                borderRadius: "4px",
-                border: "1px solid gray",
-                paddingTop: 5
-              }}
-            >
-              <Col
-                style={{
-                  padding: 2,
-                  paddingLeft: 4
-                }}
-                sm="12"
-              >
-                <p>texto largo sobre el Formacion:</p>
-              </Col>
-              <Col sm="11">
-                <Input
-                  id="formacionTextoLargo"
-                  type="textarea"
-                  rows="5"
-                  value={this.state.formacionTextoLargo}
-                  onChange={this.handleOnChange.bind(this)}
-                  placeholder={`habla en general del Formacion`}
+                  placeholder={`pagina web del centro formativo`}
                 />
               </Col>
             </Row>
 
-            <br />
-
-            {/* //////////////////////////////////////////////////////////urlPic////////////////////////////////// */}
+            {/* //////////////////////////////////////////////////////////centroUrlPic////////////////////////////////// */}
             <div style={{ padding: 15 }}>
               <FormGroup
                 style={{
@@ -150,7 +123,7 @@ class FormModal extends React.Component {
               >
                 <Row>
                   <Col sm="4">
-                    <Label>elige una foto </Label>
+                    <Label>elige una foto de la uni o el curso </Label>
                     <Input
                       type="file"
                       id="newFormacion"

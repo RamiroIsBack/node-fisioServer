@@ -95,6 +95,7 @@ class FormPersonas extends Component {
             dataObject.chunkID
           ] = dataObject.chunkData;
         }
+        this.props.subirChunk(personaObject);
       } else {
         console.log("partID no corresponde con formacion", dataObject.partID);
         return;
@@ -445,14 +446,13 @@ class FormPersonas extends Component {
                 modalShow={this.state.modalNewFormacionShow}
                 modal={this.state.modalNewFormacion}
                 pics={this.props.pics}
-                formacionArray={this.props.persona.formacion}
                 toggleModal={this.toggleModalNewFormacion.bind(this)}
                 createNewFormacion={this.createNewFormacion.bind(this)}
                 subirFoto={this.subirFoto.bind(this)}
               />
               <Button
                 id="newPerson"
-                onClick={() => this.setState({ modalNewFormacion: true })}
+                onClick={() => this.setState({ modalNewFormacionShow: true })}
                 color="success"
                 style={{ display: "inline" }}
               >

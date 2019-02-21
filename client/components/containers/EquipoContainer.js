@@ -78,9 +78,14 @@ class EquipoContainer extends Component {
               equipo.push(dataObject.newPersona);
             } else if (dataObject.chunkID === "eliminar") {
               equipo.splice(dataObject.personaIndex, 1);
+            } else if (dataObject.partID === "formacion") {
+              equipo[dataObject.personaIndex].formacion[
+                dataObject.formacionIndex
+              ][dataObject.chunkID] = dataObject.chunkData;
+            } else if (dataObject.partID === "tecnica") {
+              console.log("hola tecnica");
             } else {
-              equipo.personas[dataObject.personaIndex] =
-                dataObject.updatedPersona;
+              equipo[dataObject.personaIndex] = dataObject.updatedPersona;
             }
 
             axios({
