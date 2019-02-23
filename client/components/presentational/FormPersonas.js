@@ -63,10 +63,10 @@ class FormPersonas extends Component {
       console.log("no hay archivo q subir" + archivo);
     }
   }
-  subirChunkTecnicaOrFormacion(chunkObject) {
-    chunkObject.personaIndex = this.props.personaIndex;
-    this.props.subirChunk(chunkObject);
-  }
+  // subirChunkTecnicaOrFormacion(chunkObject) {
+  //   chunkObject.personaIndex = this.props.personaIndex;
+  //   this.props.subirChunk(chunkObject);
+  // }
   subirChunk(e) {
     var personaObject = {
       updatedPersona: Object.assign({}, this.props.persona),
@@ -106,9 +106,7 @@ class FormPersonas extends Component {
           this.state.parameters[e.target.id]
         );
       } else if (e.target.name === "eliminarTecnica") {
-        personaObject.updatedPersona.tecnicas = personaObject.updatedPersona.tecnicas.filter(
-          (tecnica, index) => e.target.id !== index
-        );
+        personaObject.updatedPersona.tecnicas.splice(e.target.id, 1);
       } else {
         personaObject.updatedPersona[e.target.id] = this.state.parameters[
           e.target.id
@@ -405,7 +403,7 @@ class FormPersonas extends Component {
                 <Col sm="3">
                   <Button
                     name="newTecnica"
-                    id=""
+                    id="newTecnica"
                     onClick={this.subirChunk.bind(this)}
                     color="primary"
                     disabled={
@@ -467,7 +465,7 @@ class FormPersonas extends Component {
                     formacionIndex={index}
                     formacion={formacion}
                     pics={this.props.pics}
-                    subirChunk={this.subirChunkTecnicaOrFormacion.bind(this)}
+                    subirChunk={this.subirChunk.bind(this)}
                     subirFoto={this.subirFotoFormacion.bind(this)}
                   />
                 );

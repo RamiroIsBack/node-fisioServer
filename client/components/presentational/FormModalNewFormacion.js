@@ -16,7 +16,7 @@ class FormModal extends React.Component {
   constructor() {
     super();
     this.state = {
-      studios: "",
+      estudios: "",
       centroFormativo: "",
       centroUrlPic: "",
       centroUrl: "",
