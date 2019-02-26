@@ -56,6 +56,7 @@ class EquipoContainer extends Component {
       if (dude && this.props.copy.equipoCopy) {
         const id = this.props.copy.equipoCopy._id;
         if (dataObject.chunkID === "equipoTextoLargo") {
+          let partID = dataObject.partID;
           axios({
             method: "patch",
             url: "/copy/equipo",
@@ -101,40 +102,6 @@ class EquipoContainer extends Component {
               .catch(err => {
                 console.log(err);
               });
-            // } else if (dataObject.partID === "formacion") {
-            //   equipo[dataObject.personaIndex].formacion[
-            //     dataObject.formacionIndex
-            //   ][dataObject.chunkID] = dataObject.chunkData;
-            //   axios({
-            //     method: "patch",
-            //     url: "/copy/equipo",
-            //     data: { id, equipo },
-            //     headers: { "x-auth": dude.token }
-            //   })
-            //     .then(res => {
-            //       console.log(res);
-            //       this.props.equipoReceived(res.data);
-            //     })
-            //     .catch(err => {
-            //       console.log(err);
-            //     });
-            // } else if (dataObject.partID === "persona") {
-            //   // persona field
-            //   equipo[dataObject.personaIndex][dataObject.chunkID] =
-            //     dataObject.chunkData;
-            //   axios({
-            //     method: "patch",
-            //     url: "/copy/equipo",
-            //     data: { id, equipo },
-            //     headers: { "x-auth": dude.token }
-            //   })
-            //     .then(res => {
-            //       console.log(res);
-            //       this.props.equipoReceived(res.data);
-            //     })
-            //     .catch(err => {
-            //       console.log(err);
-            //     });
           } else {
             console.log("partID no corresponde con persona", dataObject.partID);
           }

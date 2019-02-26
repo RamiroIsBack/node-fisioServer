@@ -18,6 +18,7 @@ class EquipoForm extends Component {
 
   subirChunk(e) {
     this.props.subirChunk({
+      partID: "persona",
       chunkID: "equipoTextoLargo",
       chunkData: this.state.parameters[e.target.id]
     });

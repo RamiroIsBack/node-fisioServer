@@ -24,6 +24,8 @@ export default (state = initialState, action) => {
       });
       newState.pics["newServicio"] = "";
       newState.pics["newTecnica"] = "";
+      newState.pics["newFormacion"] = "";
+      newState.pics["newPersona"] = "";
       return newState;
     }
     case constants.EQUIPO_RECEIVED: {
