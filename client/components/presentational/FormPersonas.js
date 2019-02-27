@@ -77,7 +77,7 @@ class FormPersonas extends Component {
       //this is not the event object
       let dataObject = Object.assign({}, e);
 
-      if (dataObject.chunkID === "urlPic") {
+      if (dataObject.partID === "urlPic") {
         personaObject.updatedPersona.urlPic = this.props.pics[
           this.props.persona.nombre
         ];
@@ -95,10 +95,6 @@ class FormPersonas extends Component {
             dataObject.chunkID
           ] = dataObject.chunkData;
         }
-        this.props.subirChunk(personaObject);
-      } else {
-        console.log("partID no corresponde con formacion", dataObject.partID);
-        return;
       }
     } else {
       if (e.target.name === "newTecnica") {
@@ -112,8 +108,8 @@ class FormPersonas extends Component {
           e.target.id
         ];
       }
-      this.props.subirChunk(personaObject);
     }
+    this.props.subirChunk(personaObject);
   }
   eliminarPersona() {
     let dataObject = {};
@@ -308,7 +304,7 @@ class FormPersonas extends Component {
             src={this.props.persona.urlPic}
             pics={this.props.pics}
             id={this.props.persona.nombre}
-            name={"persona"}
+            name={"urlPic"}
             subirChunk={this.subirChunk.bind(this)}
             subirFoto={this.subirFoto.bind(this)}
           />

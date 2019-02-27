@@ -50,7 +50,7 @@ class InstalacionesContainer extends Component {
             .catch(err => {
               console.log(err);
             });
-        } else {
+        } else if (partID === "urlPic") {
           let items = this.props.copy.instalacionesCopy.items;
           let index = "";
           items.map((item, i) => {
@@ -106,7 +106,7 @@ class InstalacionesContainer extends Component {
               src={foto.src}
               pics={this.props.copy.pics}
               id={foto.nombre}
-              name={"pic"}
+              name={"urlPic"}
               subirChunk={this.subirChunk.bind(this)}
               subirFoto={this.subirFoto.bind(this)}
             />

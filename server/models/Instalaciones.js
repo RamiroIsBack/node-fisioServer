@@ -12,7 +12,7 @@ var InstalacionesSchema = mongoose.Schema({
       src: {
         type: String
       },
-      alt: {
+      nombre: {
         type: String
       }
     }
