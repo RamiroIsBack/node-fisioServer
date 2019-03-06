@@ -106,9 +106,6 @@ class InicioContainer extends Component {
         />
         <div>
           <h3 style={{ display: "inline" }}>Carousell de fotos </h3>
-          <p style={{ display: "inline" }}>
-            que luego son tambien fotos de los diferentes servicios
-          </p>
         </div>
         <br />
         {this.props.copy.inicioCopy ? (
