@@ -23,6 +23,7 @@ export default (state = initialState, action) => {
         newState.pics[pic.nombre] = "";
       });
       newState.pics["newServicio"] = "";
+      newState.pics["newServicioIcono"] = "";
       newState.pics["newTecnica"] = "";
       newState.pics["newFormacion"] = "";
       newState.pics["newPersona"] = "";
@@ -50,6 +51,7 @@ export default (state = initialState, action) => {
       newState["serviciosCopy"] = action.data;
       action.data.servicios.map(servicio => {
         newState.pics[`servicio${servicio.nombre}`] = "";
+        newState.pics[`servicioIcono${servicio.nombre}`] = "";
       });
       return newState;
     }

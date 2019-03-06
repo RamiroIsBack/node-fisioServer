@@ -42,6 +42,7 @@ class FormModal extends React.Component {
   createNewServicio(e) {
     let obj = Object.assign({}, this.state);
     obj.urlPic = this.props.pics["newServicio"];
+    obj.urlIcono = this.props.pics["newServicioIcono"];
     this.props.createNewServicio(obj);
   }
   render() {
@@ -182,6 +183,51 @@ class FormModal extends React.Component {
                 </Row>
               </FormGroup>
             </div>
+            {/* //////////////////////////////////////////////////////////urlIcono////////////////////////////////// */}
+            <div style={{ padding: 15 }}>
+              <FormGroup
+                style={{
+                  padding: "2px",
+                  borderRadius: "4px",
+                  border: "1px solid black"
+                }}
+              >
+                <Row>
+                  <Col sm="4">
+                    <Label>elige un Icono </Label>
+                    <Input
+                      type="file"
+                      id="newServicioIcono"
+                      style={{
+                        padding: "10px",
+                        cursor: "pointer",
+                        backgroundColor: this.props.pics
+                          ? this.props.pics["newServicioIcono"] === ""
+                            ? "yellow"
+                            : "transparent"
+                          : "yellow"
+                      }}
+                      onChange={this.guardarPic.bind(this)}
+                    />
+                  </Col>
+                  <Col sm="8">
+                    <Label>
+                      hasta que no se rellene este campo no est'a la foto lista
+                      para subir a la base de datos, espera a que haya algo
+                      escrito aqui para darle al boton de subir foto
+                    </Label>
+                    <Input
+                      value={
+                        this.props.pics
+                          ? this.props.pics["newServicioIcono"]
+                          : ""
+                      }
+                      readOnly="readonly"
+                    />
+                  </Col>
+                </Row>
+              </FormGroup>
+            </div>
           </FormGroup>
         </ModalBody>
         <ModalFooter>
@@ -190,7 +236,8 @@ class FormModal extends React.Component {
             onClick={this.createNewServicio.bind(this)}
             disabled={
               this.props.pics
-                ? this.props.pics["newServicio"] === ""
+                ? this.props.pics["newServicio"] === "" ||
+                  this.props.pics["newServicioIcono"] === ""
                   ? true
                   : false
                 : true

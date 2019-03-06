@@ -60,7 +60,8 @@ class ServiciosForm extends Component {
     if (e.chunkID) {
       //this is not the event object
       let dataObject = Object.assign({}, e);
-      dataObject.chunkID = "urlPic";
+      dataObject.chunkID = e.partID;
+      dataObject.partID = "servicio";
       dataObject.servicioIndex = this.props.servicioIndex;
       this.props.subirChunk(dataObject);
     } else {
@@ -239,7 +240,16 @@ class ServiciosForm extends Component {
             src={this.props.servicio.urlPic}
             pics={this.props.pics}
             id={`servicio${this.props.servicio.nombre}`}
-            name={"servicio"}
+            name={"urlPic"}
+            subirChunk={this.subirChunk.bind(this)}
+            subirFoto={this.subirFoto.bind(this)}
+          />
+          {/* //////////////////////////////////////////////////////////urlIcono////////////////////////////////// */}
+          <FormPictures
+            src={this.props.servicio.urlIcono}
+            pics={this.props.pics}
+            id={`servicioIcono${this.props.servicio.nombre}`}
+            name={"urlIcono"}
             subirChunk={this.subirChunk.bind(this)}
             subirFoto={this.subirFoto.bind(this)}
           />
