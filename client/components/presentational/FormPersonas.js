@@ -26,7 +26,7 @@ class FormPersonas extends Component {
         apellido: "",
         cargo: "",
         urlPic: "",
-        newTecnica: { nombre: "asignar tecnica", id: "" }
+        newTecnica: { nombre: "asignar tecnica", id: "", servicio: "" }
       },
       dropDownTecnica: false,
 
@@ -53,7 +53,11 @@ class FormPersonas extends Component {
   }
   dropdownChange(e) {
     let obj = Object.assign({}, this.state.parameters);
-    obj["newTecnica"] = { nombre: e.target.name, id: e.target.id };
+    obj["newTecnica"] = {
+      nombre: e.target.name,
+      id: e.target.id,
+      servicio: e.target.title
+    };
     this.setState({ parameters: obj });
   }
   subirFoto(id, archivo) {
@@ -385,6 +389,7 @@ class FormPersonas extends Component {
                             key={index}
                             id={tecnica._id}
                             name={tecnica.nombre}
+                            title={tecnica.servicioNombre}
                             onClick={this.dropdownChange.bind(this)}
                           >
                             {tecnica.nombre}

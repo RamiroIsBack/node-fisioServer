@@ -27,6 +27,9 @@ var personaSchema = mongoose.Schema({
       },
       id: {
         type: String
+      },
+      servicio: {
+        type: String
       }
     }
   ]
