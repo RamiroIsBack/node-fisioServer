@@ -164,6 +164,7 @@ class ServiciosForm extends Component {
               </Button>
             </Col>
           </Row>
+
           {/* //////////////////////////////////////////////////////////duracion////////////////////////////////// */}
 
           <Row style={{ paddingTop: 5 }}>
@@ -191,6 +192,79 @@ class ServiciosForm extends Component {
               </Button>
             </Col>
           </Row>
+          {/* //////////////////////////////////////////////////////////bono////////////////////////////////// */}
+          <Row style={{ paddingTop: 5 }}>
+            <Col sm="4">
+              <div
+                style={{
+                  backgroundColor: "gainsboro"
+                }}
+              >
+                <h5 style={{ display: "inline-block" }}>
+                  {this.props.servicio.bono.modalidad}{" "}
+                  {this.props.servicio.bono.dias}
+                  {" : "}
+                  {this.props.servicio.bono.precio}
+                </h5>
+                {this.props.servicio.bono.precio ? (
+                  <h6 style={{ display: "inline-block" }}>Euros</h6>
+                ) : (
+                  ""
+                )}
+              </div>
+            </Col>
+            {/* <Col sm="6">
+                  <Dropdown
+                    direction="down"
+                    isOpen={this.state.dropDownTecnica}
+                    toggle={() => {
+                      this.setState({
+                        dropDownTecnica: !this.state.dropDownTecnica
+                      });
+                    }}
+                  >
+                    <DropdownToggle caret>
+                      {this.state.parameters.newTecnica.nombre}
+                    </DropdownToggle>
+                    <DropdownMenu>
+                      {this.props.tecnicas ? (
+                        this.props.tecnicas.map((tecnica, index) => (
+                          <DropdownItem
+                            key={index}
+                            id={tecnica._id}
+                            name={tecnica.nombre}
+                            title={tecnica.servicioNombre}
+                            onClick={this.dropdownChange.bind(this)}
+                          >
+                            {tecnica.nombre}
+                          </DropdownItem>
+                        ))
+                      ) : (
+                        <div />
+                      )}
+                    </DropdownMenu>
+                  </Dropdown>
+                </Col> */}
+            <Col sm="4">
+              <Input
+                id="precio"
+                value={this.state.precio}
+                onChange={this.handleOnChange.bind(this)}
+                placeholder={`cuanto cuesta`}
+              />
+            </Col>
+            <Col sm="4">
+              <Button
+                id="precio"
+                name="servicio"
+                onClick={this.subirChunk.bind(this)}
+                color="primary"
+              >
+                Cambiar precio
+              </Button>
+            </Col>
+          </Row>
+
           {/*////////////////////////////////////////////// servicioTextoLargo /////////////////////////////////*/}
           <Row
             style={{

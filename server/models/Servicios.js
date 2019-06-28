@@ -16,8 +16,8 @@ var ServiciosSchema = mongoose.Schema({
         modalidad: {
           type: String
         },
-        numero: {
-          type: Number
+        dias: {
+          type: String
         },
         precio: {
           type: Number
