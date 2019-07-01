@@ -1,5 +1,16 @@
 import React, { Component } from "react";
-import { Row, Col, Button, FormGroup, Label, Input } from "reactstrap";
+import {
+  Row,
+  Col,
+  Button,
+  FormGroup,
+  Label,
+  Input,
+  DropdownMenu,
+  DropdownItem,
+  Dropdown,
+  DropdownToggle
+} from "reactstrap";
 
 import FormPictures from "./FormPictures";
 import FormModalEliminar from "./FormModalEliminar";
@@ -13,10 +24,11 @@ class ServiciosForm extends Component {
         precio: 0,
         duracion: 0,
         servicioTextoLargo: "",
+        bonoNombre: "cambiar bono",
         bono: {
-          modalidad: "",
-          numero: 0,
-          precio: 0
+          modalidad: "elige modalidad", //sin bono,bono,mensual
+          dias: "numero o dias de la semana",
+          precio: "cuanto cuesta"
         },
         urlPic: ""
       },
@@ -25,13 +37,19 @@ class ServiciosForm extends Component {
         modalName: "Quires eliminar esta Servicio?",
         actionName: "eliminar Servicio",
         modalBodie: `Si lo eliminas se pierden los datos, si quieres copiar algun texto o algo, hazlo antes de eliminar la Servicio. `
-      }
+      },
+      dropdownBono: false
     };
   }
 
   handleOnChange(e) {
     let obj = Object.assign({}, this.state);
     obj.parameters[e.target.id] = e.target.value;
+    this.setState(obj);
+  }
+  dropdownBonoChange(e) {
+    let obj = Object.assign({}, this.state);
+    obj.parameters.bono[e.target.id] = e.target.name;
     this.setState(obj);
   }
   subirFoto(id, archivo) {
@@ -194,7 +212,7 @@ class ServiciosForm extends Component {
           </Row>
           {/* //////////////////////////////////////////////////////////bono////////////////////////////////// */}
           <Row style={{ paddingTop: 5 }}>
-            <Col sm="4">
+            <Col sm="3">
               <div
                 style={{
                   backgroundColor: "gainsboro"
@@ -213,39 +231,45 @@ class ServiciosForm extends Component {
                 )}
               </div>
             </Col>
-            {/* <Col sm="6">
-                  <Dropdown
-                    direction="down"
-                    isOpen={this.state.dropDownTecnica}
-                    toggle={() => {
-                      this.setState({
-                        dropDownTecnica: !this.state.dropDownTecnica
-                      });
-                    }}
+            <Col sm="3">
+              <Dropdown
+                direction="down"
+                isOpen={this.state.dropDownBono}
+                toggle={() => {
+                  this.setState({
+                    dropDownBono: !this.state.dropDownBono
+                  });
+                }}
+              >
+                <DropdownToggle caret>
+                  {this.state.parameters.bono.modalidad}
+                </DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem
+                    id="modalidad"
+                    name="sin bono"
+                    onClick={this.dropdownBonoChange.bind(this)}
                   >
-                    <DropdownToggle caret>
-                      {this.state.parameters.newTecnica.nombre}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                      {this.props.tecnicas ? (
-                        this.props.tecnicas.map((tecnica, index) => (
-                          <DropdownItem
-                            key={index}
-                            id={tecnica._id}
-                            name={tecnica.nombre}
-                            title={tecnica.servicioNombre}
-                            onClick={this.dropdownChange.bind(this)}
-                          >
-                            {tecnica.nombre}
-                          </DropdownItem>
-                        ))
-                      ) : (
-                        <div />
-                      )}
-                    </DropdownMenu>
-                  </Dropdown>
-                </Col> */}
-            <Col sm="4">
+                    sin bono
+                  </DropdownItem>
+                  <DropdownItem
+                    id="modalidad"
+                    name="bono"
+                    onClick={this.dropdownBonoChange.bind(this)}
+                  >
+                    bono
+                  </DropdownItem>
+                  <DropdownItem
+                    id="modalidad"
+                    name="mensualidad"
+                    onClick={this.dropdownBonoChange.bind(this)}
+                  >
+                    mensualidad
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </Col>
+            <Col sm="3">
               <Input
                 id="precio"
                 value={this.state.precio}
@@ -253,7 +277,7 @@ class ServiciosForm extends Component {
                 placeholder={`cuanto cuesta`}
               />
             </Col>
-            <Col sm="4">
+            <Col sm="3">
               <Button
                 id="precio"
                 name="servicio"
