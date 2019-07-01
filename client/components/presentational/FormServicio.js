@@ -1,19 +1,9 @@
 import React, { Component } from "react";
-import {
-  Row,
-  Col,
-  Button,
-  FormGroup,
-  Label,
-  Input,
-  DropdownMenu,
-  DropdownItem,
-  Dropdown,
-  DropdownToggle
-} from "reactstrap";
+import { Row, Col, Button, FormGroup, Label, Input } from "reactstrap";
 
 import FormPictures from "./FormPictures";
 import FormModalEliminar from "./FormModalEliminar";
+import FormBono from "./FormBono";
 
 class ServiciosForm extends Component {
   constructor() {
@@ -37,8 +27,7 @@ class ServiciosForm extends Component {
         modalName: "Quires eliminar esta Servicio?",
         actionName: "eliminar Servicio",
         modalBodie: `Si lo eliminas se pierden los datos, si quieres copiar algun texto o algo, hazlo antes de eliminar la Servicio. `
-      },
-      dropdownBono: false
+      }
     };
   }
 
@@ -47,11 +36,7 @@ class ServiciosForm extends Component {
     obj.parameters[e.target.id] = e.target.value;
     this.setState(obj);
   }
-  dropdownBonoChange(e) {
-    let obj = Object.assign({}, this.state);
-    obj.parameters.bono[e.target.id] = e.target.name;
-    this.setState(obj);
-  }
+
   subirFoto(id, archivo) {
     if (archivo) {
       this.props.subirFoto(id, archivo);
@@ -211,83 +196,10 @@ class ServiciosForm extends Component {
             </Col>
           </Row>
           {/* //////////////////////////////////////////////////////////bono////////////////////////////////// */}
-          <Row style={{ paddingTop: 5 }}>
-            <Col sm="3">
-              <div
-                style={{
-                  backgroundColor: "gainsboro"
-                }}
-              >
-                <h5 style={{ display: "inline-block" }}>
-                  {this.props.servicio.bono.modalidad}{" "}
-                  {this.props.servicio.bono.dias}
-                  {" : "}
-                  {this.props.servicio.bono.precio}
-                </h5>
-                {this.props.servicio.bono.precio ? (
-                  <h6 style={{ display: "inline-block" }}>Euros</h6>
-                ) : (
-                  ""
-                )}
-              </div>
-            </Col>
-            <Col sm="3">
-              <Dropdown
-                direction="down"
-                isOpen={this.state.dropDownBono}
-                toggle={() => {
-                  this.setState({
-                    dropDownBono: !this.state.dropDownBono
-                  });
-                }}
-              >
-                <DropdownToggle caret>
-                  {this.state.parameters.bono.modalidad}
-                </DropdownToggle>
-                <DropdownMenu>
-                  <DropdownItem
-                    id="modalidad"
-                    name="sin bono"
-                    onClick={this.dropdownBonoChange.bind(this)}
-                  >
-                    sin bono
-                  </DropdownItem>
-                  <DropdownItem
-                    id="modalidad"
-                    name="bono"
-                    onClick={this.dropdownBonoChange.bind(this)}
-                  >
-                    bono
-                  </DropdownItem>
-                  <DropdownItem
-                    id="modalidad"
-                    name="mensualidad"
-                    onClick={this.dropdownBonoChange.bind(this)}
-                  >
-                    mensualidad
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-            </Col>
-            <Col sm="3">
-              <Input
-                id="precio"
-                value={this.state.precio}
-                onChange={this.handleOnChange.bind(this)}
-                placeholder={`cuanto cuesta`}
-              />
-            </Col>
-            <Col sm="3">
-              <Button
-                id="precio"
-                name="servicio"
-                onClick={this.subirChunk.bind(this)}
-                color="primary"
-              >
-                Cambiar precio
-              </Button>
-            </Col>
-          </Row>
+          <FormBono
+            bono={this.props.servicio.bono}
+            subirBono={this.subirChunk.bind(this)}
+          />
 
           {/*////////////////////////////////////////////// servicioTextoLargo /////////////////////////////////*/}
           <Row
