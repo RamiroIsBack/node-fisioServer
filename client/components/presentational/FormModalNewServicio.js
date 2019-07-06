@@ -171,7 +171,7 @@ class FormModal extends React.Component {
                     textAlign: "center"
                   }}
                 >
-                  Precio y duracion solo n'umeros!
+                  Precio y duracion solo numeros!
                 </h4>
               </Col>
             </Row>
