@@ -3,8 +3,6 @@ import {
   Row,
   Col,
   Button,
-  FormGroup,
-  Label,
   Input,
   DropdownMenu,
   DropdownItem,
@@ -25,11 +23,102 @@ class FormBono extends Component {
       dropdownBono: false
     };
     this.handleOnChange = this.handleOnChange.bind(this);
+    this.giveMeModalidad = this.giveMeModalidad.bind(this);
+    this.giveMeDias = this.giveMeDias.bind(this);
+    this.giveMePrecio = this.giveMePrecio.bind(this);
+    this.subirBono = this.subirBono.bind(this);
+  }
+  subirBono(e) {
+    let bono = {
+      partID: e.target.id,
+      chunkID: "bono",
+      chunkData: this.state.parameters.bono
+    };
+    if (bono.chunkData.modalidad === "sin bono") {
+      bono.chunkData.dias = "";
+      bono.chunkData.precio = "";
+    }
+    this.props.subirBono(bono);
   }
   handleOnChange(e) {
     let obj = Object.assign({}, this.state);
-    obj.parameters.bono[e.target.id] = e.target.name;
+    e.target.id === "modalidad"
+      ? (obj.parameters.bono[e.target.id] = e.target.name)
+      : (obj.parameters.bono[e.target.id] = e.target.value);
     this.setState(obj);
+  }
+  giveMeModalidad() {
+    return (
+      <Dropdown
+        direction="down"
+        isOpen={this.state.dropDownBono}
+        toggle={() => {
+          this.setState({
+            dropDownBono: !this.state.dropDownBono
+          });
+        }}
+      >
+        <DropdownToggle caret>
+          {this.state.parameters.bono.modalidad}
+        </DropdownToggle>
+        <DropdownMenu>
+          <DropdownItem
+            id="modalidad"
+            name="sin bono"
+            onClick={this.handleOnChange}
+          >
+            sin bono
+          </DropdownItem>
+          <DropdownItem
+            id="modalidad"
+            name="bono"
+            onClick={this.handleOnChange}
+          >
+            bono
+          </DropdownItem>
+          <DropdownItem
+            id="modalidad"
+            name="mensualidad"
+            onClick={this.handleOnChange}
+          >
+            mensualidad
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
+    );
+  }
+  giveMeDias() {
+    return this.state.parameters.bono.modalidad !== "elige modalidad" &&
+      this.state.parameters.bono.modalidad !== "sin bono" ? (
+      <div>
+        <p style={{ margin: 0 }}>dias</p>
+        <Input
+          id="dias"
+          name={this.state.parameters.bono.dias}
+          onChange={this.handleOnChange}
+          placeholder={this.state.parameters.bono.dias}
+        />
+      </div>
+    ) : (
+      <h4>sin modalidad de bono?</h4>
+    );
+  }
+  giveMePrecio() {
+    return this.state.parameters.bono.modalidad !== "elige modalidad" &&
+      this.state.parameters.bono.modalidad !== "sin bono" ? (
+      <div>
+        {" "}
+        <p style={{ margin: 0 }}>precio</p>
+        <Input
+          id="precio"
+          name={this.state.parameters.bono.precio}
+          onChange={this.handleOnChange}
+          placeholder={this.state.parameters.bono.precio}
+        />
+      </div>
+    ) : (
+      <div />
+    );
   }
   render() {
     return (
@@ -52,62 +141,24 @@ class FormBono extends Component {
             )}
           </div>
         </Col>
-        <Col sm="3">
-          <Dropdown
-            direction="down"
-            isOpen={this.state.dropDownBono}
-            toggle={() => {
-              this.setState({
-                dropDownBono: !this.state.dropDownBono
-              });
-            }}
-          >
-            <DropdownToggle caret>
-              {this.state.parameters.bono.modalidad}
-            </DropdownToggle>
-            <DropdownMenu>
-              <DropdownItem
-                id="modalidad"
-                name="sin bono"
-                onClick={this.handleOnChange}
-              >
-                sin bono
-              </DropdownItem>
-              <DropdownItem
-                id="modalidad"
-                name="bono"
-                onClick={this.handleOnChange}
-              >
-                bono
-              </DropdownItem>
-              <DropdownItem
-                id="modalidad"
-                name="mensualidad"
-                onClick={this.handleOnChange}
-              >
-                mensualidad
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-        </Col>
-        <Col sm="3">
-          <Input
-            id="precio"
-            name={this.state.precio}
-            onChange={this.handleOnChange}
-            placeholder={`cuanto cuesta`}
-          />
-        </Col>
-        <Col sm="3">
+        <Col sm="2">{this.giveMeModalidad()}</Col>
+        <Col sm="3">{this.giveMeDias()}</Col>
+        <Col sm="2">{this.giveMePrecio()}</Col>
+
+        <Col sm="2">
           <Button
             id="bono"
             name="servicio"
-            onClick={this.props.subirBono} //need to do it
+            onClick={this.subirBono} //need to do it
             color="primary"
             disabled={
               //not working
-              this.state.parameters.bono.modalidad !== "elige modalidad" ||
-              this.state.parameters.bono.modalidad !== "sin bono"
+              this.state.parameters.bono.modalidad !== "elige modalidad" &&
+              this.state.parameters.bono.dias !==
+                "numero o dias de la semana" &&
+              this.state.parameters.bono.precio !== "cuanto cuesta"
+                ? false
+                : this.state.parameters.bono.modalidad === "sin bono"
                 ? false
                 : true
             }

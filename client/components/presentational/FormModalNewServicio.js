@@ -9,7 +9,11 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
-  ModalFooter
+  ModalFooter,
+  DropdownMenu,
+  DropdownItem,
+  Dropdown,
+  DropdownToggle
 } from "reactstrap";
 
 class FormModal extends React.Component {
@@ -105,6 +109,53 @@ class FormModal extends React.Component {
                   onChange={this.handleOnChange.bind(this)}
                   placeholder={`cuanto dura la sesion`}
                 />
+              </Col>
+            </Row>
+            {/* //////////////////////////////////////////////////////////bono////////////////////////////////// */}
+            <Row style={{ paddingTop: 5 }}>
+              <Col sm="3">
+                <div
+                  style={{
+                    backgroundColor: "gainsboro"
+                  }}
+                >
+                  <h5 style={{ display: "inline-block" }}>
+                    {this.props.bono.modalidad} {this.props.bono.dias}
+                    {" : "}
+                    {this.props.bono.precio}
+                  </h5>
+                  {this.props.bono.precio ? (
+                    <h6 style={{ display: "inline-block" }}>Euros</h6>
+                  ) : (
+                    ""
+                  )}
+                </div>
+              </Col>
+              <Col sm="2">{this.giveMeModalidad()}</Col>
+              <Col sm="3">{this.giveMeDias()}</Col>
+              <Col sm="2">{this.giveMePrecio()}</Col>
+
+              <Col sm="2">
+                <Button
+                  id="bono"
+                  name="servicio"
+                  onClick={this.subirBono} //need to do it
+                  color="primary"
+                  disabled={
+                    //not working
+                    this.state.parameters.bono.modalidad !==
+                      "elige modalidad" &&
+                    this.state.parameters.bono.dias !==
+                      "numero o dias de la semana" &&
+                    this.state.parameters.bono.precio !== "cuanto cuesta"
+                      ? false
+                      : this.state.parameters.bono.modalidad === "sin bono"
+                      ? false
+                      : true
+                  }
+                >
+                  Cambiar Bono
+                </Button>
               </Col>
             </Row>
             {/*////////////////////////////////////////////// servicioTextoLargo /////////////////////////////////*/}
