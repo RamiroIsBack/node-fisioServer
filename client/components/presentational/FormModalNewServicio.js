@@ -24,9 +24,9 @@ class FormModal extends React.Component {
       precio: 0,
       duracion: 0,
       bono: {
-        modalidad: "Bono",
-        numero: 0,
-        precio: 0
+        modalidad: "sin bono", //sin bono,bono,mensual
+        dias: "",
+        precio: ""
       },
       urlPic: "",
 
@@ -34,13 +34,20 @@ class FormModal extends React.Component {
 
       tecnicas: []
     };
+    this.giveMeModalidad = this.giveMeModalidad.bind(this);
+    this.giveMeDias = this.giveMeDias.bind(this);
+    this.giveMePrecio = this.giveMePrecio.bind(this);
   }
   guardarPic(e) {
     this.props.subirFoto(e.target.id, e.target.files[0]);
   }
   handleOnChange(e) {
     let obj = Object.assign({}, this.state);
-    obj[e.target.id] = e.target.value;
+    e.target.id === "bono"
+      ? e.target.title === "modalidad"
+        ? (obj.bono[e.target.title] = e.target.name)
+        : (obj.bono[e.target.title] = e.target.value)
+      : (obj[e.target.id] = e.target.value);
     this.setState(obj);
   }
   createNewServicio(e) {
@@ -48,6 +55,80 @@ class FormModal extends React.Component {
     obj.urlPic = this.props.pics["newServicio"];
     obj.urlIcono = this.props.pics["newServicioIcono"];
     this.props.createNewServicio(obj);
+  }
+  giveMeModalidad() {
+    return (
+      <Dropdown
+        direction="down"
+        isOpen={this.state.dropDownBono}
+        toggle={() => {
+          this.setState({
+            dropDownBono: !this.state.dropDownBono
+          });
+        }}
+      >
+        <DropdownToggle caret>{this.state.bono.modalidad}</DropdownToggle>
+        <DropdownMenu>
+          <DropdownItem
+            id="bono"
+            title="modalidad"
+            name="sin bono"
+            onClick={this.handleOnChange.bind(this)}
+          >
+            sin bono
+          </DropdownItem>
+          <DropdownItem
+            id="bono"
+            title="modalidad"
+            name="bono"
+            onClick={this.handleOnChange.bind(this)}
+          >
+            bono
+          </DropdownItem>
+          <DropdownItem
+            id="bono"
+            title="modalidad"
+            name="mensualidad"
+            onClick={this.handleOnChange.bind(this)}
+          >
+            mensualidad
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
+    );
+  }
+  giveMeDias() {
+    return this.state.bono.modalidad !== "elige modalidad" &&
+      this.state.bono.modalidad !== "sin bono" ? (
+      <div>
+        <p style={{ margin: 0 }}>dias</p>
+        <Input
+          id="bono"
+          title="dias"
+          onChange={this.handleOnChange.bind(this)}
+          placeholder={this.state.bono.dias}
+        />
+      </div>
+    ) : (
+      <h4>sin modalidad de bono?</h4>
+    );
+  }
+  giveMePrecio() {
+    return this.state.bono.modalidad !== "elige modalidad" &&
+      this.state.bono.modalidad !== "sin bono" ? (
+      <div>
+        {" "}
+        <p style={{ margin: 0 }}>precio</p>
+        <Input
+          id="bono"
+          title="precio"
+          onChange={this.handleOnChange.bind(this)}
+          placeholder={this.state.bono.precio}
+        />
+      </div>
+    ) : (
+      <div />
+    );
   }
   render() {
     return (
@@ -81,7 +162,19 @@ class FormModal extends React.Component {
                 />
               </Col>
             </Row>
-
+            <Row>
+              <Col sm="10">
+                <h4
+                  style={{
+                    backgroundColor: "yellow",
+                    fontWeight: "bold",
+                    textAlign: "center"
+                  }}
+                >
+                  Precio y duracion solo n'umeros!
+                </h4>
+              </Col>
+            </Row>
             {/* //////////////////////////////////////////////////////////precio////////////////////////////////// */}
             <Row style={{ paddingTop: 5 }}>
               <Col sm="4">
@@ -113,50 +206,9 @@ class FormModal extends React.Component {
             </Row>
             {/* //////////////////////////////////////////////////////////bono////////////////////////////////// */}
             <Row style={{ paddingTop: 5 }}>
-              <Col sm="3">
-                <div
-                  style={{
-                    backgroundColor: "gainsboro"
-                  }}
-                >
-                  <h5 style={{ display: "inline-block" }}>
-                    {this.props.bono.modalidad} {this.props.bono.dias}
-                    {" : "}
-                    {this.props.bono.precio}
-                  </h5>
-                  {this.props.bono.precio ? (
-                    <h6 style={{ display: "inline-block" }}>Euros</h6>
-                  ) : (
-                    ""
-                  )}
-                </div>
-              </Col>
-              <Col sm="2">{this.giveMeModalidad()}</Col>
-              <Col sm="3">{this.giveMeDias()}</Col>
-              <Col sm="2">{this.giveMePrecio()}</Col>
-
-              <Col sm="2">
-                <Button
-                  id="bono"
-                  name="servicio"
-                  onClick={this.subirBono} //need to do it
-                  color="primary"
-                  disabled={
-                    //not working
-                    this.state.parameters.bono.modalidad !==
-                      "elige modalidad" &&
-                    this.state.parameters.bono.dias !==
-                      "numero o dias de la semana" &&
-                    this.state.parameters.bono.precio !== "cuanto cuesta"
-                      ? false
-                      : this.state.parameters.bono.modalidad === "sin bono"
-                      ? false
-                      : true
-                  }
-                >
-                  Cambiar Bono
-                </Button>
-              </Col>
+              <Col sm="4">{this.giveMeModalidad()}</Col>
+              <Col sm="5">{this.giveMeDias()}</Col>
+              <Col sm="3">{this.giveMePrecio()}</Col>
             </Row>
             {/*////////////////////////////////////////////// servicioTextoLargo /////////////////////////////////*/}
             <Row
