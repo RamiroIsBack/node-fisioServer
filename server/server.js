@@ -288,10 +288,10 @@ app.get("/ping", (req, res) => {
       res.send(err);
     });
 });
-/////////////////landing page /////////////
-app.get("/", (req, res) => {
-  res.send({ working: "fisioB API working alright" });
-});
+/////////////////landing page when no frontend /////////////
+// app.get("/", (req, res) => {
+//   res.send({ working: "fisioB API working alright" });
+// });
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
   console.log(`The server has started on port: ${port}`);
