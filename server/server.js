@@ -288,7 +288,10 @@ app.get("/ping", (req, res) => {
       res.send(err);
     });
 });
-
+/////////////////landing page /////////////
+app.get("/", (req, res) => {
+  res.send({ working: "fisioB API working alright" });
+});
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
   console.log(`The server has started on port: ${port}`);
@@ -298,15 +301,15 @@ app.listen(port, () => {
 
 // TODO::: configure webpack without webpack-dev-middleware
 
-// var webpackConfig = "";
-// if (port === 4000) {
-//   // devtool: "inline-source-map" for development
-//   webpackConfig = require("../webpack.dev.js");
-// } else {
-//   // a single bundle.js output of all of our client side Javascript for production
-//   webpackConfig = require("../webpack.prod.js");
-// }
-// const webpackMiddleware = require("webpack-dev-middleware");
-// const webpack = require("webpack");
-// app.use(webpackMiddleware(webpack(webpackConfig)));
-// module.exports = { app };
+var webpackConfig = "";
+if (port === 4000) {
+  // devtool: "inline-source-map" for development
+  webpackConfig = require("../webpack.dev.js");
+} else {
+  // a single bundle.js output of all of our client side Javascript for production
+  webpackConfig = require("../webpack.prod.js");
+}
+const webpackMiddleware = require("webpack-dev-middleware");
+const webpack = require("webpack");
+app.use(webpackMiddleware(webpack(webpackConfig)));
+module.exports = { app };
