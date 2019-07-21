@@ -9,6 +9,7 @@ import {
   Dropdown,
   DropdownToggle
 } from "reactstrap";
+import { ETIME } from "constants";
 class FormBono extends Component {
   constructor() {
     super();
@@ -18,9 +19,15 @@ class FormBono extends Component {
           modalidad: "elige modalidad", //sin bono,bono,mensual
           dias: "numero o dias de la semana",
           precio: "cuanto cuesta"
+        },
+        bonoSecundario: {
+          modalidad: "sin bono", //sin bono,bono,mensual
+          dias: "numero o dias de la semana",
+          precio: "cuanto cuesta"
         }
       },
-      dropdownBono: false
+      dropdownBono: false,
+      dropdownBonoSecundario: false
     };
     this.handleOnChange = this.handleOnChange.bind(this);
     this.giveMeModalidad = this.giveMeModalidad.bind(this);
@@ -29,47 +36,57 @@ class FormBono extends Component {
     this.subirBono = this.subirBono.bind(this);
   }
   subirBono(e) {
-    let bono = {
+    let bonos = {
       partID: e.target.id,
-      chunkID: "bono",
-      chunkData: this.state.parameters.bono
+      chunkID: "bonos",
+      chunkData: this.state.parameters
     };
-    if (bono.chunkData.modalidad === "sin bono") {
-      bono.chunkData.dias = "";
-      bono.chunkData.precio = "";
+    if (bonos.chunkData.bono.modalidad === "sin bono") {
+      bonos.chunkData.bono.dias = "";
+      bonos.chunkData.bono.precio = "";
+      bonos.chunkData.bonoSecundario = {
+        modalidad: "sin bono",
+        dias: "",
+        precio: ""
+      };
     }
-    this.props.subirBono(bono);
+    this.props.subirBono(bonos);
   }
   handleOnChange(e) {
     let obj = Object.assign({}, this.state);
+
     e.target.id === "modalidad"
-      ? (obj.parameters.bono[e.target.id] = e.target.name)
-      : (obj.parameters.bono[e.target.id] = e.target.value);
+      ? (obj.parameters[e.target.title][e.target.id] = e.target.name)
+      : (obj.parameters[e.target.title][e.target.id] = e.target.value);
     this.setState(obj);
   }
-  giveMeModalidad() {
+  giveMeModalidad(cual) {
+    let dropdown = cual === "bono" ? "dropdownBono" : "dropdownBonoSecundario";
     return (
       <Dropdown
         direction="down"
-        isOpen={this.state.dropDownBono}
+        isOpen={this.state[dropdown]}
         toggle={() => {
           this.setState({
-            dropDownBono: !this.state.dropDownBono
+            [dropdown]: !this.state[dropdown]
           });
         }}
       >
         <DropdownToggle caret>
-          {this.state.parameters.bono.modalidad}
+          {this.state.parameters[cual].modalidad}
         </DropdownToggle>
         <DropdownMenu>
           <DropdownItem
+            title={cual}
             id="modalidad"
             name="sin bono"
             onClick={this.handleOnChange}
           >
             sin bono
           </DropdownItem>
+
           <DropdownItem
+            title={cual}
             id="modalidad"
             name="bono"
             onClick={this.handleOnChange}
@@ -77,6 +94,7 @@ class FormBono extends Component {
             bono
           </DropdownItem>
           <DropdownItem
+            title={cual}
             id="modalidad"
             name="mensualidad"
             onClick={this.handleOnChange}
@@ -87,33 +105,35 @@ class FormBono extends Component {
       </Dropdown>
     );
   }
-  giveMeDias() {
-    return this.state.parameters.bono.modalidad !== "elige modalidad" &&
-      this.state.parameters.bono.modalidad !== "sin bono" ? (
+  giveMeDias(cual) {
+    return this.state.parameters[cual].modalidad !== "elige modalidad" &&
+      this.state.parameters[cual].modalidad !== "sin bono" ? (
       <div>
         <p style={{ margin: 0 }}>dias</p>
         <Input
+          title={cual}
           id="dias"
-          name={this.state.parameters.bono.dias}
+          name={this.state.parameters[cual].dias}
           onChange={this.handleOnChange}
-          placeholder={this.state.parameters.bono.dias}
+          placeholder={this.state.parameters[cual].dias}
         />
       </div>
     ) : (
-      <h4>sin modalidad de bono?</h4>
+      <h4>sin {cual}?</h4>
     );
   }
-  giveMePrecio() {
-    return this.state.parameters.bono.modalidad !== "elige modalidad" &&
-      this.state.parameters.bono.modalidad !== "sin bono" ? (
+  giveMePrecio(cual) {
+    return this.state.parameters[cual].modalidad !== "elige modalidad" &&
+      this.state.parameters[cual].modalidad !== "sin bono" ? (
       <div>
         {" "}
         <p style={{ margin: 0 }}>precio</p>
         <Input
+          title={cual}
           id="precio"
-          name={this.state.parameters.bono.precio}
+          name={this.state.parameters[cual].precio}
           onChange={this.handleOnChange}
-          placeholder={this.state.parameters.bono.precio}
+          placeholder={this.state.parameters[cual].precio}
         />
       </div>
     ) : (
@@ -122,51 +142,79 @@ class FormBono extends Component {
   }
   render() {
     return (
-      <Row style={{ paddingTop: 5 }}>
-        <Col sm="3">
-          <div
-            style={{
-              backgroundColor: "gainsboro"
-            }}
-          >
-            <h5 style={{ display: "inline-block" }}>
-              {this.props.bono.modalidad} {this.props.bono.dias}
-              {" : "}
-              {this.props.bono.precio}
-            </h5>
-            {this.props.bono.precio ? (
-              <h6 style={{ display: "inline-block" }}>Euros</h6>
-            ) : (
-              ""
+      <div>
+        <Row style={{ paddingTop: 5 }}>
+          <Col sm="3">
+            <div
+              style={{
+                backgroundColor: "gainsboro"
+              }}
+            >
+              <h5 style={{ display: "inline-block" }}>
+                {this.props.bono.modalidad} {this.props.bono.dias}
+                {" : "}
+                {this.props.bono.precio}
+              </h5>
+              {this.props.bono.precio ? (
+                <h6 style={{ display: "inline-block" }}>Euros</h6>
+              ) : (
+                ""
+              )}
+            </div>
+          </Col>
+          <Col sm="2">{this.giveMeModalidad("bono")}</Col>
+          <Col sm="3">{this.giveMeDias("bono")}</Col>
+          <Col sm="2">{this.giveMePrecio("bono")}</Col>
+        </Row>
+        <Row style={{ paddingTop: 5 }}>
+          <Col sm="3">
+            {this.props.bonoSecundario && (
+              <div
+                style={{
+                  backgroundColor: "gainsboro"
+                }}
+              >
+                <h5 style={{ display: "inline-block" }}>
+                  {this.props.bonoSecundario.modalidad}{" "}
+                  {this.props.bonoSecundario.dias}
+                  {" : "}
+                  {this.props.bonoSecundario.precio}
+                </h5>
+                {this.props.bonoSecundario.precio ? (
+                  <h6 style={{ display: "inline-block" }}>Euros</h6>
+                ) : (
+                  ""
+                )}
+              </div>
             )}
-          </div>
-        </Col>
-        <Col sm="2">{this.giveMeModalidad()}</Col>
-        <Col sm="3">{this.giveMeDias()}</Col>
-        <Col sm="2">{this.giveMePrecio()}</Col>
-
-        <Col sm="2">
-          <Button
-            id="bono"
-            name="servicio"
-            onClick={this.subirBono} //need to do it
-            color="primary"
-            disabled={
-              //not working
-              this.state.parameters.bono.modalidad !== "elige modalidad" &&
-              this.state.parameters.bono.dias !==
-                "numero o dias de la semana" &&
-              this.state.parameters.bono.precio !== "cuanto cuesta"
-                ? false
-                : this.state.parameters.bono.modalidad === "sin bono"
-                ? false
-                : true
-            }
-          >
-            Cambiar Bono
-          </Button>
-        </Col>
-      </Row>
+          </Col>
+          <Col sm="2">{this.giveMeModalidad("bonoSecundario")}</Col>
+          <Col sm="3">{this.giveMeDias("bonoSecundario")}</Col>
+          <Col sm="2">{this.giveMePrecio("bonoSecundario")}</Col>
+        </Row>
+        <Row>
+          <Col sm="4">
+            <Button
+              id="bonos"
+              name="servicio"
+              onClick={this.subirBono} //need to do it
+              color="primary"
+              disabled={
+                this.state.parameters.bono.modalidad !== "elige modalidad" &&
+                this.state.parameters.bono.dias !==
+                  "numero o dias de la semana" &&
+                this.state.parameters.bono.precio !== "cuanto cuesta"
+                  ? false
+                  : this.state.parameters.bono.modalidad === "sin bono"
+                  ? false
+                  : true
+              }
+            >
+              Cambiar Bonos
+            </Button>
+          </Col>
+        </Row>
+      </div>
     );
   }
 }

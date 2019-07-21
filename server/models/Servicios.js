@@ -12,15 +12,28 @@ var ServiciosSchema = mongoose.Schema({
       duracion: {
         type: Number
       },
-      bono: {
-        modalidad: {
-          type: String
+      bonos: {
+        bono: {
+          modalidad: {
+            type: String
+          },
+          dias: {
+            type: String
+          },
+          precio: {
+            type: Number
+          }
         },
-        dias: {
-          type: String
-        },
-        precio: {
-          type: Number
+        bonoSecundario: {
+          modalidad: {
+            type: String
+          },
+          dias: {
+            type: String
+          },
+          precio: {
+            type: Number
+          }
         }
       },
       urlPic: {
