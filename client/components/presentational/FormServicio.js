@@ -15,11 +15,6 @@ class ServiciosForm extends Component {
         duracion: 0,
         servicioTextoLargo: "",
         bonoNombre: "cambiar bono",
-        bono: {
-          modalidad: "elige modalidad", //sin bono,bono,mensual
-          dias: "numero o dias de la semana",
-          precio: "cuanto cuesta"
-        },
         urlPic: ""
       },
       modalEliminarServicioShow: false,
@@ -197,7 +192,7 @@ class ServiciosForm extends Component {
           </Row>
           {/* //////////////////////////////////////////////////////////bono////////////////////////////////// */}
           <FormBono
-            bono={this.props.servicio.bono}
+            bonos={this.props.servicio.bonos}
             subirBono={this.subirChunk.bind(this)}
           />
 

@@ -49,6 +49,9 @@ class FormBono extends Component {
         dias: "",
         precio: ""
       };
+    } else if (bonos.chunkData.bonoSecundario.modalidad === "sin bono") {
+      bonos.chunkData.bonoSecundario.dias = "";
+      bonos.chunkData.bonoSecundario.precio = "";
     }
     this.props.subirBono(bonos);
   }
@@ -145,22 +148,24 @@ class FormBono extends Component {
       <div>
         <Row style={{ paddingTop: 5 }}>
           <Col sm="3">
-            <div
-              style={{
-                backgroundColor: "gainsboro"
-              }}
-            >
-              <h5 style={{ display: "inline-block" }}>
-                {this.props.bono.modalidad} {this.props.bono.dias}
-                {" : "}
-                {this.props.bono.precio}
-              </h5>
-              {this.props.bono.precio ? (
-                <h6 style={{ display: "inline-block" }}>Euros</h6>
-              ) : (
-                ""
-              )}
-            </div>
+            {this.props.bonos && (
+              <div
+                style={{
+                  backgroundColor: "gainsboro"
+                }}
+              >
+                <h5 style={{ display: "inline-block" }}>
+                  {this.props.bonos.bono.modalidad} {this.props.bonos.bono.dias}
+                  {" : "}
+                  {this.props.bonos.bono.precio}
+                </h5>
+                {this.props.bonos.bono.precio ? (
+                  <h6 style={{ display: "inline-block" }}>Euros</h6>
+                ) : (
+                  ""
+                )}
+              </div>
+            )}
           </Col>
           <Col sm="2">{this.giveMeModalidad("bono")}</Col>
           <Col sm="3">{this.giveMeDias("bono")}</Col>
@@ -168,19 +173,19 @@ class FormBono extends Component {
         </Row>
         <Row style={{ paddingTop: 5 }}>
           <Col sm="3">
-            {this.props.bonoSecundario && (
+            {this.props.bonos && this.props.bonos.bonoSecundario && (
               <div
                 style={{
                   backgroundColor: "gainsboro"
                 }}
               >
                 <h5 style={{ display: "inline-block" }}>
-                  {this.props.bonoSecundario.modalidad}{" "}
-                  {this.props.bonoSecundario.dias}
+                  {this.props.bonos.bonoSecundario.modalidad}{" "}
+                  {this.props.bonos.bonoSecundario.dias}
                   {" : "}
-                  {this.props.bonoSecundario.precio}
+                  {this.props.bonos.bonoSecundario.precio}
                 </h5>
-                {this.props.bonoSecundario.precio ? (
+                {this.props.bonos.bonoSecundario.precio ? (
                   <h6 style={{ display: "inline-block" }}>Euros</h6>
                 ) : (
                   ""
