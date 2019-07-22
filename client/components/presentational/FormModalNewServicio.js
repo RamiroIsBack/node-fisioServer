@@ -23,15 +23,23 @@ class FormModal extends React.Component {
       nombre: "",
       precio: 0,
       duracion: 0,
-      bono: {
-        modalidad: "sin bono", //sin bono,bono,mensual
-        dias: "",
-        precio: ""
+      bonos: {
+        bono: {
+          modalidad: "elige modalidad", //sin bono,bono,mensual
+          dias: "",
+          precio: ""
+        },
+        bonoSecundario: {
+          modalidad: "sin bono", //sin bono,bono,mensual
+          dias: "",
+          precio: ""
+        }
       },
       urlPic: "",
 
       servicioTextoLargo: "",
-
+      dropdownBono: false,
+      dropdownBonoSecundario: false,
       tecnicas: []
     };
     this.giveMeModalidad = this.giveMeModalidad.bind(this);
@@ -43,10 +51,10 @@ class FormModal extends React.Component {
   }
   handleOnChange(e) {
     let obj = Object.assign({}, this.state);
-    e.target.id === "bono"
+    e.target.id === "bono" || e.target.id === "bonoSecundario"
       ? e.target.title === "modalidad"
-        ? (obj.bono[e.target.title] = e.target.name)
-        : (obj.bono[e.target.title] = e.target.value)
+        ? (obj.bonos[e.target.id][e.target.title] = e.target.name)
+        : (obj.bonos[e.target.id][e.target.title] = e.target.value)
       : (obj[e.target.id] = e.target.value);
     this.setState(obj);
   }
@@ -56,21 +64,24 @@ class FormModal extends React.Component {
     obj.urlIcono = this.props.pics["newServicioIcono"];
     this.props.createNewServicio(obj);
   }
-  giveMeModalidad() {
+  giveMeModalidad(cual) {
+    let dropdown = cual === "bono" ? "dropdownBono" : "dropdownBonoSecundario";
     return (
       <Dropdown
         direction="down"
-        isOpen={this.state.dropDownBono}
+        isOpen={this.state[dropdown]}
         toggle={() => {
           this.setState({
-            dropDownBono: !this.state.dropDownBono
+            [dropdown]: !this.state[dropdown]
           });
         }}
       >
-        <DropdownToggle caret>{this.state.bono.modalidad}</DropdownToggle>
+        <DropdownToggle caret>
+          {this.state.bonos[cual].modalidad}
+        </DropdownToggle>
         <DropdownMenu>
           <DropdownItem
-            id="bono"
+            id={cual}
             title="modalidad"
             name="sin bono"
             onClick={this.handleOnChange.bind(this)}
@@ -78,7 +89,7 @@ class FormModal extends React.Component {
             sin bono
           </DropdownItem>
           <DropdownItem
-            id="bono"
+            id={cual}
             title="modalidad"
             name="bono"
             onClick={this.handleOnChange.bind(this)}
@@ -86,7 +97,7 @@ class FormModal extends React.Component {
             bono
           </DropdownItem>
           <DropdownItem
-            id="bono"
+            id={cual}
             title="modalidad"
             name="mensualidad"
             onClick={this.handleOnChange.bind(this)}
@@ -97,33 +108,33 @@ class FormModal extends React.Component {
       </Dropdown>
     );
   }
-  giveMeDias() {
-    return this.state.bono.modalidad !== "elige modalidad" &&
-      this.state.bono.modalidad !== "sin bono" ? (
+  giveMeDias(cual) {
+    return this.state.bonos[cual].modalidad !== "elige modalidad" &&
+      this.state.bonos[cual].modalidad !== "sin bono" ? (
       <div>
         <p style={{ margin: 0 }}>dias</p>
         <Input
-          id="bono"
+          id={cual}
           title="dias"
           onChange={this.handleOnChange.bind(this)}
-          placeholder={this.state.bono.dias}
+          placeholder={this.state.bonos[cual].dias}
         />
       </div>
     ) : (
-      <h4>sin modalidad de bono?</h4>
+      <h4>sin {cual}?</h4>
     );
   }
-  giveMePrecio() {
-    return this.state.bono.modalidad !== "elige modalidad" &&
-      this.state.bono.modalidad !== "sin bono" ? (
+  giveMePrecio(cual) {
+    return this.state.bonos[cual].modalidad !== "elige modalidad" &&
+      this.state.bonos[cual].modalidad !== "sin bono" ? (
       <div>
         {" "}
         <p style={{ margin: 0 }}>precio</p>
         <Input
-          id="bono"
+          id={cual}
           title="precio"
           onChange={this.handleOnChange.bind(this)}
-          placeholder={this.state.bono.precio}
+          placeholder={this.state.bonos[cual].precio}
         />
       </div>
     ) : (
@@ -206,9 +217,14 @@ class FormModal extends React.Component {
             </Row>
             {/* //////////////////////////////////////////////////////////bono////////////////////////////////// */}
             <Row style={{ paddingTop: 5 }}>
-              <Col sm="4">{this.giveMeModalidad()}</Col>
-              <Col sm="5">{this.giveMeDias()}</Col>
-              <Col sm="3">{this.giveMePrecio()}</Col>
+              <Col sm="4">{this.giveMeModalidad("bono")}</Col>
+              <Col sm="5">{this.giveMeDias("bono")}</Col>
+              <Col sm="3">{this.giveMePrecio("bono")}</Col>
+            </Row>
+            <Row style={{ paddingTop: 5 }}>
+              <Col sm="4">{this.giveMeModalidad("bonoSecundario")}</Col>
+              <Col sm="5">{this.giveMeDias("bonoSecundario")}</Col>
+              <Col sm="3">{this.giveMePrecio("bonoSecundario")}</Col>
             </Row>
             {/*////////////////////////////////////////////// servicioTextoLargo /////////////////////////////////*/}
             <Row
