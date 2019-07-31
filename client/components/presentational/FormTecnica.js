@@ -232,6 +232,17 @@ class FormTecnica extends Component {
           </Row>
 
           {/* //////////////////////////////////////////////////////////urlPic////////////////////////////////// */}
+          {this.props.tecnica.urlPic !== "" && (
+            <Button
+              name="tecnica"
+              id="urlPic"
+              outline
+              color="danger"
+              onClick={this.subirChunk.bind(this)}
+            >
+              Quitar la foto
+            </Button>
+          )}
           <FormPictures
             src={this.props.tecnica.urlPic}
             pics={this.props.pics}
