@@ -15,8 +15,8 @@ var { Tecnicas } = require("./models/Tecnicas");
 var { Contacto } = require("./models/Contacto");
 
 connectWithDBThroughMongoose()
-  .then(message => console.log("connectingDB: ", message))
-  .catch(e => console.log("error while connecting: ", e));
+  .then((message) => console.log("connectingDB: ", message))
+  .catch((e) => console.log("error while connecting: ", e));
 
 var app = express();
 
@@ -29,25 +29,31 @@ app.post("/copy/inicio", (req, res) => {
   var newInicio = new Inicio({
     inicioTextoCorto: req.body.params.inicioTextoCorto,
     inicioTextoLargo: req.body.params.inicioTextoLargo,
-    items: req.body.params.items
+    items: req.body.params.items,
   });
-  newInicio.save().then(doc => {
+  newInicio.save().then((doc) => {
     res.send(doc);
   });
 });
 app.get("/copy/inicio", (req, res) => {
   Inicio.find()
-    .then(inicioCopy => {
+    .then((inicioCopy) => {
       res.send({ inicioCopy });
     })
-    .catch(err => {
+    .catch((err) => {
       res.send(err);
     });
 });
 app.patch("/copy/inicio", authenticateMiddleware, (req, res) => {
   var body = req.body;
   var { id } = body;
-  if (!body.inicioTextoCorto && !body.inicioTextoLargo && !body.items) {
+  if (
+    body.anuncio === undefined &&
+    body.anuncioTexto === undefined &&
+    body.inicioTextoCorto === undefined &&
+    body.inicioTextoLargo === undefined &&
+    body.items === undefined
+  ) {
     return res.status(400).send({ err: "give me something!" });
   }
   if (!ObjectID.isValid(id)) {
@@ -55,29 +61,29 @@ app.patch("/copy/inicio", authenticateMiddleware, (req, res) => {
   }
   body.updatedAt = new Date().toString();
   Inicio.findOneAndUpdate({ _id: id }, { $set: body }, { new: true })
-    .then(inicioObject => {
+    .then((inicioObject) => {
       if (!inicioObject) {
         return res.status(404).send();
       }
       res.send(inicioObject);
     })
-    .catch(e => res.status(400).send(e));
+    .catch((e) => res.status(400).send(e));
 });
 
 ////////////////////equipo//////////////////////////
 
 app.post("/copy/equipo", (req, res) => {
   var newEquipo = new Equipo(req.body);
-  newEquipo.save().then(doc => {
+  newEquipo.save().then((doc) => {
     res.send(doc);
   });
 });
 app.get("/copy/equipo", (req, res) => {
   Equipo.find()
-    .then(equipoCopy => {
+    .then((equipoCopy) => {
       res.send({ equipoCopy });
     })
-    .catch(err => {
+    .catch((err) => {
       res.send(err);
     });
 });
@@ -92,29 +98,29 @@ app.patch("/copy/equipo", authenticateMiddleware, (req, res) => {
   }
   body.updatedAt = new Date().toString();
   Equipo.findOneAndUpdate({ _id: id }, { $set: body }, { new: true })
-    .then(equipoObject => {
+    .then((equipoObject) => {
       if (!equipoObject) {
         return res.status(404).send();
       }
       res.send(equipoObject);
     })
-    .catch(e => res.status(400).send(e));
+    .catch((e) => res.status(400).send(e));
 });
 
 //////////////////instalaciones///////////////////////////
 
 app.post("/copy/instalaciones", (req, res) => {
   var newInstalaciones = new Instalaciones(req.body);
-  newInstalaciones.save().then(doc => {
+  newInstalaciones.save().then((doc) => {
     res.send(doc);
   });
 });
 app.get("/copy/instalaciones", (req, res) => {
   Instalaciones.find()
-    .then(instalacionesCopy => {
+    .then((instalacionesCopy) => {
       res.send({ instalacionesCopy });
     })
-    .catch(err => {
+    .catch((err) => {
       res.send(err);
     });
 });
@@ -133,29 +139,29 @@ app.patch("/copy/instalaciones", authenticateMiddleware, (req, res) => {
   }
   body.updatedAt = new Date().toString();
   Instalaciones.findOneAndUpdate({ _id: id }, { $set: body }, { new: true })
-    .then(instalacionesObject => {
+    .then((instalacionesObject) => {
       if (!instalacionesObject) {
         return res.status(404).send();
       }
       res.send(instalacionesObject);
     })
-    .catch(e => res.status(400).send(e));
+    .catch((e) => res.status(400).send(e));
 });
 
 ////////////////// servicios y tarifas ///////////////////////////
 
 app.post("/copy/servicios", (req, res) => {
   var newServicios = new Servicios(req.body);
-  newServicios.save().then(doc => {
+  newServicios.save().then((doc) => {
     res.send(doc);
   });
 });
 app.get("/copy/servicios", (req, res) => {
   Servicios.find()
-    .then(serviciosCopy => {
+    .then((serviciosCopy) => {
       res.send({ serviciosCopy });
     })
-    .catch(err => {
+    .catch((err) => {
       res.send(err);
     });
 });
@@ -170,29 +176,29 @@ app.patch("/copy/servicios", authenticateMiddleware, (req, res) => {
   }
   body.updatedAt = new Date().toString();
   Servicios.findOneAndUpdate({ _id: id }, { $set: body }, { new: true })
-    .then(serviciosObject => {
+    .then((serviciosObject) => {
       if (!serviciosObject) {
         return res.status(404).send();
       }
       res.send(serviciosObject);
     })
-    .catch(e => res.status(400).send(e));
+    .catch((e) => res.status(400).send(e));
 });
 
 ////////////////// tecnicas ///////////////////////////
 
 app.post("/copy/tecnicas", (req, res) => {
   var newTecnicas = new Tecnicas(req.body);
-  newTecnicas.save().then(doc => {
+  newTecnicas.save().then((doc) => {
     res.send(doc);
   });
 });
 app.get("/copy/tecnicas", (req, res) => {
   Tecnicas.find()
-    .then(tecnicasCopy => {
+    .then((tecnicasCopy) => {
       res.send({ tecnicasCopy });
     })
-    .catch(err => {
+    .catch((err) => {
       res.send(err);
     });
 });
@@ -207,29 +213,29 @@ app.patch("/copy/tecnicas", authenticateMiddleware, (req, res) => {
   }
   body.updatedAt = new Date().toString();
   Tecnicas.findOneAndUpdate({ _id: id }, { $set: body }, { new: true })
-    .then(tecnicasObject => {
+    .then((tecnicasObject) => {
       if (!tecnicasObject) {
         return res.status(404).send();
       }
       res.send(tecnicasObject);
     })
-    .catch(e => res.status(400).send(e));
+    .catch((e) => res.status(400).send(e));
 });
 
 ////////////////// contacto ///////////////////////////
 
 app.post("/copy/contacto", (req, res) => {
   var newContacto = new Contacto(req.body.object);
-  newContacto.save().then(doc => {
+  newContacto.save().then((doc) => {
     res.send(doc);
   });
 });
 app.get("/copy/contacto", (req, res) => {
   Contacto.find()
-    .then(contactoCopy => {
+    .then((contactoCopy) => {
       res.send({ contactoCopy });
     })
-    .catch(err => {
+    .catch((err) => {
       res.send(err);
     });
 });
@@ -251,13 +257,13 @@ app.patch("/copy/contacto", authenticateMiddleware, (req, res) => {
   }
   body.updatedAt = new Date().toString();
   Contacto.findOneAndUpdate({ _id: id }, { $set: body }, { new: true })
-    .then(contactoObject => {
+    .then((contactoObject) => {
       if (!contactoObject) {
         return res.status(404).send();
       }
       res.send(contactoObject);
     })
-    .catch(e => res.status(400).send(e));
+    .catch((e) => res.status(400).send(e));
 });
 
 //////////////////user/////////////////////////////////////
@@ -265,12 +271,12 @@ app.patch("/copy/contacto", authenticateMiddleware, (req, res) => {
 app.post("/users/login", (req, res) => {
   var { nombre, password } = req.body.params;
   User.findByCredentials({ nombre, password })
-    .then(user => {
-      user.generateAuthToken().then(token => {
+    .then((user) => {
+      user.generateAuthToken().then((token) => {
         res.header("x-auth", token).send(user);
       });
     })
-    .catch(e => {
+    .catch((e) => {
       res.status(400).send(e);
     });
 });
@@ -281,10 +287,10 @@ app.get("/users/me", authenticateMiddleware, (req, res) => {
 /////////////////ping to keep the server awake https://uptimerobot.com/dashboard#mainDashboard /////////////
 app.get("/ping", (req, res) => {
   Ping.find()
-    .then(ping => {
+    .then((ping) => {
       res.send({ ping, working: "is working" });
     })
-    .catch(err => {
+    .catch((err) => {
       res.send(err);
     });
 });

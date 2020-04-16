@@ -1,23 +1,29 @@
 var mongoose = require("mongoose");
 
 var InicioSchema = mongoose.Schema({
+  anuncio: {
+    type: Boolean,
+  },
+  anuncioTexto: {
+    type: String,
+  },
   inicioTextoLargo: {
-    type: String
+    type: String,
   },
   inicioTextoCorto: {
-    type: String
+    type: String,
   },
   items: [
     {
       src: {
-        type: String
+        type: String,
       },
 
       nombre: {
-        type: String
-      }
-    }
-  ]
+        type: String,
+      },
+    },
+  ],
 });
 var Inicio = mongoose.model("Inicio", InicioSchema);
 module.exports = { Inicio };

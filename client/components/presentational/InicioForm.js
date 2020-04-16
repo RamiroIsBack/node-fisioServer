@@ -1,5 +1,13 @@
 import React, { Component } from "react";
-import { Button, FormGroup, Label, Input } from "reactstrap";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+  Button,
+  FormGroup,
+  Label,
+  Input,
+} from "reactstrap";
 
 class InicioForm extends Component {
   constructor() {
@@ -7,10 +15,12 @@ class InicioForm extends Component {
     this.state = {
       parameters: {
         inicioTextoCorto: "",
-        inicioTextoLargo: ""
-      }
+        inicioTextoLargo: "",
+        anuncioTexto: "",
+      },
     };
   }
+
   handleOnChange(e) {
     let obj = Object.assign({}, this.state);
     obj.parameters[e.target.id] = e.target.value;
@@ -21,7 +31,10 @@ class InicioForm extends Component {
     this.props.subirChunk({
       partID: e.target.name,
       chunkID: e.target.id,
-      chunkData: this.state.parameters[e.target.id]
+      chunkData:
+        e.target.id === "anuncio"
+          ? !this.props.copy.anuncio
+          : this.state.parameters[e.target.id],
     });
   }
 
@@ -35,6 +48,80 @@ class InicioForm extends Component {
           para hacer el cambio:
         </p>
         <br />
+        {/* anuncio Texto al principio */}
+        <div>
+          <h4 style={{ display: "inline" }}>Anuncio Texto </h4>
+          <p style={{ display: "inline" }}>
+            que aparece por encima de todo en una ventana para mensajes
+            importantes
+          </p>
+          <div>
+            <p
+              style={{
+                display: "inline",
+
+                backgroundColor: "yellow",
+              }}
+            >
+              {this.props.copy
+                ? this.props.copy.anuncio
+                  ? "el anuncio est'a activo"
+                  : "el anuncio est'a desactivado"
+                : "cargando....."}
+            </p>
+            <Button
+              style={{ display: "inline" }}
+              id="anuncio"
+              name="texto"
+              onClick={this.subirChunk.bind(this)}
+              color="primary"
+            >
+              {this.props.copy
+                ? this.props.copy.anuncio
+                  ? "Desactivar"
+                  : "Activar"
+                : "cargando....."}
+            </Button>
+          </div>
+        </div>
+        <FormGroup
+          style={{
+            padding: "2px",
+            borderRadius: "4px",
+            border: "1px solid black",
+          }}
+        >
+          <Label style={{ marginBottom: 0, marginLeft: "5px" }}>
+            esto hay en la base de datos:
+          </Label>
+          <Input
+            value={
+              this.props.copy ? this.props.copy.anuncioTexto : "cargando....."
+            }
+            id="anuncioTextoDB"
+            readOnly="readonly"
+          />
+          <Label for="anuncioTexto">introduce lo q quieres que aparezca</Label>
+          <Input
+            id="anuncioTexto"
+            placeholder="Otra pandemia noooooo!!"
+            value={this.state.parameters.anuncioTexto}
+            onChange={this.handleOnChange.bind(this)}
+          />
+          <Button
+            id="anuncioTexto"
+            name="texto"
+            onClick={this.subirChunk.bind(this)}
+            color="primary"
+          >
+            Subir anuncio Texto
+          </Button>
+        </FormGroup>
+
+        <br />
+
+        {/* texto corto */}
+
         <div>
           <h4 style={{ display: "inline" }}>Texto Corto </h4>
           <p style={{ display: "inline" }}>
@@ -45,7 +132,7 @@ class InicioForm extends Component {
           style={{
             padding: "2px",
             borderRadius: "4px",
-            border: "1px solid black"
+            border: "1px solid black",
           }}
         >
           <Label style={{ marginBottom: 0, marginLeft: "5px" }}>
@@ -88,7 +175,7 @@ class InicioForm extends Component {
           style={{
             padding: "2px",
             borderRadius: "4px",
-            border: "1px solid black"
+            border: "1px solid black",
           }}
         >
           <Label style={{ marginBottom: 0, marginLeft: "5px" }}>
